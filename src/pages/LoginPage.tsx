@@ -1,7 +1,8 @@
-import DemoAccess from '../components/LoginPage/DemoAccess'
-import LoginForm from '../components/LoginPage/LoginForm'
-import LoginHeader from '../components/LoginPage/LoginHeader'
-import '../styles/pages/LoginPage.css'
+import Footer from "../components/common/Footer";
+import DemoAccess from "../components/LoginPage/DemoAccess";
+import LoginForm from "../components/LoginPage/LoginForm";
+import LoginHeader from "../components/LoginPage/LoginHeader";
+import "../styles/pages/LoginPage.css";
 
 export default function LoginPage() {
   return (
@@ -22,10 +23,8 @@ export default function LoginPage() {
           </div>
         </section>
 
-        <footer>
-          © 2026 City of Millbrook · Municipal Operations v2.4.1
-        </footer>
+        <Footer />
       </div>
     </main>
-  )
+  );
 }
