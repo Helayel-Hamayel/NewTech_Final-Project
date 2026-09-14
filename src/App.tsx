@@ -1,9 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./components/common/NotFound";
 import LoginPage from "./pages/LoginPage";
-import FieldGuardPage from "./pages/FieldGuardPage";
 import ResidentPortalPage from "./pages/ResidentPortalPage";
 import StaffDashboardPage from "./pages/StaffDashboardPage";
+import FieldGuardLayout from "./layouts/FieldGuardLayout";
+import FieldGuardPage from "./pages/fieldGuard/FieldGuardPage";
+import FieldGuardReportsPage from "./pages/fieldGuard/FieldGuardReportsPage";
+import FieldGuardHistoryPage from "./pages/fieldGuard/FieldGuardHistoryPage";
 
 function App() {
   return (
@@ -12,7 +15,13 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/resident" element={<ResidentPortalPage />} />
         <Route path="/staff" element={<StaffDashboardPage />} />
-        <Route path="/field-guard" element={<FieldGuardPage />} />
+
+        <Route path="/field-guard" element={<FieldGuardLayout />}>
+          <Route index element={<FieldGuardPage />} />
+          <Route path="report" element={<FieldGuardReportsPage />} />
+          <Route path="history" element={<FieldGuardHistoryPage />} />
+        </Route>
+
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
