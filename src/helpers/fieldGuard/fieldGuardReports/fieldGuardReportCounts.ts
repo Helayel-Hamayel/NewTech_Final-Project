@@ -1,4 +1,4 @@
-import type { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import type { fieldGuardData } from "../../../data/fieldGuardData(Demo)";
 
 export function getReportCounts(reports: typeof fieldGuardData.reports) {
   return {

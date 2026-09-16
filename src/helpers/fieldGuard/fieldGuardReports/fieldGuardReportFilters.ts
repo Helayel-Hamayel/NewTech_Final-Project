@@ -1,4 +1,4 @@
-import type { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import type { fieldGuardData } from "../../../data/fieldGuardData(Demo)";
 
 export function filterReports(
   reports: typeof fieldGuardData.reports,
@@ -13,5 +13,6 @@ export function filterReports(
     .filter((report) =>
       (status === "All" || report.status === status.toUpperCase()) &&
       (priority === "All" || report.priority === priority.toUpperCase()),
-    );
+    )
+    .reverse();
 }
