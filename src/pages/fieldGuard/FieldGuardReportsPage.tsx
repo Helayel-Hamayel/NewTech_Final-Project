@@ -1,3 +1,4 @@
+import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
 import "../../styles/pages/FieldGuard/FieldGuardPage.css";
 import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
@@ -38,15 +39,15 @@ export default function FieldGuardReportsPage() {
           <dd>{counts.total}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>New</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="NEW" />New</dt>
           <dd className="reports-blue">{counts.new}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>In progress</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="IN PROGRESS" />In progress</dt>
           <dd className="reports-orange">{counts.inProgress}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>Resolved / Rejected</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="RESOLVED" />Resolved / <FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
           <dd>
             <span className="reports-green">{counts.resolved} </span>/<span className="reports-red"> {counts.rejected}</span>
           </dd>

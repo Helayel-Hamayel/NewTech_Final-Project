@@ -1,3 +1,4 @@
+import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
 import "../../styles/pages/FieldGuard/FieldGuardPage.css";
 import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
 import { RecentPanel } from "../../helpers/fieldGuard/fieldGuardPageHelpers";
@@ -20,11 +21,11 @@ export default function FieldGuardPage() {
           <dd>{issues.length}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>ISSUES ACCEPTED</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="ACCEPTED" />ISSUES ACCEPTED</dt>
           <dd className="field-guard-count-accepted">{acceptedCount}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>ISSUES REJECTED</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="REJECTED" />ISSUES REJECTED</dt>
           <dd className="field-guard-count-rejected">{rejectedCount}</dd>
         </div>
         <div className="field-guard-stat">

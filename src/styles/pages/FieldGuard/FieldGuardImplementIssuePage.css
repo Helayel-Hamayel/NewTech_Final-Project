@@ -58,6 +58,21 @@
   resize: vertical;
 }
 
+.create-issue-field input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgb(48, 54, 61);
+  border-radius: 6px;
+  background-color: #21262d;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.create-issue-field input[type="file"]::file-selector-button:hover {
+  background-color: #30363d;
+}
+
 .create-issue-field input:focus-visible,
 .create-issue-field textarea:focus-visible,
 .create-issue-field select:focus-visible,

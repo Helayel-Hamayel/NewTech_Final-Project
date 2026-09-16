@@ -68,7 +68,8 @@
 .history-field { display: flex; flex-direction: column; min-width: 0; gap: 8px; }
 .history-detail-pair > .history-field { flex: 1; }
 .history-field dt { color: #9da7b3; font-size: 13px; }
-.history-field dd { margin: 0; overflow-wrap: anywhere; line-height: 1.5; }
+.history-field dd { margin: 0; overflow-wrap: anywhere; line-height: 1.5; color: #ffffff; }
+.history-field dd.history-gold { color: #e3b341; }
 .history-priority {
   display: flex;
   align-items: center;

@@ -1,3 +1,5 @@
+import { Tag, CalendarDays, User, MapPin, FileText, Flag, Phone } from "lucide-react";
+import FieldGuardStatusIcon from "../../../components/fieldGuard/FieldGuardStatusIcon";
 import type { fieldGuardData } from "../../../data/fieldGuardData(Demo)";
 import "../../../styles/common/fieldGuard/FieldGuardChoices.css";
 
@@ -46,7 +48,7 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
               onClick={() => setStatus(value)}
               aria-pressed={status === value}
             >
-              {value}
+              <FieldGuardStatusIcon status={value} />{value}
             </button>
           ))}
         </div>
@@ -62,7 +64,7 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
               onClick={() => setPriority(value)}
               aria-pressed={priority === value}
             >
-              {value}
+              <FieldGuardStatusIcon status={value} />{value}
             </button>
           ))}
         </div>
@@ -92,11 +94,11 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
           <div className="report-content">
             <div className="report-line">
               <div className="report-identification">
-                <span>{report.displayId}</span>
+                <span className="field-guard-icon-text"><Tag className="field-guard-icon" aria-hidden="true" />{report.displayId}</span>
                 <span>{report.category}</span>
               </div>
               <span className={`field-guard-status status-${report.status.toLowerCase().replaceAll(" ", "-")}`}>
-                {report.status}
+                <FieldGuardStatusIcon status={report.status} />{report.status}
               </span>
             </div>
             <div className="report-line">
@@ -113,7 +115,7 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
                   {report.title}
                 </button>
               </h2>
-              <time dateTime={report.createdAt}>{formatDate(report.createdAt)}</time>
+              <time className="field-guard-icon-text" dateTime={report.createdAt}><CalendarDays className="field-guard-icon" aria-hidden="true" />{formatDate(report.createdAt)}</time>
             </div>
             <p className="report-description" title={report.description}>
               {report.description}
@@ -137,27 +139,27 @@ export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
   return (
     <section className="reports-side-panel report-details" aria-label={`Details for ${report.displayId}`}>
       <div className="report-details-header">
-        <h2>{report.displayId}</h2>
+        <h2 className="field-guard-icon-text"><Tag className="field-guard-icon" aria-hidden="true" />{report.displayId}</h2>
         <span className={`field-guard-status status-${report.status.toLowerCase().replaceAll(" ", "-")}`}>
-          {report.status}
+          <FieldGuardStatusIcon status={report.status} />{report.status}
         </span>
       </div>
       <dl className="report-details-fields">
         <div className="report-details-field">
-          <dt>Citizen</dt>
-          <dd><span>{report.residentName}</span><span>{report.residentPhone}</span></dd>
+          <dt className="field-guard-icon-text"><User className="field-guard-icon" aria-hidden="true" />Citizen</dt>
+          <dd><span>{report.residentName}</span><span className="field-guard-icon-text"><Phone className="field-guard-icon" aria-hidden="true" />{report.residentPhone}</span></dd>
         </div>
         <div className="report-details-field">
-          <dt>Category</dt><dd>{report.category}</dd>
+          <dt className="field-guard-icon-text"><Tag className="field-guard-icon" aria-hidden="true" />Category</dt><dd>{report.category}</dd>
         </div>
         <div className="report-details-field">
-          <dt>Location</dt><dd>{report.location}</dd>
+          <dt className="field-guard-icon-text"><MapPin className="field-guard-icon" aria-hidden="true" />Location</dt><dd>{report.location}</dd>
         </div>
         <div className="report-details-field">
-          <dt>Description</dt><dd>{report.description}</dd>
+          <dt className="field-guard-icon-text"><FileText className="field-guard-icon" aria-hidden="true" />Description</dt><dd>{report.description}</dd>
         </div>
         <div className="report-details-field">
-          <dt>Priority</dt>
+          <dt className="field-guard-icon-text"><Flag className="field-guard-icon" aria-hidden="true" />Priority</dt>
           <dd>
             <div className="report-details-priority">
               <span className={`field-guard-priority priority-${report.priority.toLowerCase()}`} aria-hidden="true" />
@@ -166,8 +168,7 @@ export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
           </dd>
         </div>
         <div className="report-details-field">
-          <dt>Date</dt>
-          <dd><time dateTime={report.createdAt}>{formatDate(report.createdAt)}</time></dd>
+          <dd><time className="field-guard-icon-text" dateTime={report.createdAt}><CalendarDays className="field-guard-icon" aria-hidden="true" />{formatDate(report.createdAt)}</time></dd>
         </div>
       </dl>
       {report.status === "NEW" && (

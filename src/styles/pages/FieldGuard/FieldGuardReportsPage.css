@@ -161,6 +161,7 @@
 .report-details-field { display: flex; flex-direction: column; gap: 8px; }
 .report-details-field dt { color: #9da7b3; font-size: 13px; }
 .report-details-field dd {
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   gap: 6px;

@@ -1,3 +1,5 @@
+import { Tag, CalendarDays } from "lucide-react";
+import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
 type RecentEntry = {
   _id: string;
   description: string;
@@ -46,14 +48,14 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
                 {entry.description}
               </p>
               <div className="field-guard-entry-meta">
-                <span>{entry.displayId}</span>
-                <time dateTime={entry.createdAt}>{formatDate(entry.createdAt)}</time>
+                <span className="field-guard-icon-text"><Tag className="field-guard-icon" aria-hidden="true" />{entry.displayId}</span>
+                <time className="field-guard-icon-text" dateTime={entry.createdAt}><CalendarDays className="field-guard-icon" aria-hidden="true" />{formatDate(entry.createdAt)}</time>
               </div>
             </div>
             <span
               className={`field-guard-status status-${entry.status.toLowerCase().replaceAll(" ", "-")}`}
             >
-              {entry.status}
+              <FieldGuardStatusIcon status={entry.status} />{entry.status}
             </span>
           </li>
         ))}

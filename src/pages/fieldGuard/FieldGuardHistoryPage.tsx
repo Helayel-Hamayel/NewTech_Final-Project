@@ -1,3 +1,4 @@
+import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
 import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
 import {
@@ -34,11 +35,11 @@ export default function FieldGuardHistoryPage() {
           <dd>{counts.total}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>Accepted</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="ACCEPTED" />Accepted</dt>
           <dd className="field-guard-count-accepted">{counts.accepted}</dd>
         </div>
         <div className="field-guard-stat">
-          <dt>Rejected</dt>
+          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
           <dd className="field-guard-count-rejected">{counts.rejected}</dd>
         </div>
         <div className="field-guard-stat">
