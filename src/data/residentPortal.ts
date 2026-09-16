@@ -10,6 +10,29 @@ export type Fine = {
   photo: string
 }
 
+export type MaintenanceTicketStage = 'Reported' | 'Dispatched' | 'In Progress' | 'Resolved'
+
+export type MaintenanceTicket = {
+  id: string
+  type: string
+  location: string
+  reportedDate: string
+  stage: MaintenanceTicketStage
+}
+
+export type InvoiceStatus = 'Paid' | 'Due'
+
+export type Invoice = {
+  id: string
+  period: string
+  rent: number
+  water: number
+  electricity: number
+  fines: number
+  total: number
+  status: InvoiceStatus
+}
+
 export const resident = {
   name: 'Maria Reyes',
   id: 'RES-00441',
@@ -61,5 +84,72 @@ export const seededFines: Fine[] = [
     date: 'Aug 12, 2026',
     amount: 50,
     photo: 'Citation photo',
+  },
+]
+
+export const seededInvoices: Invoice[] = [
+  {
+    id: 'INV-2026-05',
+    period: 'May 2026',
+    rent: 1250,
+    water: 32,
+    electricity: 84,
+    fines: 0,
+    total: 1366,
+    status: 'Paid',
+  },
+  {
+    id: 'INV-2026-06',
+    period: 'Jun 2026',
+    rent: 1250,
+    water: 38,
+    electricity: 92,
+    fines: 0,
+    total: 1380,
+    status: 'Paid',
+  },
+  {
+    id: 'INV-2026-07',
+    period: 'Jul 2026',
+    rent: 1250,
+    water: 41,
+    electricity: 96,
+    fines: 50,
+    total: 1437,
+    status: 'Paid',
+  },
+  {
+    id: 'INV-2026-08',
+    period: 'Aug 2026',
+    rent: 1250,
+    water: 45,
+    electricity: 101,
+    fines: 75,
+    total: 1471,
+    status: 'Due',
+  },
+]
+
+export const seededMaintenanceTickets: MaintenanceTicket[] = [
+  {
+    id: 'TKT-2201',
+    type: 'Pothole',
+    location: 'Oak Blvd near #88',
+    reportedDate: 'Sep 1, 2026',
+    stage: 'In Progress',
+  },
+  {
+    id: 'TKT-2189',
+    type: 'Broken Streetlight',
+    location: 'Riverside Dr & Park Ave',
+    reportedDate: 'Aug 26, 2026',
+    stage: 'Resolved',
+  },
+  {
+    id: 'TKT-2174',
+    type: 'Blocked Storm Drain',
+    location: '14 Maple St front',
+    reportedDate: 'Aug 19, 2026',
+    stage: 'Dispatched',
   },
 ]
