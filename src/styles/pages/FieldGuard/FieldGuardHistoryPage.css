@@ -69,6 +69,11 @@
 .history-detail-pair > .history-field { flex: 1; }
 .history-field dt { color: #9da7b3; font-size: 13px; }
 .history-field dd { margin: 0; overflow-wrap: anywhere; line-height: 1.5; }
+.history-priority {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .history-cost-box {
   padding: 20px;
   border: 1px solid rgb(48, 54, 61);

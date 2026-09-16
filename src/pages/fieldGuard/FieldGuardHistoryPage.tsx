@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
-import { prepareHistoryIssues, getHistoryCounts, filterHistoryIssues, formatCost } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
+import {
+  prepareHistoryIssues,
+  getHistoryCounts,
+  filterHistoryIssues,
+  formatCost,
+} from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
 import { HistoryFilters, HistoryList, HistoryDetails } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryComponents";
 import "../../styles/pages/FieldGuard/FieldGuardPage.css";
 import "../../styles/common/fieldGuard/FieldGuardChoices.css";
 import "../../styles/pages/FieldGuard/FieldGuardHistoryPage.css";
+import "../../styles/common/fieldGuard/FieldGuardChoices.css";
+
 
 export default function FieldGuardHistoryPage() {
   const [search, setSearch] = useState("");
@@ -22,16 +29,30 @@ export default function FieldGuardHistoryPage() {
         <p>Review issued violations, their status, and estimated costs.</p>
       </div>
       <dl className="field-guard-stats">
-        <div className="field-guard-stat"><dt>Total issues</dt><dd>{counts.total}</dd></div>
-        <div className="field-guard-stat"><dt>Accepted</dt><dd className="field-guard-count-accepted">{counts.accepted}</dd></div>
-        <div className="field-guard-stat"><dt>Rejected</dt><dd className="field-guard-count-rejected">{counts.rejected}</dd></div>
-        <div className="field-guard-stat"><dt>Total cost</dt><dd className="history-gold">{formatCost(counts.totalCost)}</dd></div>
+        <div className="field-guard-stat">
+          <dt>Total issues</dt>
+          <dd>{counts.total}</dd>
+        </div>
+        <div className="field-guard-stat">
+          <dt>Accepted</dt>
+          <dd className="field-guard-count-accepted">{counts.accepted}</dd>
+        </div>
+        <div className="field-guard-stat">
+          <dt>Rejected</dt>
+          <dd className="field-guard-count-rejected">{counts.rejected}</dd>
+        </div>
+        <div className="field-guard-stat">
+          <dt>Total cost</dt>
+          <dd className="history-gold">{formatCost(counts.totalCost)}</dd>
+        </div>
       </dl>
       <div className="history-panels">
         <section className="history-panel history-list-panel" aria-label="Issues">
           <HistoryFilters search={search} status={status} setSearch={setSearch} setStatus={setStatus} />
           <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={setSelectedId} />
-          <p className="history-result-count" role="status">{visibleIssues.length} out of {issues.length} issues</p>
+          <p className="history-result-count" role="status">
+            {visibleIssues.length} out of {issues.length} issues
+          </p>
         </section>
         <HistoryDetails issue={selectedIssue} />
       </div>

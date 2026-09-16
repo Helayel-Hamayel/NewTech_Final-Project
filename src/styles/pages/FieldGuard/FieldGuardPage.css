@@ -168,9 +168,8 @@
   font-weight: 600;
   white-space: nowrap;
 }
-
-.status-accepted,
-.status-completed {
+.status-resolved,
+.status-accepted {
   background-color: rgb(0, 44, 34);
   color: rgb(0, 212, 146);
 }
