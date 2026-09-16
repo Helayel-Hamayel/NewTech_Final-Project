@@ -2,7 +2,7 @@ type RecentEntry = {
   _id: string;
   description: string;
   priority: "LOW" | "MEDIUM" | "HIGH";
-  status: "ACCEPTED" | "REJECTED" | "PENDING" | "NEW" | "IN PROGRESS" | "COMPLETED";
+  status: "ACCEPTED" | "REJECTED" | "PENDING" | "NEW" | "IN PROGRESS" | "RESOLVED";
   createdAt: string;
 };
 

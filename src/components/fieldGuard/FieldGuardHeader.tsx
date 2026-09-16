@@ -8,6 +8,7 @@ export default function FieldGuardHeader() {
         <NavLink to="/field-guard" end>
           Dashboard
         </NavLink>
+        <NavLink to="/field-guard/create-issue">Implement Issue</NavLink>
         <NavLink to="/field-guard/report">Reports</NavLink>
         <NavLink to="/field-guard/history">History</NavLink>
       </nav>

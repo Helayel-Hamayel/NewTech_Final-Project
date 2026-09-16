@@ -7,6 +7,7 @@ import FieldGuardLayout from "./layouts/FieldGuardLayout";
 import FieldGuardPage from "./pages/fieldGuard/FieldGuardPage";
 import FieldGuardReportsPage from "./pages/fieldGuard/FieldGuardReportsPage";
 import FieldGuardHistoryPage from "./pages/fieldGuard/FieldGuardHistoryPage";
+import FieldGuardImplementIssuePage from "./pages/fieldGuard/FieldGuardImplementIssuePage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         <Route path="/field-guard" element={<FieldGuardLayout />}>
           <Route index element={<FieldGuardPage />} />
+          <Route path="create-issue" element={<FieldGuardImplementIssuePage />} />
           <Route path="report" element={<FieldGuardReportsPage />} />
           <Route path="history" element={<FieldGuardHistoryPage />} />
         </Route>
