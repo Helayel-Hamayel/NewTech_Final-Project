@@ -3,11 +3,13 @@ import NotFound from "./components/common/NotFound";
 import LoginPage from "./pages/LoginPage";
 import ResidentPortalPage from "./pages/ResidentPortalPage";
 import StaffDashboardPage from "./pages/StaffDashboardPage";
-import FieldGuardLayout from "./pages/FieldGuardPage";
-import FieldGuardPage from "./components/FieldGuard/FieldGuardPage";
+import FieldGuardLayout from "./components/FieldGuard/FieldGuardLayout";
+import FieldGuardPage from "./pages/FieldGuardPage";
 import FieldGuardReportsPage from "./components/FieldGuard/FieldGuardReportsPage";
 import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage";
 import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
+
+//todo: remove all classnames and css references from the components and helpers, and move them to the css files in the styles folder. The components should be purely functional and not have any styling or layout concerns.
 
 function App() {
   return (
