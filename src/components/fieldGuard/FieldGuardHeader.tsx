@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 import { FilePlusCorner, Flag, History, LayoutDashboard } from "lucide-react";
 export default function FieldGuardHeader() {
   return (

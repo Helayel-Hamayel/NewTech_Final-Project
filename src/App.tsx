@@ -3,11 +3,11 @@ import NotFound from "./components/common/NotFound";
 import LoginPage from "./pages/LoginPage";
 import ResidentPortalPage from "./pages/ResidentPortalPage";
 import StaffDashboardPage from "./pages/StaffDashboardPage";
-import FieldGuardLayout from "./layouts/FieldGuardLayout";
-import FieldGuardPage from "./pages/fieldGuard/FieldGuardPage";
-import FieldGuardReportsPage from "./pages/fieldGuard/FieldGuardReportsPage";
-import FieldGuardHistoryPage from "./pages/fieldGuard/FieldGuardHistoryPage";
-import FieldGuardImplementIssuePage from "./pages/fieldGuard/FieldGuardImplementIssuePage";
+import FieldGuardLayout from "./pages/FieldGuardPage";
+import FieldGuardPage from "./components/FieldGuard/FieldGuardPage";
+import FieldGuardReportsPage from "./components/FieldGuard/FieldGuardReportsPage";
+import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage";
+import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
 
 function App() {
   return (

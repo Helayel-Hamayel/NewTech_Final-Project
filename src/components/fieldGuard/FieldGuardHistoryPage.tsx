@@ -1,6 +1,6 @@
-import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
-import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import { fieldGuardData } from "../../data/fieldGuardData";
 import {
   prepareHistoryIssues,
   getHistoryCounts,
@@ -8,10 +8,6 @@ import {
   formatCost,
 } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
 import { HistoryFilters, HistoryList, HistoryDetails } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryComponents";
-import "../../styles/pages/FieldGuard/FieldGuardPage.css";
-import "../../styles/common/fieldGuard/FieldGuardChoices.css";
-import "../../styles/pages/FieldGuard/FieldGuardHistoryPage.css";
-import "../../styles/common/fieldGuard/FieldGuardChoices.css";
 
 
 export default function FieldGuardHistoryPage() {

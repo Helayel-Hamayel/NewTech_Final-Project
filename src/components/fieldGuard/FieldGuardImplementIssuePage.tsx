@@ -1,7 +1,5 @@
 import { Tag, FileText, Coins, MapPin, Flag } from "lucide-react";
 import { useState } from "react";
-import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
-import "../../styles/common/fieldGuard/FieldGuardChoices.css";
 
 export default function FieldGuardImplementIssuePage() {
   const [priority, setPriority] = useState("");

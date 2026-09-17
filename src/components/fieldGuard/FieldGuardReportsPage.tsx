@@ -1,8 +1,6 @@
-import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
-import "../../styles/pages/FieldGuard/FieldGuardPage.css";
-import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
-import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import { fieldGuardData } from "../../data/fieldGuardData";
 import { ReportFilters, ReportsList, ReportDetails } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportsHelpers";
 import { getReportCounts } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportCounts";
 import { filterReports } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportFilters";

@@ -1,7 +1,6 @@
 import { Tag, CalendarDays, User, MapPin, FileText, Flag, Phone } from "lucide-react";
-import FieldGuardStatusIcon from "../../../components/fieldGuard/FieldGuardStatusIcon";
-import type { fieldGuardData } from "../../../data/fieldGuardData(Demo)";
-import "../../../styles/common/fieldGuard/FieldGuardChoices.css";
+import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
+import type { fieldGuardData } from "../../../data/fieldGuardData";
 
 type GuardReport = (typeof fieldGuardData.reports)[number];
 type DisplayReport = GuardReport & { displayId: string };

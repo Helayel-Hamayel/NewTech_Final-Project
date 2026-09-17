@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom";
-import FieldGuardHeader from "../components/fieldGuard/FieldGuardHeader";
-import "../styles/common/fieldGuard/FieldGuardLayout.css";
-import "../styles/common/fieldGuard/FieldGuardIcons.css";
+import FieldGuardHeader from "../components/FieldGuard/FieldGuardHeader";
 
 export default function FieldGuardLayout() {
   return (

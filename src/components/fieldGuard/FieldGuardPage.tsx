@@ -1,6 +1,5 @@
-import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
-import "../../styles/pages/FieldGuard/FieldGuardPage.css";
-import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
+import { fieldGuardData } from "../../data/fieldGuardData";
 import { RecentPanel } from "../../helpers/fieldGuard/fieldGuardPageHelpers";
 
 export default function FieldGuardPage() {

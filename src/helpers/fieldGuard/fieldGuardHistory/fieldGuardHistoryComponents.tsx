@@ -1,8 +1,7 @@
 import { Tag, CalendarDays, MapPin, FileText, Flag, Coins } from "lucide-react";
-import FieldGuardStatusIcon from "../../../components/fieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
 import { formatCost, formatHistoryDate } from "./fieldGuardHistoryHelpers";
 import type { HistoryIssue } from "./fieldGuardHistoryHelpers";
-import "../../../styles/common/fieldGuard/FieldGuardChoices.css";
 
 type HistoryFiltersProps = {
   search: string;
