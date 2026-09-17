@@ -1,0 +1,25 @@
+.staff-layout {
+  --staff-accent: #1b5cff;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f5f7fb;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.staff-main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+}
+
+@media (max-width: 700px) {
+  .staff-layout {
+    flex-direction: column;
+  }
+
+  .staff-main {
+    padding: 20px;
+  }
+}

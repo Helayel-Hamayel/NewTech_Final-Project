@@ -1,0 +1,142 @@
+.staff-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 320px;
+  height: 100vh;
+  height: 100dvh;
+  padding: 30px 28px;
+  overflow-y: auto;
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+.staff-brand,
+.staff-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.staff-brand-icon {
+  display: grid;
+  flex: 0 0 50px;
+  height: 52px;
+  place-items: center;
+  border-radius: 18px;
+  background: var(--staff-accent);
+  color: #fff;
+}
+
+.staff-brand-title {
+  margin: 0 0 4px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.staff-city,
+.staff-dispatch {
+  color: #647d9e;
+  font-family: Consolas, "Courier New", monospace;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
+
+.staff-city {
+  margin: 0;
+  font-size: 17px;
+}
+
+.staff-profile {
+  margin-top: 16px;
+}
+
+.staff-avatar {
+  display: grid;
+  flex: 0 0 30px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--staff-accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.staff-name {
+  font-size: 18px;
+}
+
+.staff-dispatch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 32px;
+  font-size: 16px;
+}
+
+.staff-status-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #00c995;
+}
+
+.staff-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.staff-nav a,
+.staff-sign-out {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  color: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.staff-nav a:hover {
+  background: #1e293b;
+  color: #fff;
+}
+
+.staff-sign-out:hover{
+    background: #ff0000;
+  color: #fff;
+}
+
+.staff-nav a.active {
+  background: var(--staff-accent);
+  color: #fff;
+}
+
+.staff-nav a:focus-visible,
+.staff-sign-out:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 4px;
+}
+
+.staff-sign-out {
+  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  .staff-header {
+    position: static;
+    flex-basis: auto;
+    height: auto;
+    padding: 24px 20px;
+  }
+
+  .staff-sign-out {
+    margin-top: 16px;
+  }
+}
