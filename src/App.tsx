@@ -9,8 +9,6 @@ import FieldGuardReportsPage from "./components/FieldGuard/FieldGuardReportsPage
 import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage";
 import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
 
-//todo: remove all classnames and css references from the components and helpers, and move them to the css files in the styles folder. The components should be purely functional and not have any styling or layout concerns.
-
 function App() {
   return (
     <BrowserRouter>

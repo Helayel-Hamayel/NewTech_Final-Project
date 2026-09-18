@@ -13,39 +13,39 @@ export default function FieldGuardPage() {
 
   return (
     <section
-      className="field-guard-overview"
+
       aria-labelledby="field-guard-title"
     >
-      <div className="field-guard-overview-heading">
+      <div>
         <h1 id="field-guard-title">Field Guard Overview</h1>
         <p>{name}</p>
       </div>
 
-      <dl className="field-guard-stats">
-        <div className="field-guard-stat">
+      <dl>
+        <div>
           <dt>ISSUES HANDLED</dt>
           <dd>{issues.length}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text">
+        <div>
+          <dt>
             <FieldGuardStatusIcon status="ACCEPTED" />
             ISSUES ACCEPTED
           </dt>
-          <dd className="field-guard-count-accepted">{acceptedCount}</dd>
+          <dd>{acceptedCount}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text">
+        <div>
+          <dt>
             <FieldGuardStatusIcon status="REJECTED" />
             ISSUES REJECTED
           </dt>
-          <dd className="field-guard-count-rejected">{rejectedCount}</dd>
+          <dd>{rejectedCount}</dd>
         </div>
-        <div className="field-guard-stat">
+        <div>
           <dt>REPORTS HANDLED</dt>
-          <dd className="field-guard-count-reports">{reports.length}</dd>
+          <dd>{reports.length}</dd>
         </div>
       </dl>
-      <div className="field-guard-recent-panels">
+      <div>
         <RecentPanel title="Recent issues" prefix="Issue" entries={issues} />
         <RecentPanel title="Recent reports" prefix="Report" entries={reports} />
       </div>

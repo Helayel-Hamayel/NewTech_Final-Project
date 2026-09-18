@@ -20,34 +20,34 @@ export default function FieldGuardHistoryPage() {
   const selectedIssue = issues.find((issue) => issue._id === selectedId) ?? null;
 
   return (
-    <section className="field-guard-overview history-page" aria-labelledby="history-title">
-      <div className="field-guard-overview-heading">
+    <section aria-labelledby="history-title">
+      <div>
         <h1 id="history-title">Issue History</h1>
         <p>Review issued violations, their status, and estimated costs.</p>
       </div>
-      <dl className="field-guard-stats">
-        <div className="field-guard-stat">
+      <dl>
+        <div>
           <dt>Total issues</dt>
           <dd>{counts.total}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="ACCEPTED" />Accepted</dt>
-          <dd className="field-guard-count-accepted">{counts.accepted}</dd>
+        <div>
+          <dt><FieldGuardStatusIcon status="ACCEPTED" />Accepted</dt>
+          <dd>{counts.accepted}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
-          <dd className="field-guard-count-rejected">{counts.rejected}</dd>
+        <div>
+          <dt><FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
+          <dd>{counts.rejected}</dd>
         </div>
-        <div className="field-guard-stat">
+        <div>
           <dt>Total cost</dt>
-          <dd className="history-gold">{formatCost(counts.totalCost)}</dd>
+          <dd>{formatCost(counts.totalCost)}</dd>
         </div>
       </dl>
-      <div className="history-panels">
-        <section className="history-panel history-list-panel" aria-label="Issues">
+      <div>
+        <section aria-label="Issues">
           <HistoryFilters search={search} status={status} setSearch={setSearch} setStatus={setStatus} />
           <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={setSelectedId} />
-          <p className="history-result-count" role="status">
+          <p role="status">
             {visibleIssues.length} out of {issues.length} issues
           </p>
         </section>
