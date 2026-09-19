@@ -1,18 +1,24 @@
-import type { ReactNode } from 'react'
-import Header from './Header'
-import Footer from './Footer'
-import '../../styles/common/AppLayout.css'
+import type { ReactNode } from "react";
+import Header from "./Header";
+import Footer from "./Footer";
+import "../../styles/common/AppLayout.css";
 
 type SharedLayoutProps = {
-  children?: ReactNode
-}
+  children?: ReactNode;
+  header?: ReactNode;
+  footer?: ReactNode;
+};
 
-export default function SharedLayout({ children }: SharedLayoutProps) {
+export default function SharedLayout({
+  children,
+  header,
+  footer,
+}: SharedLayoutProps) {
   return (
     <div>
-      <Header />
+      {header !== undefined ? header : <Header />}
       <main>{children}</main>
-      <Footer />
+      {footer !== undefined ? footer : <Footer />}
     </div>
-  )
+  );
 }
