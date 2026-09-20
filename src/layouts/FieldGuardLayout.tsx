@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import SharedLayout from "../common/SharedLayout";
-import FieldGuardHeader from "./FieldGuardHeader";
+import SharedLayout from "../components/common/SharedLayout";
+import FieldGuardHeader from "../components/FieldGuard/FieldGuardHeader";
 
 export default function FieldGuardLayout() {
   return (

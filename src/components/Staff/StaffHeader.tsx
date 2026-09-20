@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { FileCheck2, LogOut, Map } from "lucide-react";
-import { staffData } from "../../data/staffData(Demo)";
+import { staffData } from "../../data/staffData";
 import "../../styles/common/Staff/StaffHeader.css";
 
 export default function StaffHeader() {
