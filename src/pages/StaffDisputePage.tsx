@@ -1,7 +1,7 @@
 import { Bell, Check, Search, X } from "lucide-react";
-import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
-import { staffData, staffDisputesData } from "../../data/staffData(Demo)";
-import "../../styles/pages/StaffDashboardPage.css";
+import { fieldGuardData } from "../data/fieldGuardData";
+import { staffData, staffDisputesData } from "../data/staffData";
+import "../styles/pages/StaffDashboardPage.css";
 
 export default function StaffDisputePage() {
   const pendingDisputes = staffDisputesData.filter((dispute) => dispute.status === "PENDING");

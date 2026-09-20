@@ -3,22 +3,13 @@ import NotFound from "./components/common/NotFound";
 import LoginPage from "./pages/LoginPage";
 import ResidentPortalPage from "./pages/ResidentPortalPage";
 
-//todo: fix the loose linking to other implemented pages in different branch, to test and make sure its working
-<!-- import FieldGuardLayout from "./layouts/FieldGuardLayout";
-import FieldGuardPage from "./pages/fieldGuard/FieldGuardPage";
-import FieldGuardReportsPage from "./pages/fieldGuard/FieldGuardReportsPage";
-import FieldGuardHistoryPage from "./pages/fieldGuard/FieldGuardHistoryPage";
-import FieldGuardImplementIssuePage from "./pages/fieldGuard/FieldGuardImplementIssuePage";
-import StaffLayout from "./layouts/StaffLayout";
-import StaffDisputePage from "./pages/Staff/StaffDisputePage"; -->
-
-import StaffDashboardPage from "./pages/StaffDashboardPage";
-import FieldGuardLayout from "./components/FieldGuard/FieldGuardLayout";
+import FieldGuardLayout from "./layouts/FieldGuardLayout";
 import FieldGuardPage from "./pages/FieldGuardPage";
 import FieldGuardReportsPage from "./components/FieldGuard/FieldGuardReportsPage";
 import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage";
 import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
-
+import StaffLayout from "./layouts/StaffLayout";
+import StaffDisputePage from "./pages/StaffDisputePage";
 
 function App() {
   return (
