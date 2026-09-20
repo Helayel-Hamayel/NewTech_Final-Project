@@ -22,7 +22,7 @@ import {
   type UtilityType,
 } from "../data/residentPortal";
 
-export default function ResidentPortalPage() {
+export default function ResidentPage() {
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
   const [fines, setFines] = useState(seededFines);

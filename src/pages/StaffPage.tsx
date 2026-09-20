@@ -3,7 +3,7 @@ import { fieldGuardData } from "../data/fieldGuardData";
 import { staffData, staffDisputesData } from "../data/staffData";
 import "../styles/pages/StaffDashboardPage.css";
 
-export default function StaffDisputePage() {
+export default function StaffPage() {
   const pendingDisputes = staffDisputesData.filter((dispute) => dispute.status === "PENDING");
   const openReports = fieldGuardData.reports.filter(
     (report) => report.status === "NEW" || report.status === "IN PROGRESS",
