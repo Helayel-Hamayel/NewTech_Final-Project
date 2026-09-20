@@ -1,5 +1,5 @@
 import { Tag, CalendarDays } from "lucide-react";
-import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
 type RecentEntry = {
   _id: string;
   description: string;
@@ -32,28 +32,28 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
     .reverse();
 
   return (
-    <section className="field-guard-recent-panel">
+    <section>
       <h2>{title}</h2>
-      <ul className="field-guard-recent-list">
+      <ul>
         {recentEntries.map((entry) => (
-          <li className="field-guard-recent-row" key={entry._id}>
+          <li key={entry._id}>
             <span
-              className={`field-guard-priority priority-${entry.priority.toLowerCase()}`}
+
               role="img"
               aria-label={`${entry.priority.toLowerCase()} priority`}
               title={`${entry.priority.toLowerCase()} priority`}
             />
-            <div className="field-guard-entry-content">
-              <p className="field-guard-entry-description" title={entry.description}>
+            <div>
+              <p title={entry.description}>
                 {entry.description}
               </p>
-              <div className="field-guard-entry-meta">
-                <span className="field-guard-icon-text"><Tag className="field-guard-icon" aria-hidden="true" />{entry.displayId}</span>
-                <time className="field-guard-icon-text" dateTime={entry.createdAt}><CalendarDays className="field-guard-icon" aria-hidden="true" />{formatDate(entry.createdAt)}</time>
+              <div>
+                <span><Tag aria-hidden="true" />{entry.displayId}</span>
+                <time dateTime={entry.createdAt}><CalendarDays aria-hidden="true" />{formatDate(entry.createdAt)}</time>
               </div>
             </div>
             <span
-              className={`field-guard-status status-${entry.status.toLowerCase().replaceAll(" ", "-")}`}
+
             >
               <FieldGuardStatusIcon status={entry.status} />{entry.status}
             </span>
@@ -61,7 +61,7 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
         ))}
       </ul>
       {recentEntries.length === 0 && (
-        <p className="field-guard-empty">No entries yet.</p>
+        <p>No entries yet.</p>
       )}
     </section>
   );

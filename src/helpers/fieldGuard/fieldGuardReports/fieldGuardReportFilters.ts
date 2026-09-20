@@ -1,4 +1,4 @@
-import type { fieldGuardData } from "../../../data/fieldGuardData(Demo)";
+import type { fieldGuardData } from "../../../data/fieldGuardData";
 
 export function filterReports(
   reports: typeof fieldGuardData.reports,
@@ -10,9 +10,10 @@ export function filterReports(
       ...report,
       displayId: `Report-${String(index + 1).padStart(3, "0")}`,
     }))
-    .filter((report) =>
-      (status === "All" || report.status === status.toUpperCase()) &&
-      (priority === "All" || report.priority === priority.toUpperCase()),
+    .filter(
+      (report) =>
+        (status === "All" || report.status === status.toUpperCase()) &&
+        (priority === "All" || report.priority === priority.toUpperCase()),
     )
     .reverse();
 }

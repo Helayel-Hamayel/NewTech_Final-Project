@@ -1,8 +1,6 @@
-import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
-import "../../styles/pages/FieldGuard/FieldGuardPage.css";
-import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
-import { fieldGuardData } from "../../data/fieldGuardData(Demo)";
+import { fieldGuardData } from "../../data/fieldGuardData";
 import { ReportFilters, ReportsList, ReportDetails } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportsHelpers";
 import { getReportCounts } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportCounts";
 import { filterReports } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportFilters";
@@ -28,33 +26,33 @@ export default function FieldGuardReportsPage() {
   }
 
   return (
-    <section className="field-guard-overview" aria-labelledby="reports-title">
-      <div className="field-guard-overview-heading">
+    <section aria-labelledby="reports-title">
+      <div>
         <h1 id="reports-title">Reports</h1>
         <p>Review reports and track their progress.</p>
       </div>
-      <dl className="field-guard-stats">
-        <div className="field-guard-stat">
+      <dl>
+        <div>
           <dt>Total reports</dt>
           <dd>{counts.total}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="NEW" />New</dt>
-          <dd className="reports-blue">{counts.new}</dd>
+        <div>
+          <dt><FieldGuardStatusIcon status="NEW" />New</dt>
+          <dd>{counts.new}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="IN PROGRESS" />In progress</dt>
-          <dd className="reports-orange">{counts.inProgress}</dd>
+        <div>
+          <dt><FieldGuardStatusIcon status="IN PROGRESS" />In progress</dt>
+          <dd>{counts.inProgress}</dd>
         </div>
-        <div className="field-guard-stat">
-          <dt className="field-guard-icon-text"><FieldGuardStatusIcon status="RESOLVED" />Resolved / <FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
+        <div>
+          <dt><FieldGuardStatusIcon status="RESOLVED" />Resolved / <FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
           <dd>
-            <span className="reports-green">{counts.resolved} </span>/<span className="reports-red"> {counts.rejected}</span>
+            <span>{counts.resolved} </span>/<span> {counts.rejected}</span>
           </dd>
         </div>
       </dl>
-      <div className="reports-panels">
-        <section className="reports-list-panel" aria-label="Reports list">
+      <div>
+        <section aria-label="Reports list">
           <ReportFilters status={status} priority={priority} setStatus={setStatus} setPriority={setPriority} />
           <ReportsList
             reports={filteredReports}
