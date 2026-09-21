@@ -9,11 +9,16 @@ type ResidentPortalNavProps = {
 
 export default function ResidentPortalNav({ activeTab, onTabChange }: ResidentPortalNavProps) {
   return (
-    <nav aria-label="Resident portal navigation">
-      <ul>
+    <nav className="resident-nav" aria-label="Resident portal navigation">
+      <ul className="resident-nav-list">
         {tabs.map((tab) => (
           <li key={tab}>
-            <button type="button" aria-current={activeTab === tab ? 'page' : undefined} onClick={() => onTabChange(tab)}>
+            <button
+              className={`resident-nav-button${activeTab === tab ? ' is-active' : ''}`}
+              type="button"
+              aria-current={activeTab === tab ? 'page' : undefined}
+              onClick={() => onTabChange(tab)}
+            >
               {tab}
             </button>
           </li>

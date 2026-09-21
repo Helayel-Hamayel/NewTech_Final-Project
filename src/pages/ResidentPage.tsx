@@ -21,6 +21,7 @@ import {
   utilityUsage,
   type UtilityType,
 } from "../data/residentPortal";
+import "../styles/pages/ResidentPortalPage.css";
 
 export default function ResidentPage() {
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
@@ -140,47 +141,80 @@ export default function ResidentPage() {
   }
 
   return (
-    <SharedLayout>
-      <header>
-        <h1>Resident Portal</h1>
-        <p>
-          {resident.name} · {resident.id}
-        </p>
-        <button type="button">Sign Out</button>
-      </header>
-      <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
-      {activeTab === "Dashboard" ? (
-        <Dashboard
-          unpaidFines={unpaidFines}
-          unpaidFineTotal={unpaidFineTotal}
-          utilityType={utilityType}
-          utilityUsage={utilityUsage[utilityType]}
-          onUtilityTypeChange={setUtilityType}
-          onAppeal={handleAppeal}
-          onNavigate={setActiveTab}
-        />
-      ) : activeTab === "Billing" ? (
-        <Billing
-          invoices={seededInvoices}
-          onDownloadInvoice={handleDownloadInvoice}
-        />
-      ) : activeTab === "My Tickets" ? (
-        <MyTickets
-          tickets={seededMaintenanceTickets}
-          fines={fines}
-          issues={residentIssues}
-          onOpenAppeal={handleOpenAppeal}
-          selectedAppealFine={selectedAppealFine}
-          appealStatement={appealStatement}
-          onAppealStatementChange={setAppealStatement}
-          onSubmitAppeal={handleSubmitAppeal}
-          onCloseAppeal={() => setSelectedAppealFine(null)}
-          onAddIssue={handleAddIssue}
-          onCheckIssue={handleCheckIssue}
-        />
-      ) : (
-        <Properties />
-      )}
+    <SharedLayout
+      header={
+        <header className="resident-topbar">
+          <div className="resident-brand">
+            <span className="resident-brand-mark" aria-hidden="true">
+              C
+            </span>
+            <div className="resident-brand-copy">
+              <p>City of</p>
+              <p>Millbrook</p>
+            </div>
+          </div>
+
+          <div className="resident-user-meta">
+            <div>
+              <p className="resident-user-label">Resident portal</p>
+              <p className="resident-user-name">
+                {resident.name} · {resident.id}
+              </p>
+            </div>
+            <button className="resident-signout" type="button">
+              Sign Out
+            </button>
+          </div>
+        </header>
+      }
+      footer={
+        <footer className="resident-footer">
+          © 2026 City of Millbrook · Municipal Operations v2.4.1
+        </footer>
+      }
+    >
+      <main className="resident-page">
+        <div className="resident-page-shell">
+          <section className="resident-page-panel">
+            <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
+
+            <div className="resident-content">
+              {activeTab === "Dashboard" ? (
+                <Dashboard
+                  unpaidFines={unpaidFines}
+                  unpaidFineTotal={unpaidFineTotal}
+                  utilityType={utilityType}
+                  utilityUsage={utilityUsage[utilityType]}
+                  onUtilityTypeChange={setUtilityType}
+                  onAppeal={handleAppeal}
+                  onNavigate={setActiveTab}
+                />
+              ) : activeTab === "Billing" ? (
+                <Billing
+                  invoices={seededInvoices}
+                  onDownloadInvoice={handleDownloadInvoice}
+                />
+              ) : activeTab === "My Tickets" ? (
+                <MyTickets
+                  tickets={seededMaintenanceTickets}
+                  fines={fines}
+                  issues={residentIssues}
+                  onOpenAppeal={handleOpenAppeal}
+                  selectedAppealFine={selectedAppealFine}
+                  appealStatement={appealStatement}
+                  onAppealStatementChange={setAppealStatement}
+                  onSubmitAppeal={handleSubmitAppeal}
+                  onCloseAppeal={() => setSelectedAppealFine(null)}
+                  onAddIssue={handleAddIssue}
+                  onCheckIssue={handleCheckIssue}
+                />
+              ) : (
+                <Properties />
+              )}
+            </div>
+          </section>
+        </div>
+      </main>
     </SharedLayout>
   );
 }
