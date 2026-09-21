@@ -11,6 +11,9 @@ import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImpl
 import StaffLayout from "./layouts/StaffLayout";
 import StaffPage from "./pages/StaffPage";
 
+//todo:
+// add dark theme toggle
+
 function App() {
   return (
     <BrowserRouter>

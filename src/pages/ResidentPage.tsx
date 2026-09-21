@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Building2, LogOut } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import SharedLayout from "../components/common/SharedLayout";
@@ -146,7 +147,7 @@ export default function ResidentPage() {
         <header className="resident-topbar">
           <div className="resident-brand">
             <span className="resident-brand-mark" aria-hidden="true">
-              C
+              <Building2 size={20} strokeWidth={2.2} />
             </span>
             <div className="resident-brand-copy">
               <p>City of</p>
@@ -154,16 +155,16 @@ export default function ResidentPage() {
             </div>
           </div>
 
+          <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
+
           <div className="resident-user-meta">
-            <div>
-              <p className="resident-user-label">Resident portal</p>
-              <p className="resident-user-name">
-                {resident.name} · {resident.id}
-              </p>
-            </div>
             <button className="resident-signout" type="button">
-              Sign Out
+              <LogOut className="resident-signout-icon" aria-hidden="true" />
+              Sign out
             </button>
+            <span className="resident-user-avatar" aria-label="Current user">
+              {resident.name.charAt(0)}
+            </span>
           </div>
         </header>
       }
@@ -176,8 +177,6 @@ export default function ResidentPage() {
       <main className="resident-page">
         <div className="resident-page-shell">
           <section className="resident-page-panel">
-            <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
-
             <div className="resident-content">
               {activeTab === "Dashboard" ? (
                 <Dashboard
