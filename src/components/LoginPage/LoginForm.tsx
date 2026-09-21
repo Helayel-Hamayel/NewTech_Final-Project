@@ -1,3 +1,5 @@
+import { ArrowRight } from "lucide-react";
+
 export default function LoginForm() {
   return (
     <form className="login-form">
@@ -30,7 +32,8 @@ export default function LoginForm() {
       </div>
 
       <button className="login-submit" type="button">
-        Sign in securely <span aria-hidden="true">-&gt;</span>
+        Sign in securely{" "}
+        <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
       </button>
     </form>
   );

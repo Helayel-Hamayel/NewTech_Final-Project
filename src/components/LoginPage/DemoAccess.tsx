@@ -1,5 +1,12 @@
-import { Link } from 'react-router-dom'
-import { demoAccounts } from '../../data/demoAccounts'
+import { ArrowRight, HardHat, House, ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
+import { demoAccounts } from "../../data/demoAccounts";
+
+const accountIcons = {
+  resident: House,
+  staff: ShieldCheck,
+  "field-guard": HardHat,
+};
 
 export default function DemoAccess() {
   return (
@@ -12,15 +19,22 @@ export default function DemoAccess() {
       </div>
 
       {demoAccounts.map((account) => (
-        <Link className="demo-account" to={account.path} key={account.name}>
+        <Link
+          className={`demo-account demo-account--${account.role}`}
+          to={account.path}
+          key={account.name}
+        >
           <span className="demo-account-icon" aria-hidden="true">
-            {account.icon}
+            {(() => {
+              const AccountIcon = accountIcons[account.role];
+              return <AccountIcon size={16} strokeWidth={2.2} />;
+            })()}
           </span>
           <span className="demo-account-copy">
             <strong>{account.name}</strong> - {account.details}
           </span>
           <span className="demo-account-arrow" aria-hidden="true">
-            -&gt;
+            <ArrowRight size={16} strokeWidth={2.2} />
           </span>
         </Link>
       ))}

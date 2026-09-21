@@ -3,9 +3,9 @@ import Footer from "../components/common/Footer";
 import DemoAccess from "../components/LoginPage/DemoAccess";
 import LoginForm from "../components/LoginPage/LoginForm";
 import LoginHeader from "../components/LoginPage/LoginHeader";
-import loginBackgroundOne from "../assets/background/Login_Background (1).jpg";
-import loginBackgroundTwo from "../assets/background/Login_Background (2).jpg";
-import loginBackgroundThree from "../assets/background/Login_Background (3).jpg";
+import loginBackgroundOne from "../assets/background/Login_Background (1).webp";
+import loginBackgroundTwo from "../assets/background/Login_Background (2).webp";
+import loginBackgroundThree from "../assets/background/Login_Background (3).webp";
 import "../styles/pages/LoginPage.css";
 
 export default function LoginPage() {
@@ -54,6 +54,23 @@ export default function LoginPage() {
 
             <LoginForm />
             <DemoAccess />
+            <aside
+              className="registration-notice"
+              aria-labelledby="registration-heading"
+            >
+              <div className="registration-notice-mark" aria-hidden="true">
+                i
+              </div>
+              <div>
+                <h2 id="registration-heading">Need an account?</h2>
+                <p>
+                  New residents must register in person at the Municipal
+                  Operations office. Bring valid identification and proof of
+                  residency. Staff will verify your details and issue temporary
+                  credentials for your first sign-in.
+                </p>
+              </div>
+            </aside>
           </div>
         </section>
 

@@ -1,9 +1,11 @@
+import { Building2 } from "lucide-react";
+
 export default function LoginHeader() {
   return (
     <header className="login-header">
       <div className="login-brand">
         <span className="login-brand-mark" aria-hidden="true">
-          M
+          <Building2 size={22} strokeWidth={2.1} />
         </span>
         <div className="login-brand-copy">
           <p>City of</p>
