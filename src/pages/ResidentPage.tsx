@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Building2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import SharedLayout from "../components/common/SharedLayout";
+import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
 import Dashboard from "../components/ResidentPage/Dashboard";
 import MyTickets from "../components/ResidentPage/MyTickets";
@@ -74,6 +76,30 @@ export default function ResidentPage() {
     handleAppeal(selectedAppealFine.id);
     setSelectedAppealFine(null);
     setAppealStatement("");
+  }
+
+  function handleSignOut() {
+    toast.warn(
+      <div className="signout-toast">
+        <strong>Sign out of CivicHub?</strong>
+        <span>Your current portal session will end.</span>
+        <div className="signout-toast-actions">
+          <button
+            type="button"
+            onClick={() => {
+              toast.dismiss();
+              navigate("/login", { replace: true });
+            }}
+          >
+            Sign out
+          </button>
+          <button type="button" onClick={() => toast.dismiss()}>
+            Stay signed in
+          </button>
+        </div>
+      </div>,
+      { autoClose: false, closeButton: false, closeOnClick: false },
+    );
   }
 
   function handleDownloadInvoice(invoice: Invoice) {
@@ -160,10 +186,12 @@ export default function ResidentPage() {
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
 
           <div className="resident-user-meta">
+            <ThemeToggle />
+            <span className="resident-header-divider" aria-hidden="true" />
             <button
               className="resident-signout"
               type="button"
-              onClick={() => navigate("/login", { replace: true })}
+              onClick={handleSignOut}
             >
               <LogOut className="resident-signout-icon" aria-hidden="true" />
               Sign out

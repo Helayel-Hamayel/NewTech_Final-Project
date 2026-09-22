@@ -1,5 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./components/common/NotFound";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import LoginPage from "./pages/LoginPage";
 import ResidentPage from "./pages/ResidentPage";
 
@@ -11,35 +14,39 @@ import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImpl
 import StaffLayout from "./layouts/StaffLayout";
 import StaffPage from "./pages/StaffPage";
 
-//todo:
-// add dark theme toggle
-// make the app responsive for mobile devices
-
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/resident" element={<ResidentPage />} />
+    <ThemeProvider>
+      <BrowserRouter>
+        <ToastContainer
+          position="top-center"
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+        />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/resident" element={<ResidentPage />} />
 
-        <Route path="/staff" element={<StaffLayout />}>
-          <Route index element={<StaffPage />} />
-        </Route>
+          <Route path="/staff" element={<StaffLayout />}>
+            <Route index element={<StaffPage />} />
+          </Route>
 
-        <Route path="/field-guard" element={<FieldGuardLayout />}>
-          <Route index element={<FieldGuardPage />} />
-          <Route
-            path="create-issue"
-            element={<FieldGuardImplementIssuePage />}
-          />
-          <Route path="report" element={<FieldGuardReportsPage />} />
-          <Route path="history" element={<FieldGuardHistoryPage />} />
-        </Route>
+          <Route path="/field-guard" element={<FieldGuardLayout />}>
+            <Route index element={<FieldGuardPage />} />
+            <Route
+              path="create-issue"
+              element={<FieldGuardImplementIssuePage />}
+            />
+            <Route path="report" element={<FieldGuardReportsPage />} />
+            <Route path="history" element={<FieldGuardHistoryPage />} />
+          </Route>
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

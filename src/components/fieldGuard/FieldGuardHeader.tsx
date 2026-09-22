@@ -1,9 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { FilePlusCorner, Flag, History, LayoutDashboard } from "lucide-react";
+import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 export default function FieldGuardHeader() {
   return (
-    <header>
-      <nav aria-label="Field Guard navigation">
+    <header className="field-guard-header">
+      <nav className="field-guard-nav" aria-label="Field Guard navigation">
         <NavLink to="/field-guard" end>
           <LayoutDashboard />
           Dashboard
@@ -21,7 +22,7 @@ export default function FieldGuardHeader() {
           History
         </NavLink>
       </nav>
-      <Link to="/login" replace>
+      <Link className="field-guard-signout" to="/login" replace>
         Sign out
       </Link>
     </header>

@@ -1,0 +1,55 @@
+.field-guard-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 16px clamp(16px, 4vw, 56px);
+	background: #0f172a;
+	color: #e2e8f0;
+}
+
+.field-guard-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.field-guard-nav a,
+.field-guard-signout {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	border-radius: 9px;
+	color: inherit;
+	padding: 9px 11px;
+	text-decoration: none;
+	font-size: 0.88rem;
+	font-weight: 700;
+}
+
+.field-guard-nav a:hover,
+.field-guard-nav a.active,
+.field-guard-signout:hover {
+	background: #2563eb;
+	color: #fff;
+}
+
+.field-guard-nav a:focus-visible,
+.field-guard-signout:focus-visible {
+	outline: 3px solid #93c5fd;
+	outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+	.field-guard-header {
+		align-items: stretch;
+		flex-direction: column;
+		padding: 16px;
+	}
+
+	.field-guard-nav a,
+	.field-guard-signout {
+		flex: 1 1 auto;
+		justify-content: center;
+	}
+}

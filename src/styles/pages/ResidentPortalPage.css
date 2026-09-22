@@ -26,6 +26,26 @@
   --resident-red-700: #b91c1c;
 }
 
+html[data-theme="dark"] {
+  --resident-page-bg: #111a27;
+  --resident-panel-bg: #162131;
+  --resident-card-bg: #1c2a3b;
+  --resident-card-alt: #223244;
+  --resident-card-soft: #22352f;
+  --resident-rose: #3a2f35;
+  --resident-sand: #3d3729;
+  --resident-border: rgba(148, 163, 184, 0.22);
+  --resident-shadow: 0 10px 24px rgba(2, 6, 23, 0.24);
+  --resident-ink: #e5edf5;
+  --resident-slate-700: #c2cfdb;
+  --resident-slate-600: #a9bac9;
+  --resident-slate-500: #8da0b2;
+  --resident-slate-400: #71869a;
+  --resident-slate-300: #526579;
+  --resident-slate-200: #34475b;
+  --resident-slate-100: #253548;
+}
+
 body {
   background: var(--resident-page-bg);
   color: var(--resident-ink);
@@ -114,6 +134,51 @@ select {
   align-items: center;
   gap: clamp(12px, 1.2vw, 20px);
   margin-left: auto;
+}
+
+.resident-header-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(148, 163, 184, 0.35);
+}
+
+.signout-toast {
+  display: grid;
+  gap: 5px;
+}
+
+.signout-toast strong {
+  font-size: 0.92rem;
+}
+
+.signout-toast span {
+  font-size: 0.8rem;
+}
+
+.signout-toast-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.signout-toast-actions button {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  padding: 5px 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.signout-toast-actions button:first-child {
+  background: #fff;
+  color: #9f1239;
+}
+
+.signout-toast-actions button:hover {
+  transform: translateY(-1px);
 }
 
 .resident-user-avatar {
@@ -631,6 +696,145 @@ select {
   font-size: 0.82rem;
 }
 
+html[data-theme="dark"] .resident-page-panel,
+html[data-theme="dark"] .resident-card,
+html[data-theme="dark"] .property-hero,
+html[data-theme="dark"] .resident-dialog {
+  background: var(--resident-card-bg);
+}
+
+html[data-theme="dark"] .resident-page,
+html[data-theme="dark"] body {
+  background: var(--resident-page-bg);
+}
+
+html[data-theme="dark"] .resident-table,
+html[data-theme="dark"] .billing-table tbody tr:hover {
+  background: var(--resident-card-alt);
+}
+
+html[data-theme="dark"] .issue-form input,
+html[data-theme="dark"] .issue-form select,
+html[data-theme="dark"] .issue-form textarea,
+html[data-theme="dark"] .appeal-form textarea {
+  border-color: var(--resident-slate-300);
+  background: #132031;
+  color: var(--resident-ink);
+}
+
+html[data-theme="dark"] .property-hero-art,
+html[data-theme="dark"] .property-stats div,
+html[data-theme="dark"] .ticket-card,
+html[data-theme="dark"] .citation-card,
+html[data-theme="dark"] .submitted-issue-card,
+html[data-theme="dark"] .appeal-summary {
+  background: var(--resident-card-alt);
+}
+
+html[data-theme="dark"] .billing-table td,
+html[data-theme="dark"] .billing-table th,
+html[data-theme="dark"] .property-details div,
+html[data-theme="dark"] .property-contact-list li {
+  border-color: var(--resident-border);
+}
+
+html[data-theme="dark"] .resident-page-panel {
+  background: var(--resident-panel-bg);
+}
+
+html[data-theme="dark"] .resident-kpi-card--rose {
+  background: linear-gradient(145deg, #342b34, #3e303a);
+  border-color: rgba(214, 150, 164, 0.26);
+}
+
+html[data-theme="dark"] .resident-kpi-card--sand {
+  background: linear-gradient(145deg, #393328, #443b2b);
+  border-color: rgba(224, 177, 105, 0.25);
+}
+
+html[data-theme="dark"] .resident-kpi-card--rose .resident-kpi-value,
+html[data-theme="dark"] .resident-kpi-card--rose .resident-kpi-label,
+html[data-theme="dark"] .resident-kpi-card--rose h3 {
+  color: #e4b5c0;
+}
+
+html[data-theme="dark"] .resident-kpi-card--sand .resident-kpi-value,
+html[data-theme="dark"] .resident-kpi-card--sand .resident-kpi-label,
+html[data-theme="dark"] .resident-kpi-card--sand h3 {
+  color: #e5c488;
+}
+
+html[data-theme="dark"] .resident-status-card {
+  background: linear-gradient(145deg, #263b37, #2d4841);
+  border-color: rgba(116, 190, 158, 0.25);
+}
+
+html[data-theme="dark"] .resident-status-card h3 {
+  color: #9bd7bd;
+}
+
+html[data-theme="dark"] .resident-utility-toggle,
+html[data-theme="dark"] .resident-list-item {
+  background: #223244;
+  border-color: var(--resident-border);
+}
+
+html[data-theme="dark"] .resident-utility-toggle button.is-active {
+  background: #2f6f9c;
+  color: #f1f7fb;
+}
+
+html[data-theme="dark"] .resident-list-photo {
+  background: #29445a;
+  color: #9bc9e7;
+}
+
+html[data-theme="dark"] .status-badge--unpaid {
+  background: #4a3035;
+  border-color: rgba(225, 145, 157, 0.3);
+  color: #f0b5be;
+}
+
+html[data-theme="dark"] .status-badge--paid {
+  background: #28483e;
+  border-color: rgba(125, 211, 170, 0.28);
+  color: #a8e0c5;
+}
+
+html[data-theme="dark"] .status-badge--info {
+  background: #294457;
+  border-color: rgba(125, 190, 224, 0.28);
+  color: #a9d8ed;
+}
+
+html[data-theme="dark"] .billing-balance-card {
+  background: linear-gradient(135deg, #172f45, #1d5368);
+  box-shadow: 0 14px 28px rgba(2, 6, 23, 0.26);
+}
+
+html[data-theme="dark"] .billing-stat-card {
+  background: #223244;
+}
+
+html[data-theme="dark"] .billing-table tbody tr:hover {
+  background: #26394c;
+}
+
+html[data-theme="dark"] .property-tags span {
+  background: #2a3b4b;
+  color: #c4d5e2;
+}
+
+html[data-theme="dark"] .issues-panel {
+  background: #203b3c;
+  border-color: rgba(112, 190, 181, 0.24);
+}
+
+html[data-theme="dark"] .citation-photo {
+  background: #4a392b;
+  color: #e8c28e;
+}
+
 .resident-page-intro--split {
   display: flex;
   align-items: flex-start;
@@ -792,6 +996,7 @@ select {
   .resident-topbar {
     flex-direction: column;
     align-items: flex-start;
+    padding-right: 22px;
   }
 
   .resident-nav {
@@ -803,6 +1008,10 @@ select {
   .resident-user-meta {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .resident-header-divider {
+    display: none;
   }
 
   .resident-summary-grid,

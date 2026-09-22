@@ -8,6 +8,11 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html[data-theme="dark"] .staff-layout {
+  background: #111a27;
+  color: #dbe5ef;
+}
+
 .staff-main {
   flex: 1;
   min-width: 0;
@@ -20,6 +25,6 @@
   }
 
   .staff-main {
-    padding: 20px;
+    padding: 20px 16px;
   }
 }
