@@ -13,6 +13,7 @@ import StaffPage from "./pages/StaffPage";
 
 //todo:
 // add dark theme toggle
+// make the app responsive for mobile devices
 
 function App() {
   return (

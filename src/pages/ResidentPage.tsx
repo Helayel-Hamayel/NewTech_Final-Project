@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Building2, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import SharedLayout from "../components/common/SharedLayout";
@@ -25,6 +26,7 @@ import {
 import "../styles/pages/ResidentPortalPage.css";
 
 export default function ResidentPage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
   const [fines, setFines] = useState(seededFines);
@@ -158,7 +160,11 @@ export default function ResidentPage() {
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
 
           <div className="resident-user-meta">
-            <button className="resident-signout" type="button">
+            <button
+              className="resident-signout"
+              type="button"
+              onClick={() => navigate("/login", { replace: true })}
+            >
               <LogOut className="resident-signout-icon" aria-hidden="true" />
               Sign out
             </button>

@@ -41,60 +41,119 @@ export default function ResidentIssues({ issues, onAddIssue, onCheckIssue }: Res
   }
 
   return (
-    <section aria-labelledby="resident-issues-heading">
-      <h3 id="resident-issues-heading">Resident-reported issues</h3>
-      <p>Report a community issue for a Field Guard to inspect.</p>
+    <section
+      className="resident-card issues-panel"
+      aria-labelledby="resident-issues-heading"
+    >
+      <div className="resident-card-header">
+        <div>
+          <p className="section-label">Community care</p>
+          <h2 id="resident-issues-heading">Report an issue</h2>
+          <p>Send a local concern to a Field Guard for inspection.</p>
+        </div>
+        <span className="issues-accent" aria-hidden="true">
+          ●
+        </span>
+      </div>
 
-      <form onSubmit={handleSubmit}>
+      <form className="issue-form" onSubmit={handleSubmit}>
         <label>
           Phone number
-          <input required type="tel" value={form.phone} onChange={(event) => updateForm('phone', event.target.value)} placeholder="(555) 010-0000" />
+          <input
+            required
+            type="tel"
+            value={form.phone}
+            onChange={(event) => updateForm("phone", event.target.value)}
+            placeholder="(555) 010-0000"
+          />
         </label>
         <label>
           Subject or issue type
-          <input required value={form.subject} onChange={(event) => updateForm('subject', event.target.value)} placeholder="Illegal parked car" />
+          <input
+            required
+            value={form.subject}
+            onChange={(event) => updateForm("subject", event.target.value)}
+            placeholder="Illegal parked car"
+          />
         </label>
         <label>
           Category
-          <select value={form.category} onChange={(event) => updateForm('category', event.target.value)}>
-            {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+          <select
+            value={form.category}
+            onChange={(event) => updateForm("category", event.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
           </select>
         </label>
         <label>
           Description
-          <textarea required value={form.description} onChange={(event) => updateForm('description', event.target.value)} placeholder="Describe the issue" />
+          <textarea
+            required
+            value={form.description}
+            onChange={(event) => updateForm("description", event.target.value)}
+            placeholder="Describe the issue"
+          />
         </label>
         <label>
           Photo
-          <input type="file" accept="image/*" onChange={(event) => updateForm('photo', event.target.files?.[0]?.name ?? '')} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) =>
+              updateForm("photo", event.target.files?.[0]?.name ?? "")
+            }
+          />
         </label>
         <label>
           Location
-          <input required value={form.location} onChange={(event) => updateForm('location', event.target.value)} placeholder="Street, building, or landmark" />
+          <input
+            required
+            value={form.location}
+            onChange={(event) => updateForm("location", event.target.value)}
+            placeholder="Street, building, or landmark"
+          />
         </label>
-        <button type="submit">Submit issue</button>
+        <button className="resident-primary-btn" type="submit">
+          Submit issue
+        </button>
       </form>
 
-      <h4>Submitted issues</h4>
-      <ul>
+      <h3 className="issues-subheading">Submitted issues</h3>
+      <ul className="submitted-issues-list">
         {issues.map((issue) => (
           <li key={issue.id}>
-            <article>
-              <h4>{issue.id}: {issue.subject}</h4>
-              <p>Status: {issue.status}</p>
-              <p>Category: {issue.category}</p>
-              <p>Phone: {issue.phone}</p>
-              <p>Description: {issue.description}</p>
-              <p>Photo: {issue.photo}</p>
-              <p>Location: {issue.location}</p>
-              <p>Reported: {issue.reportedDate}</p>
-              {issue.status !== 'Field Guard Checked' ? (
-                <button type="button" onClick={() => onCheckIssue(issue.id)}>Field Guard checked</button>
+            <article className="submitted-issue-card">
+              <div className="submitted-issue-header">
+                <div>
+                  <span className="ticket-id">{issue.id}</span>
+                  <h4>{issue.subject}</h4>
+                </div>
+                <span className="status-badge status-badge--info">
+                  {issue.status}
+                </span>
+              </div>
+              <p className="resident-muted">
+                {issue.category} · {issue.location} · Reported{" "}
+                {issue.reportedDate}
+              </p>
+              <p>{issue.description}</p>
+              {issue.status !== "Field Guard Checked" ? (
+                <button
+                  className="resident-secondary-btn"
+                  type="button"
+                  onClick={() => onCheckIssue(issue.id)}
+                >
+                  Mark as checked
+                </button>
               ) : null}
             </article>
           </li>
         ))}
       </ul>
     </section>
-  )
+  );
 }
