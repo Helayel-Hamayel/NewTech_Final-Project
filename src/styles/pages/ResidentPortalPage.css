@@ -143,42 +143,98 @@ select {
 }
 
 .signout-toast {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 5px;
+  width: min(440px, calc(100vw - 40px));
+  box-sizing: border-box;
+  padding: 30px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 18px;
+  background: var(--resident-card-bg);
+  color: var(--resident-ink);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.32);
+  text-align: center;
 }
 
 .signout-toast strong {
-  font-size: 0.92rem;
+  font-size: 1.35rem;
 }
 
 .signout-toast span {
-  font-size: 0.8rem;
+  color: var(--resident-slate-600);
+  font-size: 0.92rem;
 }
 
 .signout-toast-actions {
   display: flex;
+  justify-content: center;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 18px;
 }
 
 .signout-toast-actions button {
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
-  background: transparent;
-  color: inherit;
-  padding: 5px 8px;
+  border: 1px solid var(--resident-border);
+  border-radius: 8px;
+  background: var(--resident-card-alt);
+  color: var(--resident-ink);
+  padding: 9px 13px;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 700;
 }
 
 .signout-toast-actions button:first-child {
-  background: #fff;
-  color: #9f1239;
+  border-color: #be6070;
+  background: #a53f55;
+  color: #fff;
 }
 
 .signout-toast-actions button:hover {
   transform: translateY(-1px);
+}
+
+.signout-confirmation-toast {
+  position: relative !important;
+  z-index: 1000;
+  width: min(440px, calc(100vw - 40px)) !important;
+  max-width: 440px !important;
+  height: auto;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  pointer-events: auto;
+}
+
+.Toastify__toast-container--top-center:has(.signout-confirmation-toast) {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 20px;
+  transform: none;
+  pointer-events: none;
+}
+
+.Toastify__toast-container--top-center:has(.signout-confirmation-toast) .signout-confirmation-toast {
+  pointer-events: auto;
+}
+
+.signout-confirmation-toast::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: rgba(7, 15, 27, 0.56);
+  content: "";
+  backdrop-filter: blur(7px);
 }
 
 .resident-user-avatar {

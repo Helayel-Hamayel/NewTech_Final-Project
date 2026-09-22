@@ -98,7 +98,12 @@ export default function ResidentPage() {
           </button>
         </div>
       </div>,
-      { autoClose: false, closeButton: false, closeOnClick: false },
+      {
+        autoClose: false,
+        closeButton: false,
+        closeOnClick: false,
+        className: "signout-confirmation-toast",
+      },
     );
   }
 
