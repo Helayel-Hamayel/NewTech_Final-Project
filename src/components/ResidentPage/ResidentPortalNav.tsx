@@ -22,6 +22,11 @@ export default function ResidentPortalNav({
   return (
     <nav className="resident-nav" aria-label="Resident portal navigation">
       <ul className="resident-nav-list">
+        <span
+          className="resident-nav-indicator"
+          aria-hidden="true"
+          style={{ transform: `translateX(${tabs.indexOf(activeTab) * 100}%)` }}
+        />
         {tabs.map((tab) => (
           <li key={tab}>
             <button

@@ -168,9 +168,6 @@ export default function ResidentPage() {
               <LogOut className="resident-signout-icon" aria-hidden="true" />
               Sign out
             </button>
-            <span className="resident-user-avatar" aria-label="Current user">
-              {resident.name.charAt(0)}
-            </span>
           </div>
         </header>
       }
