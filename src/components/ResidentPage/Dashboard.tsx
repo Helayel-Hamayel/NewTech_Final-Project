@@ -26,8 +26,18 @@ export default function Dashboard({
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
       <header className="resident-page-intro">
-        <h1 id="dashboard-heading">Good morning, Maria Reyes</h1>
-        <p>14 Maple Street, Unit 2B · Resident ID: RES-00441</p>
+        <div className="resident-page-intro-copy">
+          <h1 id="dashboard-heading">Good morning, Maria Reyes</h1>
+          <p>14 Maple Street, Unit 2B · Resident ID: RES-00441</p>
+        </div>
+        <section
+          className="resident-card resident-status-card"
+          aria-labelledby="status-heading"
+        >
+          <p className="section-label">Account status</p>
+          <h3 id="status-heading">Active</h3>
+          <p className="resident-status-line">Lease valid to Dec 2026</p>
+        </section>
       </header>
 
       <div className="resident-summary-grid">
@@ -73,32 +83,43 @@ export default function Dashboard({
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
-          <h3>Active Fines</h3>
-          <p className="resident-kpi-value">{unpaidFines.length}</p>
-          <p className="resident-kpi-label">Appealed</p>
-          <button type="button" onClick={() => onNavigate("My Tickets")}>
-            View in My Tickets
-          </button>
+          <div className="resident-kpi-content">
+            <h3>
+              Active
+              <br />
+              Fines
+            </h3>
+            <div className="resident-kpi-metric">
+              <p className="resident-kpi-value">{unpaidFines.length}</p>
+              <p className="resident-kpi-label">Appealed</p>
+            </div>
+          </div>
+          <div className="resident-kpi-actions">
+            <button type="button" onClick={() => onNavigate("My Tickets")}>
+              View in My Tickets
+            </button>
+          </div>
         </article>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--sand">
-          <h3>Open Requests</h3>
-          <p className="resident-kpi-value">2</p>
-          <p className="resident-kpi-label">Maintenance tickets</p>
-          <button type="button" onClick={() => onNavigate("My Tickets")}>
-            View in My Tickets
-          </button>
+          <div className="resident-kpi-content">
+            <h3>
+              Open
+              <br />
+              Requests
+            </h3>
+            <div className="resident-kpi-metric">
+              <p className="resident-kpi-value">2</p>
+              <p className="resident-kpi-label">Maintenance tickets</p>
+            </div>
+          </div>
+          <div className="resident-kpi-actions">
+            <button type="button" onClick={() => onNavigate("My Tickets")}>
+              View in My Tickets
+            </button>
+          </div>
         </article>
       </div>
-
-      <section
-        className="resident-card resident-status-card"
-        aria-labelledby="status-heading"
-      >
-        <p className="section-label">Account status</p>
-        <h3 id="status-heading">Active</h3>
-        <p className="resident-status-line">Lease valid to Dec 2026</p>
-      </section>
 
       <section
         className="resident-card resident-utility-card"
