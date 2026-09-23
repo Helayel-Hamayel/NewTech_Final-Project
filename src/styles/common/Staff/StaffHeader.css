@@ -108,6 +108,10 @@
   color: #fff;
 }
 
+html[data-theme="dark"] .staff-nav a:hover {
+  background: #26364a;
+}
+
 .staff-sign-out:hover{
     background: #ff0000;
   color: #fff;

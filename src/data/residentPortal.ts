@@ -20,6 +20,13 @@ export type MaintenanceTicket = {
   stage: MaintenanceTicketStage
 }
 
+export type ResidentServiceRequest = MaintenanceTicket & {
+  description: string;
+  phone: string;
+  preferredDate: string;
+  attachment: string;
+};
+
 export type ResidentIssueStatus =
   | "Submitted"
   | "Field Guard Review"
