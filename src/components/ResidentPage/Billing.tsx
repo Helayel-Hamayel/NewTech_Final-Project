@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Check, Download, ReceiptText, WalletCards } from "lucide-react";
-import { currency } from "./formatters";
+import { currency } from "../../helpers/formatting/currency";
 import type { BillingProps } from "./types";
 
 export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {

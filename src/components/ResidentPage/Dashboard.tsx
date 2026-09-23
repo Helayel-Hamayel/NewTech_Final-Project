@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
-import { currency } from "./formatters";
+import { currency } from "../../helpers/formatting/currency";
 import type { DashboardProps } from "./types";
 
 export default function Dashboard({

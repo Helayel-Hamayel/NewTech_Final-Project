@@ -1,5 +1,5 @@
 import { residentProperty } from "../../data/residentPortal";
-import { currency } from "./formatters";
+import { currency } from "../../helpers/formatting/currency";
 import { Building2, Droplets, Phone, ShieldCheck } from "lucide-react";
 
 export default function Properties() {

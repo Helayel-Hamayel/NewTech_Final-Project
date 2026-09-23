@@ -1,5 +1,5 @@
 import type { MaintenanceTicket } from '../../data/residentPortal'
-import { currency } from './formatters'
+import { currency } from "../../helpers/formatting/currency";
 import ResidentIssues from './ResidentIssues'
 import type { MyTicketsProps } from './types'
 
