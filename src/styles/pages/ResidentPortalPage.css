@@ -1098,6 +1098,40 @@ html[data-theme="dark"] .citation-photo {
   color: #e8c28e;
 }
 
+html[data-theme="dark"] .property-contact-list-item--water {
+  border-color: rgba(125, 190, 224, 0.34) !important;
+  background: #19384b;
+  color: #a9d8ed;
+}
+
+html[data-theme="dark"] .property-contact-list-item--water strong {
+  color: #c2e6f5;
+}
+
+html[data-theme="dark"] .property-contact-list-item--electricity {
+  border-color: rgba(224, 177, 105, 0.34) !important;
+  background: #443b2b;
+  color: #e5c488;
+}
+
+html[data-theme="dark"] .property-contact-list-item--electricity strong {
+  color: #f2d9a0;
+}
+
+html[data-theme="dark"] .property-section--support {
+  border-color: rgba(116, 190, 158, 0.32);
+  background: linear-gradient(180deg, #263b37 0%, #203b32 100%);
+}
+
+html[data-theme="dark"] .property-section--support .section-label {
+  color: #9bd7bd;
+}
+
+html[data-theme="dark"] .property-section--support h2,
+html[data-theme="dark"] .property-section--support .property-contact-list a {
+  color: #b8e6c9;
+}
+
 .resident-page-intro--split {
   display: flex;
   align-items: flex-start;
@@ -1269,6 +1303,16 @@ html[data-theme="dark"] .citation-photo {
   background: var(--resident-card-bg);
   box-shadow: var(--resident-shadow);
 }
+.property-hero + .property-glance {
+  margin-top: -22px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: 0;
+}
+.property-hero:has(+ .property-glance) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .property-hero-art {
   display: grid;
   min-height: 210px;
@@ -1288,6 +1332,31 @@ html[data-theme="dark"] .citation-photo {
   display: grid;
   align-content: center;
   padding: 28px;
+}
+.property-glance {
+  margin: 0;
+}
+.property-glance .resident-card-header {
+  margin-bottom: 12px;
+}
+.property-glance .property-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+.property-glance .property-stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 0;
+  border-bottom: 0;
+  border-right: 1px solid var(--resident-slate-200);
+  background: transparent;
+}
+.property-glance .property-stats div:last-child {
+  border-right: 0;
 }
 .property-title-row {
   display: flex;
@@ -1384,6 +1453,26 @@ html[data-theme="dark"] .citation-photo {
   padding: 12px 0;
   border-bottom: 1px solid var(--resident-slate-200);
 }
+.property-contact-list-item--water {
+  border: 1px solid #bae6fd !important;
+  border-radius: 10px;
+  background: #f0f9ff;
+  color: #0369a1;
+  padding: 12px 14px !important;
+}
+.property-contact-list-item--water strong {
+  color: #075985;
+}
+.property-contact-list-item--electricity {
+  border: 1px solid #fde68a !important;
+  border-radius: 10px;
+  background: #fffbeb;
+  color: #a16207;
+  padding: 12px 14px !important;
+}
+.property-contact-list-item--electricity strong {
+  color: #854d0e;
+}
 .property-contact-list span {
   color: var(--resident-slate-600);
   font-size: 0.85rem;
@@ -1398,6 +1487,22 @@ html[data-theme="dark"] .citation-photo {
 .property-contact-list a:hover {
   color: var(--resident-blue);
   text-decoration: underline;
+}
+.property-section--support {
+  border-color: #b7dfc4;
+  background: linear-gradient(180deg, #f2fbf4 0%, #e8f6ec 100%);
+}
+.property-section--support .resident-card-header {
+  color: #247443;
+}
+.property-section--support .section-label {
+  color: #4d8b61;
+}
+.property-section--support h2 {
+  color: #1f6339;
+}
+.property-section--support .property-contact-list a {
+  color: #247443;
 }
 
 .issues-panel {
@@ -1820,6 +1925,19 @@ html[data-theme="dark"] .citation-photo {
   .citation-grid {
     grid-template-columns: 1fr;
   }
+  .property-glance .property-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .property-glance .property-stats div {
+    border-right: 1px solid var(--resident-slate-200);
+    border-bottom: 1px solid var(--resident-slate-200);
+  }
+  .property-glance .property-stats div:nth-child(2n) {
+    border-right: 0;
+  }
+  .property-glance .property-stats div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
   .billing-balance-card {
     grid-template-columns: auto 1fr;
   }
@@ -1847,5 +1965,19 @@ html[data-theme="dark"] .citation-photo {
   .appeal-layout {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .property-glance .property-stats {
+    grid-template-columns: 1fr;
+  }
+  .property-glance .property-stats div,
+  .property-glance .property-stats div:nth-child(2n) {
+    border-right: 0;
+    border-bottom: 1px solid var(--resident-slate-200);
+  }
+  .property-glance .property-stats div:last-child {
+    border-bottom: 0;
   }
 }

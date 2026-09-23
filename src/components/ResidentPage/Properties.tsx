@@ -38,33 +38,33 @@ export default function Properties() {
           </div>
         </div>
       </article>
-      <div className="property-grid">
-        <section className="resident-card property-section">
-          <div className="resident-card-header">
-            <div>
-              <p className="section-label">At a glance</p>
-              <h2>Property stats</h2>
-            </div>
+      <section className="resident-card property-section property-glance">
+        <div className="resident-card-header">
+          <div>
+            <p className="section-label">At a glance</p>
+            <h2>Property stats</h2>
           </div>
-          <dl className="property-stats">
-            <div>
-              <dt>Bedrooms</dt>
-              <dd>{residentProperty.bedrooms}</dd>
-            </div>
-            <div>
-              <dt>Bathrooms</dt>
-              <dd>{residentProperty.bathrooms}</dd>
-            </div>
-            <div>
-              <dt>Floor</dt>
-              <dd>{residentProperty.floor}</dd>
-            </div>
-            <div>
-              <dt>Zone</dt>
-              <dd>{residentProperty.zone}</dd>
-            </div>
-          </dl>
-        </section>
+        </div>
+        <dl className="property-stats">
+          <div>
+            <dt>Bedrooms</dt>
+            <dd>{residentProperty.bedrooms}</dd>
+          </div>
+          <div>
+            <dt>Bathrooms</dt>
+            <dd>{residentProperty.bathrooms}</dd>
+          </div>
+          <div>
+            <dt>Floor</dt>
+            <dd>{residentProperty.floor}</dd>
+          </div>
+          <div>
+            <dt>Zone</dt>
+            <dd>{residentProperty.zone}</dd>
+          </div>
+        </dl>
+      </section>
+      <div className="property-grid">
         <section className="resident-card property-section">
           <div className="resident-card-header">
             <div>
@@ -103,14 +103,17 @@ export default function Properties() {
           </div>
           <ul className="property-contact-list">
             {residentProperty.utilityAccounts.map((utility) => (
-              <li key={utility.name}>
+              <li
+                className={`property-contact-list-item property-contact-list-item--${utility.name.toLowerCase()}`}
+                key={utility.name}
+              >
                 <span>{utility.name}</span>
                 <strong>{utility.account}</strong>
               </li>
             ))}
           </ul>
         </section>
-        <section className="resident-card property-section">
+        <section className="resident-card property-section property-section--support">
           <div className="resident-card-header">
             <div>
               <p className="section-label">Need help?</p>
