@@ -18,12 +18,11 @@ const categories = [
 
 type IssueForm = Omit<
   ResidentIssue,
-  "id" | "reportedDate" | "status" | "photo"
+  "id" | "reportedDate" | "status" | "photo" | "subject"
 > & { photo: string };
 
 const emptyForm: IssueForm = {
   phone: "",
-  subject: "",
   category: "Parking",
   description: "",
   photo: "",
@@ -44,6 +43,7 @@ export default function ResidentIssues({
     event.preventDefault();
     onAddIssue({
       ...form,
+      subject: form.category,
       id: `ISS-${3002 + issues.length}`,
       photo: form.photo || "No photo attached",
       reportedDate: new Date().toLocaleDateString("en-US", {
@@ -74,26 +74,7 @@ export default function ResidentIssues({
 
       <form className="issue-form" onSubmit={handleSubmit}>
         <label>
-          Phone number
-          <input
-            required
-            type="tel"
-            value={form.phone}
-            onChange={(event) => updateForm("phone", event.target.value)}
-            placeholder="(555) 010-0000"
-          />
-        </label>
-        <label>
           Subject or issue type
-          <input
-            required
-            value={form.subject}
-            onChange={(event) => updateForm("subject", event.target.value)}
-            placeholder="Illegal parked car"
-          />
-        </label>
-        <label>
-          Category
           <select
             value={form.category}
             onChange={(event) => updateForm("category", event.target.value)}
@@ -115,22 +96,32 @@ export default function ResidentIssues({
           />
         </label>
         <label>
-          Photo
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(event) =>
-              updateForm("photo", event.target.files?.[0]?.name ?? "")
-            }
-          />
-        </label>
-        <label>
           Location
           <input
             required
             value={form.location}
             onChange={(event) => updateForm("location", event.target.value)}
             placeholder="Street, building, or landmark"
+          />
+        </label>
+        <label>
+          Phone number
+          <input
+            required
+            type="tel"
+            value={form.phone}
+            onChange={(event) => updateForm("phone", event.target.value)}
+            placeholder="(555) 010-0000"
+          />
+        </label>
+        <label>
+          Photo or document
+          <input
+            type="file"
+            accept="image/*,.pdf"
+            onChange={(event) =>
+              updateForm("photo", event.target.files?.[0]?.name ?? "")
+            }
           />
         </label>
         <button className="resident-primary-btn" type="submit">

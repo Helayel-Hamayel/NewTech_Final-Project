@@ -101,8 +101,8 @@ export default function Dashboard({
             </div>
           </div>
           <div className="resident-kpi-actions">
-            <button type="button" onClick={() => onNavigate("My Tickets")}>
-              View in My Tickets
+            <button type="button" onClick={() => onNavigate("My Services")}>
+              View in My Services
             </button>
           </div>
         </article>
@@ -120,8 +120,8 @@ export default function Dashboard({
             </div>
           </div>
           <div className="resident-kpi-actions">
-            <button type="button" onClick={() => onNavigate("My Tickets")}>
-              View in My Tickets
+            <button type="button" onClick={() => onNavigate("My Services")}>
+              View in My Services
             </button>
           </div>
         </article>
@@ -216,7 +216,7 @@ export default function Dashboard({
           <button
             className="resident-secondary-btn"
             type="button"
-            onClick={() => onNavigate("My Tickets")}
+            onClick={() => onNavigate("My Services")}
           >
             View all fines
           </button>

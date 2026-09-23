@@ -14,6 +14,7 @@ import {
   type Fine,
   type Invoice,
   type ResidentIssue,
+  type ResidentServiceRequest,
   seededFines,
   seededInvoices,
   seededMaintenanceTickets,
@@ -30,6 +31,17 @@ export default function ResidentPage() {
   const [fines, setFines] = useState(seededFines);
   const [residentIssues, setResidentIssues] =
     useState<ResidentIssue[]>(seededResidentIssues);
+  const [serviceRequests, setServiceRequests] = useState<
+    ResidentServiceRequest[]
+  >(
+    seededMaintenanceTickets.map((ticket) => ({
+      ...ticket,
+      description: "Existing service request",
+      phone: "(555) 010-4412",
+      preferredDate: ticket.reportedDate,
+      attachment: "",
+    })),
+  );
   const [selectedAppealFine, setSelectedAppealFine] = useState<Fine | null>(
     null,
   );
@@ -52,11 +64,15 @@ export default function ResidentPage() {
   function handleOpenAppeal(fine: Fine) {
     setSelectedAppealFine(fine);
     setAppealStatement("");
-    setActiveTab("My Tickets");
+    setActiveTab("My Services");
   }
 
   function handleAddIssue(issue: ResidentIssue) {
     setResidentIssues((currentIssues) => [issue, ...currentIssues]);
+  }
+
+  function handleAddServiceRequest(request: ResidentServiceRequest) {
+    setServiceRequests((currentRequests) => [request, ...currentRequests]);
   }
 
   function handleSubmitAppeal() {
@@ -160,9 +176,10 @@ export default function ResidentPage() {
                   invoices={seededInvoices}
                   onDownloadInvoice={handleDownloadInvoice}
                 />
-              ) : activeTab === "My Tickets" ? (
+              ) : activeTab === "My Services" ? (
                 <MyTickets
-                  tickets={seededMaintenanceTickets}
+                  tickets={serviceRequests}
+                  serviceRequests={serviceRequests}
                   fines={fines}
                   issues={residentIssues}
                   onOpenAppeal={handleOpenAppeal}
@@ -172,6 +189,7 @@ export default function ResidentPage() {
                   onSubmitAppeal={handleSubmitAppeal}
                   onCloseAppeal={() => setSelectedAppealFine(null)}
                   onAddIssue={handleAddIssue}
+                  onAddServiceRequest={handleAddServiceRequest}
                 />
               ) : (
                 <Properties />

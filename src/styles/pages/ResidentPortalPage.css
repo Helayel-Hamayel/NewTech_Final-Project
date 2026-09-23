@@ -760,6 +760,110 @@ html[data-theme="dark"] .resident-kpi-actions {
   align-items: end;
 }
 
+.tickets-subnav {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--resident-slate-200);
+  border-radius: 12px;
+  background: var(--resident-slate-100);
+}
+
+.tickets-subnav button {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--resident-slate-600);
+  padding: 10px 12px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.tickets-subnav button:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--resident-slate-800);
+}
+
+.tickets-subnav button.is-active {
+  border-color: var(--resident-slate-300);
+  background: var(--resident-white);
+  color: var(--resident-slate-900);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.1);
+}
+
+.service-request-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--resident-slate-200);
+}
+
+.service-request-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--resident-slate-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.service-request-form textarea,
+.service-request-form input,
+.service-request-form select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--resident-slate-300);
+  border-radius: 9px;
+  background: var(--resident-white);
+  color: var(--resident-ink);
+  padding: 10px 11px;
+  font: inherit;
+  font-size: 0.84rem;
+}
+
+.service-request-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.service-request-form label:nth-child(2),
+.service-request-form button {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .service-request-form {
+    grid-template-columns: 1fr;
+  }
+
+  .service-request-form label:nth-child(2),
+  .service-request-form button {
+    grid-column: auto;
+  }
+}
+
+html[data-theme="dark"] .tickets-subnav {
+  border-color: var(--resident-border);
+  background: var(--resident-card-alt);
+}
+
+html[data-theme="dark"] .tickets-subnav button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--resident-ink);
+}
+
+html[data-theme="dark"] .tickets-subnav button.is-active {
+  border-color: var(--resident-slate-300);
+  background: var(--resident-card-bg);
+  color: var(--resident-ink);
+}
+
 .resident-card-header h3 {
   margin: 0;
   color: var(--resident-ink);
@@ -955,7 +1059,10 @@ html[data-theme="dark"] .billing-table tbody tr:hover {
 html[data-theme="dark"] .issue-form input,
 html[data-theme="dark"] .issue-form select,
 html[data-theme="dark"] .issue-form textarea,
-html[data-theme="dark"] .appeal-form textarea {
+html[data-theme="dark"] .appeal-form textarea,
+html[data-theme="dark"] .service-request-form input,
+html[data-theme="dark"] .service-request-form select,
+html[data-theme="dark"] .service-request-form textarea {
   border-color: var(--resident-slate-300);
   background: #132031;
   color: var(--resident-ink);
@@ -1511,8 +1618,11 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
   margin-top: 20px;
+  margin-bottom: 22px;
   padding-top: 20px;
+  padding-bottom: 20px;
   border-top: 1px solid #d5e8e6;
+  border-bottom: 1px solid #d5e8e6;
 }
 .issue-form label {
   display: grid;
@@ -1521,7 +1631,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   font-size: 0.78rem;
   font-weight: 700;
 }
-.issue-form label:nth-of-type(4) {
+.issue-form label:nth-of-type(2) {
   grid-column: 1 / -1;
 }
 .issue-form input,
@@ -1532,7 +1642,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   box-sizing: border-box;
   border: 1px solid var(--resident-slate-300);
   border-radius: 9px;
-  background: white;
+  background: var(--resident-white);
   color: var(--resident-ink);
   padding: 10px 11px;
   outline: none;
@@ -1715,6 +1825,95 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   color: #166534;
   font-size: 0.78rem;
   font-weight: 700;
+}
+.citation-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 0 2px;
+}
+.citation-actions .resident-secondary-btn,
+.citation-actions .resident-primary-btn {
+  margin-top: 0;
+}
+.appeal-field {
+  display: grid;
+  gap: 6px;
+  color: var(--resident-slate-600);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.appeal-field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--resident-slate-300);
+  border-radius: 9px;
+  background: var(--resident-card-bg);
+  color: var(--resident-ink);
+  padding: 10px 11px;
+}
+.appeal-upload-option {
+  display: grid;
+  gap: 6px;
+  color: var(--resident-slate-600);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.appeal-upload-option input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px dashed var(--resident-slate-300);
+  border-radius: 9px;
+  background: var(--resident-card-alt);
+  color: var(--resident-slate-600);
+  padding: 9px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+}
+.appeal-upload-option span {
+  color: var(--resident-slate-500);
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+.citation-detail-dialog {
+  max-width: 500px;
+}
+.citation-detail-dialog h2,
+.citation-detail-dialog p {
+  margin: 0;
+}
+.citation-detail-violation {
+  margin-top: 6px !important;
+  color: var(--resident-slate-600);
+  font-size: 0.95rem;
+}
+.citation-detail-list {
+  display: grid;
+  gap: 0;
+  margin: 20px 0;
+}
+.citation-detail-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--resident-slate-200);
+}
+.citation-detail-list dt {
+  color: var(--resident-slate-500);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.citation-detail-list dd {
+  margin: 0;
+  color: var(--resident-ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: right;
 }
 .resident-dialog-backdrop {
   position: fixed;
@@ -2055,7 +2254,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   .issue-form {
     grid-template-columns: 1fr;
   }
-  .issue-form label:nth-of-type(4),
+  .issue-form label:nth-of-type(2),
   .issue-form button {
     grid-column: auto;
   }

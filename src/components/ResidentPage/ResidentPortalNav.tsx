@@ -1,12 +1,12 @@
 import type { PortalTab } from "./types";
 import { ClipboardList, FileText, Home, LayoutDashboard } from "lucide-react";
 
-const tabs: PortalTab[] = ["Dashboard", "Billing", "My Tickets", "Properties"];
+const tabs: PortalTab[] = ["Dashboard", "Billing", "My Services", "Properties"];
 
 const tabIcons = {
   Dashboard: LayoutDashboard,
   Billing: FileText,
-  "My Tickets": ClipboardList,
+  "My Services": ClipboardList,
   Properties: Home,
 } as const;
 
