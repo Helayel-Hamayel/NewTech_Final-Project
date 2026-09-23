@@ -1,43 +1,59 @@
-import { useState } from 'react'
-import type { SubmitEvent } from 'react'
-import type { ResidentIssue } from '../../data/residentPortal'
+import { useState } from "react";
+import type { SubmitEvent } from "react";
+import type { ResidentIssue } from "../../data/residentPortal";
 
 type ResidentIssuesProps = {
-  issues: ResidentIssue[]
-  onAddIssue: (issue: ResidentIssue) => void
-  onCheckIssue: (issueId: string) => void
-}
+  issues: ResidentIssue[];
+  onAddIssue: (issue: ResidentIssue) => void;
+};
 
-const categories = ['Parking', 'Road and sidewalk', 'Lighting', 'Waste and sanitation', 'Noise', 'Other']
+const categories = [
+  "Parking",
+  "Road and sidewalk",
+  "Lighting",
+  "Waste and sanitation",
+  "Noise",
+  "Other",
+];
 
-type IssueForm = Omit<ResidentIssue, 'id' | 'reportedDate' | 'status' | 'photo'> & { photo: string }
+type IssueForm = Omit<
+  ResidentIssue,
+  "id" | "reportedDate" | "status" | "photo"
+> & { photo: string };
 
 const emptyForm: IssueForm = {
-  phone: '',
-  subject: '',
-  category: 'Parking',
-  description: '',
-  photo: '',
-  location: '',
-}
+  phone: "",
+  subject: "",
+  category: "Parking",
+  description: "",
+  photo: "",
+  location: "",
+};
 
-export default function ResidentIssues({ issues, onAddIssue, onCheckIssue }: ResidentIssuesProps) {
-  const [form, setForm] = useState<IssueForm>(emptyForm)
+export default function ResidentIssues({
+  issues,
+  onAddIssue,
+}: ResidentIssuesProps) {
+  const [form, setForm] = useState<IssueForm>(emptyForm);
 
   function updateForm(field: keyof IssueForm, value: string) {
-    setForm((current) => ({ ...current, [field]: value }))
+    setForm((current) => ({ ...current, [field]: value }));
   }
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
     onAddIssue({
       ...form,
       id: `ISS-${3002 + issues.length}`,
-      photo: form.photo || 'No photo attached',
-      reportedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: 'Submitted',
-    })
-    setForm(emptyForm)
+      photo: form.photo || "No photo attached",
+      reportedDate: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      status: "Submitted",
+    });
+    setForm(emptyForm);
   }
 
   return (
@@ -141,15 +157,6 @@ export default function ResidentIssues({ issues, onAddIssue, onCheckIssue }: Res
                 {issue.reportedDate}
               </p>
               <p>{issue.description}</p>
-              {issue.status !== "Field Guard Checked" ? (
-                <button
-                  className="resident-secondary-btn"
-                  type="button"
-                  onClick={() => onCheckIssue(issue.id)}
-                >
-                  Mark as checked
-                </button>
-              ) : null}
             </article>
           </li>
         ))}

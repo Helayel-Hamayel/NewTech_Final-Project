@@ -1,10 +1,26 @@
-import type { MaintenanceTicket } from '../../data/residentPortal'
+import type { MaintenanceTicket } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
-import ResidentIssues from './ResidentIssues'
-import type { MyTicketsProps } from './types'
+import ResidentIssues from "./ResidentIssues";
+import type { MyTicketsProps } from "./types";
 
-export default function MyTickets({ tickets, fines, issues, onOpenAppeal, selectedAppealFine, appealStatement, onAppealStatementChange, onSubmitAppeal, onCloseAppeal, onAddIssue, onCheckIssue }: MyTicketsProps) {
-  const ticketStages: MaintenanceTicket['stage'][] = ['Reported', 'Dispatched', 'In Progress', 'Resolved']
+export default function MyTickets({
+  tickets,
+  fines,
+  issues,
+  onOpenAppeal,
+  selectedAppealFine,
+  appealStatement,
+  onAppealStatementChange,
+  onSubmitAppeal,
+  onCloseAppeal,
+  onAddIssue,
+}: MyTicketsProps) {
+  const ticketStages: MaintenanceTicket["stage"][] = [
+    "Reported",
+    "Dispatched",
+    "In Progress",
+    "Resolved",
+  ];
 
   return (
     <section className="resident-view" aria-labelledby="tickets-heading">
@@ -16,11 +32,7 @@ export default function MyTickets({ tickets, fines, issues, onOpenAppeal, select
           place.
         </p>
       </header>
-      <ResidentIssues
-        issues={issues}
-        onAddIssue={onAddIssue}
-        onCheckIssue={onCheckIssue}
-      />
+      <ResidentIssues issues={issues} onAddIssue={onAddIssue} />
       <section
         className="resident-card tickets-section"
         aria-labelledby="maintenance-heading"
@@ -56,7 +68,13 @@ export default function MyTickets({ tickets, fines, issues, onOpenAppeal, select
                 >
                   {ticketStages.map((stage, index) => (
                     <div
-                      className={index < currentStageIndex ? "is-complete" : index === currentStageIndex ? "is-current" : "is-upcoming"}
+                      className={
+                        index < currentStageIndex
+                          ? "is-complete"
+                          : index === currentStageIndex
+                            ? "is-current"
+                            : "is-upcoming"
+                      }
                       key={`${ticket.id}-${stage}`}
                     >
                       <span className="ticket-progress-dot">

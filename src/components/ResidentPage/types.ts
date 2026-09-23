@@ -18,15 +18,14 @@ export type BillingProps = {
 }
 
 export type MyTicketsProps = {
-  tickets: MaintenanceTicket[]
-  fines: Fine[]
-  issues: ResidentIssue[]
-  onOpenAppeal: (fine: Fine) => void
-  selectedAppealFine: Fine | null
-  appealStatement: string
-  onAppealStatementChange: (value: string) => void
-  onSubmitAppeal: () => void
-  onCloseAppeal: () => void
-  onAddIssue: (issue: ResidentIssue) => void
-  onCheckIssue: (issueId: string) => void
-}
+  tickets: MaintenanceTicket[];
+  fines: Fine[];
+  issues: ResidentIssue[];
+  onOpenAppeal: (fine: Fine) => void;
+  selectedAppealFine: Fine | null;
+  appealStatement: string;
+  onAppealStatementChange: (value: string) => void;
+  onSubmitAppeal: () => void;
+  onCloseAppeal: () => void;
+  onAddIssue: (issue: ResidentIssue) => void;
+};

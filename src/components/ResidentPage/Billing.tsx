@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Check, Download, ReceiptText, WalletCards } from "lucide-react";
+import { Download, ReceiptText, WalletCards } from "lucide-react";
 import { currency } from "../../helpers/formatting/currency";
+import PaymentCheckout from "./PaymentCheckout";
 import type { BillingProps } from "./types";
 
 export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
-  const [paymentMessage, setPaymentMessage] = useState("");
+  const [checkoutAmount, setCheckoutAmount] = useState<number | null>(null);
   const currentBalanceDue = invoices
     .filter((invoice) => invoice.status === "Due")
     .reduce((total, invoice) => total + invoice.total, 0);
@@ -14,12 +15,6 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
   const yearToDatePaid = invoices
     .filter((invoice) => invoice.status === "Paid")
     .reduce((total, invoice) => total + invoice.total, 0);
-
-  function handlePay(invoiceId: string) {
-    setPaymentMessage(
-      `Payment started for ${invoiceId}. A secure checkout would open here.`,
-    );
-  }
 
   return (
     <section className="resident-view" aria-labelledby="billing-heading">
@@ -54,7 +49,7 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
           <button
             className="resident-primary-btn"
             type="button"
-            onClick={() => handlePay("current balance")}
+            onClick={() => setCheckoutAmount(currentBalanceDue)}
           >
             Pay balance
           </button>
@@ -84,12 +79,6 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
           </div>
           <span className="billing-count">{invoices.length} records</span>
         </div>
-        {paymentMessage ? (
-          <p className="resident-action-message" role="status">
-            <Check size={16} aria-hidden="true" />
-            {paymentMessage}
-          </p>
-        ) : null}
         <div className="billing-table-wrap">
           <table className="billing-table">
             <thead>
@@ -145,7 +134,7 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
                       <button
                         className="resident-primary-btn"
                         type="button"
-                        onClick={() => handlePay(invoice.id)}
+                        onClick={() => setCheckoutAmount(invoice.total)}
                       >
                         Pay now
                       </button>
@@ -157,6 +146,13 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
           </table>
         </div>
       </section>
+      {checkoutAmount !== null ? (
+        <PaymentCheckout
+          amount={checkoutAmount}
+          defaultPayments={1}
+          onClose={() => setCheckoutAmount(null)}
+        />
+      ) : null}
     </section>
   );
 }

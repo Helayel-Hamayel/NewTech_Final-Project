@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Building2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
 import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
@@ -35,6 +34,7 @@ export default function ResidentPage() {
     null,
   );
   const [appealStatement, setAppealStatement] = useState("");
+  const [isSignoutOpen, setIsSignoutOpen] = useState(false);
   const unpaidFines = fines.filter((fine) => fine.status === "Unpaid");
   const unpaidFineTotal = unpaidFines.reduce(
     (total, fine) => total + fine.amount,
@@ -59,16 +59,6 @@ export default function ResidentPage() {
     setResidentIssues((currentIssues) => [issue, ...currentIssues]);
   }
 
-  function handleCheckIssue(issueId: string) {
-    setResidentIssues((currentIssues) =>
-      currentIssues.map((issue) =>
-        issue.id === issueId
-          ? { ...issue, status: "Field Guard Checked" }
-          : issue,
-      ),
-    );
-  }
-
   function handleSubmitAppeal() {
     if (!selectedAppealFine) return;
     handleAppeal(selectedAppealFine.id);
@@ -77,32 +67,7 @@ export default function ResidentPage() {
   }
 
   function handleSignOut() {
-    toast.warn(
-      <div className="signout-toast">
-        <strong>Sign out of CivicHub?</strong>
-        <span>Your current portal session will end.</span>
-        <div className="signout-toast-actions">
-          <button
-            type="button"
-            onClick={() => {
-              toast.dismiss();
-              navigate("/login", { replace: true });
-            }}
-          >
-            Sign out
-          </button>
-          <button type="button" onClick={() => toast.dismiss()}>
-            Stay signed in
-          </button>
-        </div>
-      </div>,
-      {
-        autoClose: false,
-        closeButton: false,
-        closeOnClick: false,
-        className: "signout-confirmation-toast",
-      },
-    );
+    setIsSignoutOpen(true);
   }
 
   function handleDownloadInvoice(invoice: Invoice) {
@@ -128,14 +93,45 @@ export default function ResidentPage() {
           <div className="resident-user-meta">
             <ThemeToggle />
             <span className="resident-header-divider" aria-hidden="true" />
-            <button
-              className="resident-signout"
-              type="button"
-              onClick={handleSignOut}
-            >
-              <LogOut className="resident-signout-icon" aria-hidden="true" />
-              Sign out
-            </button>
+            <div className="resident-signout-wrap">
+              <button
+                className="resident-signout"
+                type="button"
+                onClick={handleSignOut}
+                aria-expanded={isSignoutOpen}
+                aria-controls="signout-popover"
+              >
+                <LogOut className="resident-signout-icon" aria-hidden="true" />
+                Sign out
+              </button>
+              {isSignoutOpen ? (
+                <div
+                  className="signout-popover"
+                  id="signout-popover"
+                  role="dialog"
+                  aria-labelledby="signout-popover-title"
+                >
+                  <strong id="signout-popover-title">
+                    Sign out of CivicHub?
+                  </strong>
+                  <span>Your current portal session will end.</span>
+                  <div className="signout-toast-actions">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/login", { replace: true })}
+                    >
+                      Sign out
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsSignoutOpen(false)}
+                    >
+                      Stay signed in
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </header>
       }
@@ -176,7 +172,6 @@ export default function ResidentPage() {
                   onSubmitAppeal={handleSubmitAppeal}
                   onCloseAppeal={() => setSelectedAppealFine(null)}
                   onAddIssue={handleAddIssue}
-                  onCheckIssue={handleCheckIssue}
                 />
               ) : (
                 <Properties />

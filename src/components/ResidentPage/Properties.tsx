@@ -91,8 +91,6 @@ export default function Properties() {
             </div>
           </dl>
         </section>
-      </div>
-      <div className="property-grid">
         <section className="resident-card property-section">
           <div className="resident-card-header">
             <div>
@@ -113,6 +111,8 @@ export default function Properties() {
             ))}
           </ul>
         </section>
+      </div>
+      <div className="property-support-row">
         <section className="resident-card property-section property-section--support">
           <div className="resident-card-header">
             <div>

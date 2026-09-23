@@ -142,36 +142,43 @@ select {
   background: rgba(148, 163, 184, 0.35);
 }
 
-.signout-toast {
+.resident-signout-wrap {
   position: relative;
-  z-index: 1;
+}
+
+.signout-popover {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 12px);
+  right: 0;
   display: grid;
   gap: 5px;
-  width: min(440px, calc(100vw - 40px));
+  width: min(300px, calc(100vw - 32px));
   box-sizing: border-box;
-  padding: 30px;
+  padding: 18px;
   border: 1px solid rgba(148, 163, 184, 0.28);
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--resident-card-bg);
   color: var(--resident-ink);
-  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.32);
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.28);
   text-align: center;
+  animation: signout-popover-enter 180ms ease-out both;
 }
 
-.signout-toast strong {
-  font-size: 1.35rem;
+.signout-popover strong {
+  font-size: 1rem;
 }
 
-.signout-toast span {
+.signout-popover span {
   color: var(--resident-slate-600);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
 }
 
 .signout-toast-actions {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 .signout-toast-actions button {
@@ -195,47 +202,16 @@ select {
   transform: translateY(-1px);
 }
 
-.signout-confirmation-toast {
-  position: relative !important;
-  z-index: 1000;
-  width: min(440px, calc(100vw - 40px)) !important;
-  max-width: 440px !important;
-  height: auto;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  pointer-events: auto;
-}
+@keyframes signout-popover-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 
-.Toastify__toast-container--top-center:has(.signout-confirmation-toast) {
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  width: 100vw;
-  max-width: none;
-  height: 100vh;
-  box-sizing: border-box;
-  padding: 20px;
-  transform: none;
-  pointer-events: none;
-}
-
-.Toastify__toast-container--top-center:has(.signout-confirmation-toast)
-  .signout-confirmation-toast {
-  pointer-events: auto;
-}
-
-.signout-confirmation-toast::before {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  background: rgba(7, 15, 27, 0.56);
-  content: "";
-  backdrop-filter: blur(7px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .resident-user-avatar {
@@ -1394,6 +1370,13 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
+.property-support-row {
+  display: flex;
+  justify-content: center;
+}
+.property-support-row .property-section--support {
+  width: min(100%, 560px);
+}
 .property-section {
   padding: 22px;
 }
@@ -1760,6 +1743,120 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   background: transparent;
   color: var(--resident-slate-600);
   cursor: pointer;
+}
+
+.payment-dialog {
+  display: grid;
+  gap: 10px;
+  max-width: 460px;
+}
+
+.payment-dialog h2,
+.payment-dialog p {
+  margin: 0;
+}
+
+.payment-dialog h2 {
+  color: var(--resident-ink);
+  font-size: 1.45rem;
+}
+
+.payment-dialog-copy {
+  color: var(--resident-slate-600);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.payment-dialog-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 6px;
+  padding: 14px;
+  border: 1px solid var(--resident-slate-200);
+  border-radius: 10px;
+  background: var(--resident-card-alt);
+}
+
+.payment-dialog-total span {
+  color: var(--resident-slate-600);
+  font-size: 0.8rem;
+}
+
+.payment-dialog-total strong {
+  color: var(--resident-ink);
+  font-size: 1.2rem;
+}
+
+.payment-count-field {
+  display: grid;
+  gap: 6px;
+  color: var(--resident-slate-700);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.payment-count-field input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--resident-slate-300);
+  border-radius: 9px;
+  background: var(--resident-card-bg);
+  color: var(--resident-ink);
+  padding: 10px 11px;
+}
+
+.payment-installment-preview {
+  color: var(--resident-slate-600);
+  font-size: 0.82rem;
+}
+
+.payment-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.demo-payment-form {
+  display: grid;
+  gap: 10px;
+}
+
+.demo-payment-form h2,
+.demo-payment-form p {
+  margin: 0;
+}
+
+.demo-payment-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.payment-complete {
+  display: grid;
+  gap: 12px;
+  text-align: center;
+}
+
+.payment-complete strong {
+  color: #166534;
+  font-size: 1.1rem;
+}
+
+.payment-complete p {
+  margin: 0;
+  color: var(--resident-slate-600);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .demo-payment-row {
+    grid-template-columns: 1fr;
+  }
 }
 .appeal-layout {
   display: grid;

@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
+import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
 
 export default function Dashboard({
@@ -22,20 +23,8 @@ export default function Dashboard({
   onNavigate,
 }: DashboardProps) {
   const { isDark } = useTheme();
-  const [balanceActionMessage, setBalanceActionMessage] = useState("");
+  const [checkoutPayments, setCheckoutPayments] = useState<number | null>(null);
   const totalBalance = 1250 + 86 + unpaidFineTotal;
-
-  function handlePayAll() {
-    setBalanceActionMessage(
-      `Payment started for ${currency.format(totalBalance)}. A secure checkout would open here.`,
-    );
-  }
-
-  function handlePaymentPlan() {
-    setBalanceActionMessage(
-      "Payment plan request started. A resident services specialist would contact you here.",
-    );
-  }
 
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
@@ -67,7 +56,6 @@ export default function Dashboard({
               {currency.format(totalBalance)}
             </h2>
           </div>
-
           <dl className="resident-balance-list">
             <div>
               <dt>Rent</dt>
@@ -82,28 +70,22 @@ export default function Dashboard({
               <dd>{currency.format(unpaidFineTotal)}</dd>
             </div>
           </dl>
-
           <div className="resident-card-actions">
             <button
               className="resident-primary-btn"
               type="button"
-              onClick={handlePayAll}
+              onClick={() => setCheckoutPayments(1)}
             >
               Pay All · {currency.format(totalBalance)}
             </button>
             <button
               className="resident-secondary-btn resident-secondary-btn--light"
               type="button"
-              onClick={handlePaymentPlan}
+              onClick={() => setCheckoutPayments(2)}
             >
               Payment Plan
             </button>
           </div>
-          {balanceActionMessage ? (
-            <p className="resident-action-message" role="status">
-              {balanceActionMessage}
-            </p>
-          ) : null}
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
@@ -174,7 +156,6 @@ export default function Dashboard({
             </button>
           </div>
         </div>
-
         <figure className="resident-chart">
           <figcaption>{utilityType} usage, March–August 2026</figcaption>
           <ResponsiveContainer width="100%" height={260}>
@@ -210,7 +191,6 @@ export default function Dashboard({
             </BarChart>
           </ResponsiveContainer>
         </figure>
-
         <aside className="resident-current-bill">
           <div>
             <h4>Current bill</h4>
@@ -241,7 +221,6 @@ export default function Dashboard({
             View all fines
           </button>
         </div>
-
         {unpaidFines.length === 0 ? (
           <p className="resident-empty-state">No unpaid citations.</p>
         ) : (
@@ -289,6 +268,14 @@ export default function Dashboard({
           </ul>
         )}
       </section>
+
+      {checkoutPayments !== null ? (
+        <PaymentCheckout
+          amount={totalBalance}
+          defaultPayments={checkoutPayments}
+          onClose={() => setCheckoutPayments(null)}
+        />
+      ) : null}
     </section>
   );
 }
