@@ -7,6 +7,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "./formatters";
 import type { DashboardProps } from "./types";
@@ -17,11 +18,24 @@ export default function Dashboard({
   utilityType,
   utilityUsage,
   onUtilityTypeChange,
-  onAppeal,
+  onOpenAppeal,
   onNavigate,
 }: DashboardProps) {
   const { isDark } = useTheme();
+  const [balanceActionMessage, setBalanceActionMessage] = useState("");
   const totalBalance = 1250 + 86 + unpaidFineTotal;
+
+  function handlePayAll() {
+    setBalanceActionMessage(
+      `Payment started for ${currency.format(totalBalance)}. A secure checkout would open here.`,
+    );
+  }
+
+  function handlePaymentPlan() {
+    setBalanceActionMessage(
+      "Payment plan request started. A resident services specialist would contact you here.",
+    );
+  }
 
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
@@ -70,16 +84,26 @@ export default function Dashboard({
           </dl>
 
           <div className="resident-card-actions">
-            <button className="resident-primary-btn" type="button">
+            <button
+              className="resident-primary-btn"
+              type="button"
+              onClick={handlePayAll}
+            >
               Pay All · {currency.format(totalBalance)}
             </button>
             <button
               className="resident-secondary-btn resident-secondary-btn--light"
               type="button"
+              onClick={handlePaymentPlan}
             >
               Payment Plan
             </button>
           </div>
+          {balanceActionMessage ? (
+            <p className="resident-action-message" role="status">
+              {balanceActionMessage}
+            </p>
+          ) : null}
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
@@ -193,7 +217,11 @@ export default function Dashboard({
             <p>{currency.format(86)}</p>
             <span>Due Sep 30, 2026</span>
           </div>
-          <button className="resident-secondary-btn" type="button">
+          <button
+            className="resident-secondary-btn"
+            type="button"
+            onClick={() => onNavigate("Billing")}
+          >
             View billing history
           </button>
         </aside>
@@ -205,6 +233,13 @@ export default function Dashboard({
             <p className="section-label">Citations</p>
             <h3 id="fines-heading">Active fines &amp; citations</h3>
           </div>
+          <button
+            className="resident-secondary-btn"
+            type="button"
+            onClick={() => onNavigate("My Tickets")}
+          >
+            View all fines
+          </button>
         </div>
 
         {unpaidFines.length === 0 ? (
@@ -244,7 +279,7 @@ export default function Dashboard({
                   <button
                     className="resident-secondary-btn"
                     type="button"
-                    onClick={() => onAppeal(fine.id)}
+                    onClick={() => onOpenAppeal(fine)}
                   >
                     File Appeal
                   </button>

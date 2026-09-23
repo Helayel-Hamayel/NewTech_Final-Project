@@ -55,6 +55,7 @@ export default function ResidentPage() {
   function handleOpenAppeal(fine: Fine) {
     setSelectedAppealFine(fine);
     setAppealStatement("");
+    setActiveTab("My Tickets");
   }
 
   function handleAddIssue(issue: ResidentIssue) {
@@ -221,7 +222,7 @@ export default function ResidentPage() {
                   utilityType={utilityType}
                   utilityUsage={utilityUsage[utilityType]}
                   onUtilityTypeChange={setUtilityType}
-                  onAppeal={handleAppeal}
+                  onOpenAppeal={handleOpenAppeal}
                   onNavigate={setActiveTab}
                 />
               ) : activeTab === "Billing" ? (

@@ -56,9 +56,7 @@ export default function MyTickets({ tickets, fines, issues, onOpenAppeal, select
                 >
                   {ticketStages.map((stage, index) => (
                     <div
-                      className={
-                        index <= currentStageIndex ? "is-complete" : ""
-                      }
+                      className={index < currentStageIndex ? "is-complete" : index === currentStageIndex ? "is-current" : "is-upcoming"}
                       key={`${ticket.id}-${stage}`}
                     >
                       <span className="ticket-progress-dot">

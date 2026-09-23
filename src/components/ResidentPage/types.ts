@@ -8,7 +8,7 @@ export type DashboardProps = {
   utilityType: UtilityType
   utilityUsage: Array<{ month: string; usage: number }>
   onUtilityTypeChange: (utilityType: UtilityType) => void
-  onAppeal: (fineId: string) => void
+  onOpenAppeal: (fine: Fine) => void
   onNavigate: (tab: PortalTab) => void
 }
 
