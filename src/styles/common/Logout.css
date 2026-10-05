@@ -1,0 +1,16 @@
+.logout-button {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.logout-button:hover {
+  color: #ff4d4d;
+}
