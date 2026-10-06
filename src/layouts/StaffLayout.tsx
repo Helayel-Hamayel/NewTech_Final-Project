@@ -4,9 +4,9 @@ import "../styles/common/Staff/StaffLayout.css";
 
 export default function StaffLayout() {
   return (
-    <div className="staff-layout">
+    <div className="staff-shell">
       <StaffHeader />
-      <main className="staff-main">
+      <main className="staff-content">
         <Outlet />
       </main>
     </div>

@@ -1,4 +1,4 @@
-.staff-header {
+.sidebar {
   position: sticky;
   top: 0;
   display: flex;
@@ -12,14 +12,14 @@
   color: #94a3b8;
 }
 
-.staff-brand,
-.staff-profile {
+.brand,
+.profile {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.staff-brand-icon {
+.brand-mark {
   display: grid;
   flex: 0 0 50px;
   height: 52px;
@@ -29,7 +29,7 @@
   color: #fff;
 }
 
-.staff-brand-title {
+.brand-title {
   margin: 0 0 4px;
   color: #fff;
   font-size: 18px;
@@ -37,24 +37,24 @@
   line-height: 1.2;
 }
 
-.staff-city,
-.staff-dispatch {
+.city,
+.dispatch {
   color: #647d9e;
   font-family: Consolas, "Courier New", monospace;
   letter-spacing: 0.5px;
   font-size: 12px;
 }
 
-.staff-city {
+.city {
   margin: 0;
   font-size: 17px;
 }
 
-.staff-profile {
+.profile {
   margin-top: 16px;
 }
 
-.staff-avatar {
+.avatar {
   display: grid;
   flex: 0 0 30px;
   height: 32px;
@@ -66,11 +66,11 @@
   font-weight: 700;
 }
 
-.staff-name {
+.name {
   font-size: 18px;
 }
 
-.staff-dispatch {
+.dispatch {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -78,20 +78,20 @@
   font-size: 16px;
 }
 
-.staff-status-dot {
+.status-dot {
   width: 13px;
   height: 13px;
   border-radius: 50%;
   background: #00c995;
 }
 
-.staff-nav {
+.nav {
   display: grid;
   gap: 8px;
 }
 
-.staff-nav a,
-.staff-sign-out {
+.nav a,
+.sign-out {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -103,44 +103,44 @@
   text-decoration: none;
 }
 
-.staff-nav a:hover {
+.nav a:hover {
   background: #1e293b;
   color: #fff;
 }
 
-html[data-theme="dark"] .staff-nav a:hover {
+html[data-theme="dark"] .nav a:hover {
   background: #26364a;
 }
 
-.staff-sign-out:hover{
+.sign-out:hover {
     background: #ff0000;
   color: #fff;
 }
 
-.staff-nav a.active {
+.nav a.active {
   background: var(--staff-accent);
   color: #fff;
 }
 
-.staff-nav a:focus-visible,
-.staff-sign-out:focus-visible {
+.nav a:focus-visible,
+.sign-out:focus-visible {
   outline: 2px solid #93c5fd;
   outline-offset: 4px;
 }
 
-.staff-sign-out {
+.sign-out {
   margin-top: auto;
 }
 
 @media (max-width: 700px) {
-  .staff-header {
+  .sidebar {
     position: static;
     flex-basis: auto;
     height: auto;
     padding: 24px 20px;
   }
 
-  .staff-sign-out {
+  .sign-out {
     margin-top: 16px;
   }
 }

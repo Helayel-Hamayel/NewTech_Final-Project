@@ -10,33 +10,35 @@ export default function StaffHeader() {
     .join("");
 
   return (
-    <aside className="staff-header" aria-label="Staff sidebar">
-      <div className="staff-brand">
-        <span className="staff-brand-icon" aria-hidden="true">
+    <aside className="sidebar" aria-label="Staff sidebar">
+      <div className="brand">
+        <span className="brand-mark" aria-hidden="true">
           <Map size={28} />
         </span>
         <div>
-          <p className="staff-brand-title">Municipal Operations</p>
-          <p className="staff-city">City of Millbrook</p>
+          <p className="brand-title">Municipal Operations</p>
+          <p className="city">City of Millbrook</p>
         </div>
       </div>
 
-      <div className="staff-profile">
-        <span className="staff-avatar" aria-hidden="true">{initials}</span>
-        <span className="staff-name">{staffData.name}</span>
+      <div className="profile">
+        <span className="avatar" aria-hidden="true">
+          {initials}
+        </span>
+        <span className="name">{staffData.name}</span>
       </div>
-      <p className="staff-dispatch">
-        <span className="staff-status-dot" aria-hidden="true" />
+      <p className="dispatch">
+        <span className="status-dot" aria-hidden="true" />
         Dispatch #{staffData.workName}
       </p>
 
-      <nav className="staff-nav" aria-label="Staff navigation">
+      <nav className="nav" aria-label="Staff navigation">
         <NavLink to="/staff" end>
           <FileCheck2 size={22} aria-hidden="true" />
           Citation Disputes
         </NavLink>
       </nav>
-      <Link className="staff-sign-out" to="/login" replace>
+      <Link className="sign-out" to="/login" replace>
         <LogOut size={20} aria-hidden="true" />
         Sign out
       </Link>
