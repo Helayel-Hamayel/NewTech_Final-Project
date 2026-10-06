@@ -9,12 +9,14 @@ import MyTickets from "../components/ResidentPage/MyTickets";
 import Properties from "../components/ResidentPage/Properties";
 import ResidentPortalNav from "../components/ResidentPage/ResidentPortalNav";
 import { downloadInvoicePdf } from "../helpers/pdf/invoicePdf";
+import { useCitationState } from "../contexts/useCitationState";
 import type { PortalTab } from "../components/ResidentPage/types";
 import {
   type Fine,
   type Invoice,
   type ResidentIssue,
   type ResidentServiceRequest,
+  resident,
   seededFines,
   seededInvoices,
   seededMaintenanceTickets,
@@ -26,9 +28,10 @@ import "../styles/pages/ResidentPortalPage.css";
 
 export default function ResidentPage() {
   const navigate = useNavigate();
+  const { citationState } = useCitationState();
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
-  const [fines, setFines] = useState(seededFines);
+  const [appealedFineIds, setAppealedFineIds] = useState<string[]>([]);
   const [residentIssues, setResidentIssues] =
     useState<ResidentIssue[]>(seededResidentIssues);
   const [serviceRequests, setServiceRequests] = useState<
@@ -47,6 +50,17 @@ export default function ResidentPage() {
   );
   const [appealStatement, setAppealStatement] = useState("");
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
+  const fines = seededFines
+    .filter((fine) => fine.residentId === resident.id)
+    .map((fine) => ({
+      ...fine,
+      status:
+        citationState[fine.id] === "WAIVED"
+          ? ("Waived" as const)
+          : appealedFineIds.includes(fine.id)
+            ? ("Appealed" as const)
+            : fine.status,
+    }));
   const unpaidFines = fines.filter((fine) => fine.status === "Unpaid");
   const unpaidFineTotal = unpaidFines.reduce(
     (total, fine) => total + fine.amount,
@@ -54,10 +68,8 @@ export default function ResidentPage() {
   );
 
   function handleAppeal(fineId: string) {
-    setFines((currentFines) =>
-      currentFines.map((fine) =>
-        fine.id === fineId ? { ...fine, status: "Appealed" } : fine,
-      ),
+    setAppealedFineIds((current) =>
+      current.includes(fineId) ? current : [...current, fineId],
     );
   }
 

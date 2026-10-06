@@ -2,7 +2,8 @@ export type UtilityType = 'Water' | 'Electricity'
 
 export type Fine = {
   id: string
-  status: 'Unpaid' | 'Appealed'
+  residentId: string
+  status: 'Unpaid' | 'Appealed' | 'Waived'
   violation: string
   location: string
   date: string
@@ -131,24 +132,37 @@ export const utilityUsage: Record<
 export const seededFines: Fine[] = [
   {
     id: "CIT-1042",
+    residentId: "RES-00441",
     status: "Unpaid",
-    violation: "Illegal dumping",
-    location: "Oak Blvd near #88",
+    violation: "Illegal Sidewalk Parking",
+    location: "Birch Avenue",
     date: "Sep 4, 2026",
     amount: 150,
     photo: "Citation photo",
   },
   {
     id: "CIT-1018",
+    residentId: "RES-00388",
     status: "Unpaid",
-    violation: "Parking violation",
+    violation: "Expired Meter",
     location: "14 Maple Street",
     date: "Aug 28, 2026",
     amount: 75,
     photo: "Citation photo",
   },
   {
+    id: "CIT-1043",
+    residentId: "RES-00441",
+    status: "Unpaid",
+    violation: "Expired Meter",
+    location: "14 Maple Street",
+    date: "Sep 19, 2026",
+    amount: 75,
+    photo: "Citation photo",
+  },
+  {
     id: "CIT-0997",
+    residentId: "RES-00441",
     status: "Appealed",
     violation: "Missed waste collection",
     location: "Riverside Drive",
