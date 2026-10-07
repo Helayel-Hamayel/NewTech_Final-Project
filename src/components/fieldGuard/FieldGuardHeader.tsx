@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   Activity,
   FilePlusCorner,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 import ThemeToggle from "../common/ThemeToggle";
+import { useUser } from "../../contexts/useUser";
 
 export type FieldGuardTab = "dashboard" | "citation" | "reports" | "history";
 
@@ -30,7 +32,17 @@ export default function FieldGuardHeader({
   onTabChange,
 }: FieldGuardHeaderProps) {
   const navigate = useNavigate();
+  const { signOut } = useUser();
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
+
+  async function confirmSignOut() {
+    try {
+      await signOut();
+      navigate("/login", { replace: true });
+    } catch {
+      toast.error("Could not sign out. Please try again.");
+    }
+  }
 
   return (
     <header className="field-guard-header">
@@ -76,7 +88,7 @@ export default function FieldGuardHeader({
                 <div className="field-guard-signout-actions">
                   <button
                     type="button"
-                    onClick={() => navigate("/login", { replace: true })}
+                    onClick={confirmSignOut}
                   >
                     Sign Out
                   </button>

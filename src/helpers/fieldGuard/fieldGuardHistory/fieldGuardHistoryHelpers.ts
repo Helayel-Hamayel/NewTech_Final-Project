@@ -1,5 +1,12 @@
 import type { fieldGuardData } from "../../../data/fieldGuardData";
 
+const currency = new Intl.NumberFormat("en-IL", {
+  style: "currency",
+  currency: "ILS",
+  currencyDisplay: "narrowSymbol",
+  maximumFractionDigits: 0,
+});
+
 export type HistoryIssue = (typeof fieldGuardData.issues)[number] & {
   displayId: string;
 };
@@ -32,7 +39,8 @@ export function filterHistoryIssues(
   const query = search.trim().toLowerCase();
   return issues.filter(
     (issue) =>
-      issue.displayId.toLowerCase().includes(query) &&
+      (issue.displayId.toLowerCase().includes(query) ||
+        issue.vehicleRegistration?.toLowerCase().includes(query)) &&
       (status === "All" || issue.status === status.toUpperCase()),
   );
 }
@@ -49,8 +57,5 @@ export function formatHistoryDate(value: string) {
 }
 
 export function formatCost(amount: number) {
-  return amount.toLocaleString("en-GB", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  return currency.format(amount);
 }

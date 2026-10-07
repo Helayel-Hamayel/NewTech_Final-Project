@@ -1,6 +1,5 @@
 import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
 import { useState } from "react";
-import { fieldGuardData } from "../../data/fieldGuardData";
 import {
   prepareHistoryIssues,
   getHistoryCounts,
@@ -9,12 +8,19 @@ import {
 } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
 import { HistoryFilters, HistoryList, HistoryDetails } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryComponents";
 import "../../styles/pages/FieldGuard/FieldGuardHistoryPage.css";
+import type { FieldGuardIssue } from "../../data/fieldGuardData";
 
-export default function FieldGuardHistoryPage() {
+type FieldGuardHistoryPageProps = {
+  issues: FieldGuardIssue[];
+};
+
+export default function FieldGuardHistoryPage({
+  issues: sourceIssues,
+}: FieldGuardHistoryPageProps) {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const issues = prepareHistoryIssues(fieldGuardData.issues);
+  const issues = prepareHistoryIssues(sourceIssues);
   const counts = getHistoryCounts(issues);
   const visibleIssues = filterHistoryIssues(issues, search, status);
   const selectedIssue = issues.find((issue) => issue._id === selectedId) ?? null;
@@ -24,7 +30,7 @@ export default function FieldGuardHistoryPage() {
       <div className="field-guard-page-heading">
         <p className="field-guard-eyebrow">CITATION RECORDS</p>
         <h1 id="history-title">Issue History</h1>
-        <p>Review issued violations, their status, and estimated costs.</p>
+        <p>Review issued citations, their status, and indicative fines.</p>
       </div>
       <dl className="field-guard-stat-grid field-guard-history-stats">
         <div className="field-guard-stat-card">
@@ -40,7 +46,7 @@ export default function FieldGuardHistoryPage() {
           <dd>{counts.rejected}</dd>
         </div>
         <div className="field-guard-stat-card">
-          <dt>Total cost</dt>
+          <dt>Total indicative fines</dt>
           <dd>{formatCost(counts.totalCost)}</dd>
         </div>
       </dl>

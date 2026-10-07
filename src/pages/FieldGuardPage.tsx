@@ -1,10 +1,14 @@
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
-import { fieldGuardData } from "../data/fieldGuardData";
+import { fieldGuardData, type FieldGuardIssue } from "../data/fieldGuardData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";
 import "../styles/pages/FieldGuard/FieldGuardPage.css";
 
-export default function FieldGuardPage() {
-  const { name, issues, reports } = fieldGuardData;
+type FieldGuardPageProps = {
+  issues: FieldGuardIssue[];
+};
+
+export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
+  const { name, reports } = fieldGuardData;
   const acceptedCount = issues.filter(
     (issue) => issue.status === "ACCEPTED",
   ).length;

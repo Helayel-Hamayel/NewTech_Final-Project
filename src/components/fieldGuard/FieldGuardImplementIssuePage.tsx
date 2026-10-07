@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Camera, Check, MapPin, Search, Ticket } from "lucide-react";
+import { Camera, Check, MapPin, Ticket } from "lucide-react";
 import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
+import type { FieldGuardIssue } from "../../data/fieldGuardData";
 
 const infractions = [
   { name: "Accessible parking without a permit", fine: 1000 },
@@ -21,6 +22,10 @@ const currency = new Intl.NumberFormat("en-IL", {
 
 const israeliPlatePattern = /^(?:\d{2}-\d{3}-\d{2}|\d{3}-\d{2}-\d{3})$/;
 
+type FieldGuardImplementIssuePageProps = {
+  onIssueIssued: (issue: Omit<FieldGuardIssue, "_id">) => void;
+};
+
 function formatIsraeliPlate(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 8);
   if (digits.length <= 2) return digits;
@@ -33,8 +38,9 @@ function formatIsraeliPlate(value: string) {
   }`;
 }
 
-export default function FieldGuardImplementIssuePage() {
-  const [lookup, setLookup] = useState("");
+export default function FieldGuardImplementIssuePage({
+  onIssueIssued,
+}: FieldGuardImplementIssuePageProps) {
   const [plate, setPlate] = useState("");
   const [infractionName, setInfractionName] = useState(infractions[0].name);
   const [photoCaptured, setPhotoCaptured] = useState(false);
@@ -48,7 +54,6 @@ export default function FieldGuardImplementIssuePage() {
     if (!ticketIssued) return;
 
     const timeout = window.setTimeout(() => {
-      setLookup("");
       setPlate("");
       setInfractionName(infractions[0].name);
       setPhotoCaptured(false);
@@ -61,7 +66,25 @@ export default function FieldGuardImplementIssuePage() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!isPlateValid || ticketIssued) return;
+    onIssueIssued({
+      name: selectedInfraction.name,
+      description: `Parking violation recorded for vehicle ${plate}.`,
+      amount: selectedInfraction.fine,
+      violationType: selectedInfraction.name,
+      priority: "MEDIUM",
+      status: "PENDING",
+      location: "Tel Aviv-Yafo · Zone 3",
+      createdAt: new Date().toISOString(),
+      vehicleRegistration: plate,
+    });
     setTicketIssued(true);
+  }
+
+  function resetForm() {
+    setPlate("");
+    setInfractionName(infractions[0].name);
+    setPhotoCaptured(false);
+    setTicketIssued(false);
   }
 
   return (
@@ -69,30 +92,20 @@ export default function FieldGuardImplementIssuePage() {
       <header className="field-citation-heading">
         <div>
           <p className="field-citation-eyebrow">FIELD OPERATIONS</p>
-          <h1 id="citation-title">Issue Parking Report</h1>
-          <p>Record a municipal parking violation in Tel Aviv-Yafo.</p>
+          <h1 id="citation-title">Issue Parking Citation</h1>
+          <p>Create a demo citation for Tel Aviv-Yafo.</p>
         </div>
         <span className="field-citation-ticket-mark" aria-hidden="true">
           <Ticket size={21} />
         </span>
       </header>
 
-      <form className="field-citation-form" onSubmit={handleSubmit}>
-        <div className="field-citation-lookup">
-          <label htmlFor="citation-lookup">Vehicle / address lookup</label>
-          <div className="field-citation-search">
-            <Search size={18} aria-hidden="true" />
-            <input
-              id="citation-lookup"
-              type="search"
-              value={lookup}
-              onChange={(event) => setLookup(event.target.value)}
-              placeholder="Search license plate or street address"
-              autoComplete="off"
-            />
-          </div>
-        </div>
+      <p className="field-citation-demo-note" role="note">
+        Demo only: reports stay in this browser session. They are not official
+        citations or sent to city systems.
+      </p>
 
+      <form className="field-citation-form" onSubmit={handleSubmit}>
         <div className="field-citation-plate">
           <label htmlFor="citation-plate">Vehicle registration number</label>
           <input
@@ -158,29 +171,39 @@ export default function FieldGuardImplementIssuePage() {
             <strong>{photoCaptured ? "Photo Captured" : "Photo Evidence"}</strong>
             <small>
               {photoCaptured
-                ? "Evidence attached to this citation"
-                : "Tap to capture photo evidence"}
+                ? "Photo marked for this demo report"
+                : "Demo toggle only; no image is attached"}
             </small>
           </span>
         </button>
 
-        <button
-          className={`field-citation-submit${ticketIssued ? " is-issued" : ""}`}
-          type="submit"
-          disabled={!isPlateValid || ticketIssued}
-        >
-          {ticketIssued ? (
-            <>
-              <Check size={19} aria-hidden="true" />
-              Parking Report Issued!
-            </>
-          ) : (
-            <>
-              <Ticket size={19} aria-hidden="true" />
-              Issue Parking Report
-            </>
-          )}
-        </button>
+        <div className="field-citation-actions">
+          <button
+            className="field-citation-reset"
+            type="button"
+            onClick={resetForm}
+            disabled={ticketIssued}
+          >
+            Reset
+          </button>
+          <button
+            className={`field-citation-submit${ticketIssued ? " is-issued" : ""}`}
+            type="submit"
+            disabled={!isPlateValid || ticketIssued}
+          >
+            {ticketIssued ? (
+              <>
+                <Check size={19} aria-hidden="true" />
+                Demo Citation Created
+              </>
+            ) : (
+              <>
+                <Ticket size={19} aria-hidden="true" />
+                Create Demo Citation
+              </>
+            )}
+          </button>
+        </div>
       </form>
 
       <p className="field-citation-location">

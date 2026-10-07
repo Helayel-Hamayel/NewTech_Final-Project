@@ -1,23 +1,17 @@
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useUser } from "../../contexts/useUser";
 import "../../styles/common/Logout.css";
 export default function Logout() {
   const navigate = useNavigate();
+  const { signOut } = useUser();
   async function handleLogout() {
     try {
-      const res = await fetch("http://localhost:4000/auth/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        throw new Error("Logging out is not available");
-      }
-
-      navigate("/", { replace: true });
+      await signOut();
+      navigate("/login", { replace: true });
     } catch {
-      alert("There was An error with Logging out, please try again Later");
+      toast.error("Could not sign out. Please try again.");
     }
   }
   return (

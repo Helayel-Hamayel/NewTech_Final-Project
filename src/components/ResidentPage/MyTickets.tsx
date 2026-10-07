@@ -84,6 +84,10 @@ export default function MyTickets({
         <p>
           Report community concerns and track service requests in one place.
         </p>
+        <p className="resident-muted" role="note">
+          Demo workspace: reports and service requests are temporary and are
+          not sent to city staff.
+        </p>
       </header>
       <nav className="tickets-subnav" aria-label="My services sections">
         <button
