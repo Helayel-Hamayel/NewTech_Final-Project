@@ -89,6 +89,9 @@
 .staff-notifications:focus-visible,
 .staff-new-ticket:focus-visible,
 .staff-assign-team:focus-visible,
+.staff-review-request:focus-visible,
+.staff-route-request:focus-visible,
+.staff-reject-request:focus-visible,
 .staff-row-actions button:focus-visible,
 .staff-dialog-close:focus-visible,
 .staff-dialog-actions button:focus-visible {
@@ -647,6 +650,367 @@
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
 }
 
+.staff-assignment-dialog {
+  width: min(540px, 100%);
+}
+
+.staff-assignment-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin: 0 0 18px;
+  padding: 14px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-bg);
+}
+
+.staff-assignment-summary div {
+  min-width: 0;
+}
+
+.staff-assignment-summary dt {
+  margin-bottom: 4px;
+  color: var(--staff-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.staff-assignment-summary dd {
+  margin: 0;
+  color: var(--staff-ink);
+  font-size: 0.76rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.staff-assignment-form fieldset {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.staff-assignment-form legend {
+  padding: 0;
+  color: var(--staff-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.staff-assignment-form fieldset > p {
+  margin: -3px 0 2px;
+  color: var(--staff-muted);
+  font-size: 0.68rem;
+}
+
+.staff-assignment-option {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px !important;
+  padding: 11px;
+  border: 1px solid var(--staff-border);
+  border-radius: 9px;
+  background: var(--staff-card-bg);
+  cursor: pointer;
+}
+
+.staff-assignment-option.is-selected {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+.staff-assignment-option input[type="radio"] {
+  flex: 0 0 auto;
+  width: 16px;
+  min-height: 16px;
+  margin: 2px 0 0;
+  padding: 0;
+  accent-color: #2563eb;
+}
+
+.staff-assignment-option span {
+  display: grid;
+  gap: 3px;
+}
+
+.staff-assignment-option strong {
+  color: var(--staff-ink);
+  font-size: 0.75rem;
+}
+
+.staff-assignment-option small {
+  color: var(--staff-muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.staff-confirm-assignment {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-confirm-assignment:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.staff-confirm-assignment:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.staff-service-requests {
+  overflow: visible;
+}
+
+.staff-service-requests-description {
+  margin: 8px 0 0;
+  color: var(--staff-muted);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.staff-service-request-count {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid rgba(217, 119, 6, 0.24);
+  border-radius: 999px;
+  background: #fff8e8;
+  color: #a65b05;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.staff-service-request-demo-note {
+  margin: 0 22px 18px;
+  color: var(--staff-muted);
+  font-size: 0.72rem;
+}
+
+.staff-service-request-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  padding: 0 22px 22px;
+}
+
+.staff-service-request-card {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--staff-border);
+  border-radius: 12px;
+  background: var(--staff-card-bg);
+}
+
+.staff-service-request-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.staff-service-request-card h3,
+.staff-service-request-description h3,
+.staff-service-request-routing h3,
+.staff-service-request-rejection h3 {
+  margin: 11px 0 6px;
+  color: var(--staff-ink);
+  font-size: 0.96rem;
+}
+
+.staff-service-request-resident,
+.staff-service-request-summary,
+.staff-service-request-outcome {
+  margin: 7px 0 0;
+  color: var(--staff-muted);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.staff-service-request-summary {
+  color: var(--staff-ink);
+}
+
+.staff-service-request-outcome {
+  font-weight: 700;
+}
+
+.staff-review-request {
+  min-height: 34px;
+  margin-top: 14px;
+  padding: 0 11px;
+  border: 1px solid var(--staff-border);
+  border-radius: 8px;
+  background: var(--staff-card-alt);
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-review-request:hover {
+  border-color: #60a5fa;
+  color: var(--staff-accent);
+}
+
+.staff-service-requests-empty {
+  margin: 0;
+  padding: 18px 22px 24px;
+  color: var(--staff-muted);
+  font-size: 0.78rem;
+}
+
+.staff-service-request-dialog {
+  width: min(620px, 100%);
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
+}
+
+.staff-service-request-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-bg);
+}
+
+.staff-service-request-details div {
+  min-width: 0;
+}
+
+.staff-service-request-details dt {
+  margin-bottom: 4px;
+  color: var(--staff-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.staff-service-request-details dd {
+  margin: 0;
+  color: var(--staff-ink);
+  font-size: 0.76rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.staff-service-request-description,
+.staff-service-request-rejection,
+.staff-service-request-routing {
+  margin-top: 17px;
+}
+
+.staff-service-request-description p,
+.staff-service-request-rejection p,
+.staff-service-request-routing p {
+  margin: 0;
+  color: var(--staff-muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.staff-service-request-routing > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 11px;
+}
+
+.staff-route-request,
+.staff-reject-request {
+  min-height: 36px;
+  padding: 0 11px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-route-request {
+  background: #2563eb;
+}
+
+.staff-route-request:hover {
+  background: #1d4ed8;
+}
+
+.staff-reject-request-form {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--staff-border);
+}
+
+.staff-reject-request-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--staff-ink);
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.staff-reject-request-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border: 1px solid var(--staff-border);
+  border-radius: 8px;
+  background: var(--staff-card-bg);
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.76rem;
+  resize: vertical;
+}
+
+.staff-reject-request-form textarea:focus {
+  border-color: #3b82f6;
+  outline: 3px solid rgba(59, 130, 246, 0.14);
+}
+
+.staff-reject-request-help,
+.staff-reject-request-error {
+  margin: 0;
+  color: var(--staff-muted);
+  font-size: 0.68rem;
+}
+
+.staff-reject-request-error {
+  color: #b91c1c;
+}
+
+.staff-reject-request {
+  justify-self: end;
+  background: #b42335;
+}
+
+.staff-reject-request:hover:not(:disabled) {
+  background: #991b2b;
+}
+
+.staff-reject-request:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
 .staff-dialog-heading {
   display: flex;
   align-items: flex-start;
@@ -703,6 +1067,7 @@
 
 .staff-dialog-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 9px;
   margin-top: 5px;
@@ -732,6 +1097,12 @@
 html[data-theme="dark"] .staff-kpi--amber {
   border-color: rgba(224, 177, 105, 0.25);
   background: linear-gradient(145deg, #393328, #443b2b);
+}
+
+html[data-theme="dark"] .staff-service-request-count {
+  border-color: rgba(224, 177, 105, 0.27);
+  background: #443b2b;
+  color: #e5b36e;
 }
 
 html[data-theme="dark"] .staff-kpi--amber strong {
@@ -804,6 +1175,20 @@ html[data-theme="dark"] .staff-priority--low {
   .staff-page {
     min-height: calc(100vh - 105px);
     min-height: calc(100dvh - 105px);
+  }
+
+  @media (max-width: 760px) {
+    .staff-service-request-list {
+      grid-template-columns: 1fr;
+    }
+
+    .staff-service-request-details {
+      grid-template-columns: 1fr;
+    }
+
+    .staff-assignment-summary {
+      grid-template-columns: 1fr;
+    }
   }
 
   .staff-topbar {

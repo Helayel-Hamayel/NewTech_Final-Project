@@ -13,6 +13,11 @@ export type Fine = {
 
 export type MaintenanceTicketStage = 'Reported' | 'Dispatched' | 'In Progress' | 'Resolved'
 
+export type ResidentIssueStatus =
+  | "Submitted"
+  | "Field Guard Review"
+  | "Field Guard Checked";
+
 export type MaintenanceTicket = {
   id: string
   type: string
@@ -21,17 +26,13 @@ export type MaintenanceTicket = {
   stage: MaintenanceTicketStage
 }
 
-export type ResidentServiceRequest = MaintenanceTicket & {
+export type ResidentServiceRequest = Omit<MaintenanceTicket, "stage"> & {
+  stage: MaintenanceTicketStage | ResidentIssueStatus;
   description: string;
   phone: string;
   preferredDate: string;
   attachment: string;
 };
-
-export type ResidentIssueStatus =
-  | "Submitted"
-  | "Field Guard Review"
-  | "Field Guard Checked";
 
 export type ResidentIssue = {
   id: string;

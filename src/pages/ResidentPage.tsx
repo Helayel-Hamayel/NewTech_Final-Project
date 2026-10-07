@@ -16,7 +16,6 @@ import type { PortalTab } from "../components/ResidentPage/types";
 import {
   type Fine,
   type Invoice,
-  type ResidentIssue,
   type ResidentServiceRequest,
   resident,
   seededFines,
@@ -35,19 +34,28 @@ export default function ResidentPage() {
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
   const [appealedFineIds, setAppealedFineIds] = useState<string[]>([]);
-  const [residentIssues, setResidentIssues] =
-    useState<ResidentIssue[]>(seededResidentIssues);
   const [serviceRequests, setServiceRequests] = useState<
     ResidentServiceRequest[]
-  >(
-    seededMaintenanceTickets.map((ticket) => ({
+  >([
+    ...seededResidentIssues.map((issue) => ({
+      id: issue.id,
+      type: issue.subject,
+      description: issue.description,
+      location: issue.location,
+      reportedDate: issue.reportedDate,
+      stage: issue.status,
+      phone: issue.phone,
+      preferredDate: "",
+      attachment: issue.photo,
+    })),
+    ...seededMaintenanceTickets.map((ticket) => ({
       ...ticket,
       description: "Existing service request",
       phone: "050-555-4412",
       preferredDate: ticket.reportedDate,
       attachment: "",
     })),
-  );
+  ]);
   const [selectedAppealFine, setSelectedAppealFine] = useState<Fine | null>(
     null,
   );
@@ -80,10 +88,6 @@ export default function ResidentPage() {
     setSelectedAppealFine(fine);
     setAppealStatement("");
     setActiveTab("My Services");
-  }
-
-  function handleAddIssue(issue: ResidentIssue) {
-    setResidentIssues((currentIssues) => [issue, ...currentIssues]);
   }
 
   function handleAddServiceRequest(request: ResidentServiceRequest) {
@@ -202,17 +206,14 @@ export default function ResidentPage() {
                 />
               ) : activeTab === "My Services" ? (
                 <MyTickets
-                  tickets={serviceRequests}
                   serviceRequests={serviceRequests}
                   fines={fines}
-                  issues={residentIssues}
                   onOpenAppeal={handleOpenAppeal}
                   selectedAppealFine={selectedAppealFine}
                   appealStatement={appealStatement}
                   onAppealStatementChange={setAppealStatement}
                   onSubmitAppeal={handleSubmitAppeal}
                   onCloseAppeal={() => setSelectedAppealFine(null)}
-                  onAddIssue={handleAddIssue}
                   onAddServiceRequest={handleAddServiceRequest}
                 />
               ) : (

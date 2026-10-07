@@ -3,6 +3,7 @@ import { staffData } from "../../data/staffData";
 import type { StaffTab } from "../../data/staffData";
 
 const tabTitles: Record<StaffTab, string> = {
+  requests: "Resident Requests",
   disputes: "Citation Disputes",
   billing: "Billing Ledger",
   maintenance: "Maintenance Dispatch",
@@ -40,7 +41,7 @@ export default function StaffTopBar({
             type="search"
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search residents, properties, tickets…"
+            placeholder="Search requests, residents, properties…"
             aria-label="Search current staff view"
           />
         </label>

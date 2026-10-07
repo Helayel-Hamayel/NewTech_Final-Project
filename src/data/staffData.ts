@@ -12,7 +12,62 @@ export type StaffDispute = {
   reason: string;
 };
 
-export type StaffTab = "disputes" | "billing" | "maintenance";
+export type StaffTab = "requests" | "disputes" | "billing" | "maintenance";
+
+export type StaffServiceRequestStatus = "Pending" | "Assigned" | "Rejected";
+export type StaffServiceRequestDestination = "Field Guard" | "Maintenance Team";
+
+export type StaffServiceRequest = {
+  id: string;
+  residentName: string;
+  type: string;
+  description: string;
+  location: string;
+  reported: string;
+  phone: string;
+  attachment: string;
+  status: StaffServiceRequestStatus;
+  assignedTo?: StaffServiceRequestDestination;
+  rejectionReason?: string;
+};
+
+export const seededStaffServiceRequests: StaffServiceRequest[] = [
+  {
+    id: "ISS-3001",
+    residentName: "Maria Reyes",
+    type: "Parking",
+    description:
+      "A vehicle is blocking the residential parking spaces near the east entrance.",
+    location: "14 Rothschild Boulevard, east entrance",
+    reported: "7 Oct 2026",
+    phone: "050-555-4412",
+    attachment: "Parking issue photo",
+    status: "Pending",
+  },
+  {
+    id: "REQ-4002",
+    residentName: "James Okonkwo",
+    type: "Road and sidewalk",
+    description: "A pothole is creating a hazard for pedestrians and cyclists.",
+    location: "Ibn Gabirol Street, near 88",
+    reported: "6 Oct 2026",
+    phone: "052-555-1882",
+    attachment: "No attachment",
+    status: "Pending",
+  },
+  {
+    id: "REQ-3998",
+    residentName: "Aisha Mensah",
+    type: "Lighting",
+    description: "The streetlight outside the building has stopped working.",
+    location: "21 Allenby Street",
+    reported: "5 Oct 2026",
+    phone: "054-555-9281",
+    attachment: "No attachment",
+    status: "Assigned",
+    assignedTo: "Maintenance Team",
+  },
+];
 
 export type BillingAccount = {
   property: string;

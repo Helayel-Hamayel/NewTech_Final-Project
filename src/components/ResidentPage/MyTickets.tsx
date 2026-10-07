@@ -6,35 +6,43 @@ import type {
 } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
 import { formatIsraeliDate } from "../../helpers/formatting/israeliDate";
-import ResidentIssues from "./ResidentIssues";
 import type { MyTicketsProps } from "./types";
 
+const requestTypes = [
+  "Parking",
+  "Road and sidewalk",
+  "Lighting",
+  "Waste and sanitation",
+  "Noise",
+  "Maintenance",
+  "Repair",
+  "Inspection",
+  "Utility service",
+  "Other",
+];
+
 export default function MyTickets({
-  tickets,
   serviceRequests,
   fines,
-  issues,
   onOpenAppeal,
   selectedAppealFine,
   appealStatement,
   onAppealStatementChange,
   onSubmitAppeal,
   onCloseAppeal,
-  onAddIssue,
   onAddServiceRequest,
 }: MyTicketsProps) {
   const [activeSection, setActiveSection] = useState<
-    "issues" | "maintenance" | "fines"
-  >("issues");
+    "requests" | "fines"
+  >("requests");
   const [selectedCitationFine, setSelectedCitationFine] =
     useState<MyTicketsProps["selectedAppealFine"]>(null);
   const [appealReason, setAppealReason] = useState("Incorrect information");
   const [appealContact, setAppealContact] = useState("Email");
   const [requestForm, setRequestForm] = useState({
-    type: "Maintenance",
+    type: requestTypes[0],
     description: "",
     location: "",
-    preferredDate: "",
     phone: "",
     attachment: "",
   });
@@ -56,7 +64,7 @@ export default function MyTickets({
       type: requestForm.type,
       description: requestForm.description,
       location: requestForm.location,
-      preferredDate: requestForm.preferredDate,
+      preferredDate: "",
       phone: requestForm.phone,
       attachment: requestForm.attachment,
       reportedDate: formatIsraeliDate(new Date()),
@@ -64,10 +72,9 @@ export default function MyTickets({
     };
     onAddServiceRequest(request);
     setRequestForm({
-      type: "Maintenance",
+      type: requestTypes[0],
       description: "",
       location: "",
-      preferredDate: "",
       phone: "",
       attachment: "",
     });
@@ -88,18 +95,11 @@ export default function MyTickets({
       </header>
       <nav className="tickets-subnav" aria-label="My services sections">
         <button
-          className={activeSection === "issues" ? "is-active" : ""}
+          className={activeSection === "requests" ? "is-active" : ""}
           type="button"
-          onClick={() => setActiveSection("issues")}
+          onClick={() => setActiveSection("requests")}
         >
-          Report a Community Issue
-        </button>
-        <button
-          className={activeSection === "maintenance" ? "is-active" : ""}
-          type="button"
-          onClick={() => setActiveSection("maintenance")}
-        >
-          Track Service Requests
+          Service requests
         </button>
         <button
           className={activeSection === "fines" ? "is-active" : ""}
@@ -109,18 +109,15 @@ export default function MyTickets({
           Fines &amp; citations
         </button>
       </nav>
-      {activeSection === "issues" ? (
-        <ResidentIssues issues={issues} onAddIssue={onAddIssue} />
-      ) : null}
-      {activeSection === "maintenance" ? (
+      {activeSection === "requests" ? (
         <section
           className="resident-card tickets-section"
-          aria-labelledby="maintenance-heading"
+          aria-labelledby="requests-heading"
         >
           <div className="resident-card-header">
             <div>
-              <p className="section-label">Home and street services</p>
-              <h2 id="maintenance-heading">Track Service Requests</h2>
+              <p className="section-label">Community and home services</p>
+              <h2 id="requests-heading">Report a problem or request</h2>
             </div>
           </div>
           <form
@@ -128,17 +125,16 @@ export default function MyTickets({
             onSubmit={handleServiceRequestSubmit}
           >
             <label>
-              Request type
+              What do you need help with?
               <select
                 value={requestForm.type}
                 onChange={(event) =>
                   updateRequestForm("type", event.target.value)
                 }
               >
-                <option>Maintenance</option>
-                <option>Repair</option>
-                <option>Inspection</option>
-                <option>Utility service</option>
+                {requestTypes.map((type) => (
+                  <option key={type}>{type}</option>
+                ))}
               </select>
             </label>
             <label>
@@ -161,16 +157,6 @@ export default function MyTickets({
                   updateRequestForm("location", event.target.value)
                 }
                 placeholder="Street, building, or room"
-              />
-            </label>
-            <label>
-              Preferred visit date
-              <input
-                type="date"
-                value={requestForm.preferredDate}
-                onChange={(event) =>
-                  updateRequestForm("preferredDate", event.target.value)
-                }
               />
             </label>
             <label>
@@ -199,53 +185,65 @@ export default function MyTickets({
               />
             </label>
             <button className="resident-primary-btn" type="submit">
-              Submit service request
+              Submit request
             </button>
           </form>
-          <div className="ticket-list">
-            {tickets.map((ticket) => {
-              const currentStageIndex = ticketStages.indexOf(ticket.stage);
-              return (
-                <article className="ticket-card" key={ticket.id}>
-                  <div className="ticket-card-top">
-                    <div>
-                      <span className="ticket-id">{ticket.id}</span>
-                      <h3>{ticket.type}</h3>
-                    </div>
-                    <span className="status-badge status-badge--info">
-                      {ticket.stage}
-                    </span>
-                  </div>
-                  <p className="ticket-location">{ticket.location}</p>
-                  <p className="resident-muted">
-                    Reported {ticket.reportedDate}
-                  </p>
-                  <div
-                    className="ticket-progress"
-                    aria-label={`Maintenance progress: ${ticket.stage}`}
-                  >
-                    {ticketStages.map((stage, index) => (
-                      <div
-                        className={
-                          index < currentStageIndex
-                            ? "is-complete"
-                            : index === currentStageIndex
-                              ? "is-current"
-                              : "is-upcoming"
-                        }
-                        key={`${ticket.id}-${stage}`}
-                      >
-                        <span className="ticket-progress-dot">
-                          {index <= currentStageIndex ? "●" : "○"}
-                        </span>
-                        <span>{stage}</span>
+          <h3 className="requests-subheading">Your requests</h3>
+          {serviceRequests.length === 0 ? (
+            <p className="resident-empty-state">
+              No requests yet. Submit a request above to get started.
+            </p>
+          ) : (
+            <div className="ticket-list">
+              {serviceRequests.map((request) => {
+                const currentStageIndex = ticketStages.findIndex(
+                  (stage) => stage === request.stage,
+                );
+                return (
+                  <article className="ticket-card" key={request.id}>
+                    <div className="ticket-card-top">
+                      <div>
+                        <span className="ticket-id">{request.id}</span>
+                        <h3>{request.type}</h3>
                       </div>
-                    ))}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                      <span className="status-badge status-badge--info">
+                        {request.stage}
+                      </span>
+                    </div>
+                    <p className="ticket-location">{request.location}</p>
+                    <p className="resident-muted">
+                      Reported {request.reportedDate}
+                    </p>
+                    <p>{request.description}</p>
+                    {currentStageIndex >= 0 ? (
+                      <div
+                        className="ticket-progress"
+                        aria-label={`Request progress: ${request.stage}`}
+                      >
+                        {ticketStages.map((stage, index) => (
+                          <div
+                            className={
+                              index < currentStageIndex
+                                ? "is-complete"
+                                : index === currentStageIndex
+                                  ? "is-current"
+                                  : "is-upcoming"
+                            }
+                            key={`${request.id}-${stage}`}
+                          >
+                            <span className="ticket-progress-dot">
+                              {index <= currentStageIndex ? "●" : "○"}
+                            </span>
+                            <span>{stage}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </section>
       ) : null}
       {activeSection === "fines" ? (

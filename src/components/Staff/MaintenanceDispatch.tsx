@@ -4,6 +4,19 @@ import type { Dispatch, SetStateAction } from "react";
 import { Plus, X } from "lucide-react";
 import type { StaffMaintenanceTicket } from "../../data/staffData";
 
+const maintenanceTeams = [
+  {
+    name: "Team Alpha",
+    workExample: "Street repairs, drains, and public-space maintenance",
+  },
+  {
+    name: "Utility Crew 3",
+    workExample: "Water leaks and utility-related work",
+  },
+] as const;
+
+type MaintenanceTeam = (typeof maintenanceTeams)[number]["name"];
+
 const ticketColumns: StaffMaintenanceTicket["status"][] = [
   "Unassigned",
   "Dispatched",
@@ -30,6 +43,10 @@ export default function MaintenanceDispatch({
   setTickets,
 }: MaintenanceDispatchProps) {
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  const [assignmentTicketId, setAssignmentTicketId] = useState<string | null>(
+    null,
+  );
+  const [selectedTeam, setSelectedTeam] = useState<MaintenanceTeam | "">("");
   const [newTicketIssue, setNewTicketIssue] = useState("");
   const [newTicketLocation, setNewTicketLocation] = useState("");
   const [newTicketPriority, setNewTicketPriority] =
@@ -44,20 +61,29 @@ export default function MaintenanceDispatch({
       ticket.status,
     ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch)),
   );
+  const assignmentTicket =
+    tickets.find((ticket) => ticket.id === assignmentTicketId) ?? null;
 
-  function handleAssignTeam(ticketId: string) {
+  function openAssignment(ticketId: string) {
+    setAssignmentTicketId(ticketId);
+    setSelectedTeam("");
+  }
+
+  function confirmAssignment(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!assignmentTicketId || !selectedTeam) return;
     setTickets((currentTickets) =>
       currentTickets.map((ticket) =>
-        ticket.id === ticketId && ticket.status === "Unassigned"
+        ticket.id === assignmentTicketId && ticket.status === "Unassigned"
           ? {
               ...ticket,
               status: "Dispatched",
-              team: "Team Alpha",
-              eta: "30m",
+              team: selectedTeam,
             }
           : ticket,
       ),
     );
+    setAssignmentTicketId(null);
   }
 
   function handleCreateTicket(event: FormEvent<HTMLFormElement>) {
@@ -138,7 +164,8 @@ export default function MaintenanceDispatch({
                         </p>
                         {ticket.status === "Dispatched" ? (
                           <p className="staff-ticket-meta">
-                            {ticket.team} · ETA {ticket.eta}
+                            {ticket.team} ·{" "}
+                            {ticket.eta ? `ETA ${ticket.eta}` : "ETA pending"}
                           </p>
                         ) : ticket.status === "In Progress" ? (
                           <p className="staff-ticket-meta">{ticket.team}</p>
@@ -155,9 +182,9 @@ export default function MaintenanceDispatch({
                           <button
                             className="staff-assign-team"
                             type="button"
-                            onClick={() => handleAssignTeam(ticket.id)}
+                            onClick={() => openAssignment(ticket.id)}
                           >
-                            Assign Team
+                            Review &amp; assign
                           </button>
                         ) : null}
                       </article>
@@ -247,6 +274,97 @@ export default function MaintenanceDispatch({
                 <button className="staff-new-ticket" type="submit">
                   <Plus size={16} aria-hidden="true" />
                   Create Ticket
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      ) : null}
+
+      {assignmentTicket ? (
+        <div className="staff-modal-backdrop">
+          <section
+            className="staff-ticket-dialog staff-assignment-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="assign-ticket-heading"
+          >
+            <div className="staff-dialog-heading">
+              <div>
+                <p className="staff-section-label">
+                  Ticket {assignmentTicket.id}
+                </p>
+                <h2 id="assign-ticket-heading">Review &amp; assign ticket</h2>
+              </div>
+              <button
+                className="staff-dialog-close"
+                type="button"
+                aria-label="Close assignment dialog"
+                onClick={() => setAssignmentTicketId(null)}
+              >
+                <X size={19} aria-hidden="true" />
+              </button>
+            </div>
+            <dl className="staff-assignment-summary">
+              <div>
+                <dt>Issue</dt>
+                <dd>{assignmentTicket.issue}</dd>
+              </div>
+              <div>
+                <dt>Priority</dt>
+                <dd>{assignmentTicket.priority}</dd>
+              </div>
+              <div>
+                <dt>Location</dt>
+                <dd>{assignmentTicket.location}</dd>
+              </div>
+              <div>
+                <dt>Reported</dt>
+                <dd>{assignmentTicket.reported}</dd>
+              </div>
+            </dl>
+            <form
+              className="staff-assignment-form"
+              onSubmit={confirmAssignment}
+            >
+              <fieldset>
+                <legend>Choose a team</legend>
+                <p>
+                  Team descriptions are based on the work shown in this demo.
+                </p>
+                {maintenanceTeams.map((team) => (
+                  <label
+                    className={`staff-assignment-option${selectedTeam === team.name ? " is-selected" : ""}`}
+                    key={team.name}
+                  >
+                    <input
+                      type="radio"
+                      name="maintenance-team"
+                      value={team.name}
+                      checked={selectedTeam === team.name}
+                      onChange={() => setSelectedTeam(team.name)}
+                    />
+                    <span>
+                      <strong>{team.name}</strong>
+                      <small>{team.workExample}</small>
+                    </span>
+                  </label>
+                ))}
+              </fieldset>
+              <div className="staff-dialog-actions">
+                <button
+                  className="staff-cancel"
+                  type="button"
+                  onClick={() => setAssignmentTicketId(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="staff-confirm-assignment"
+                  type="submit"
+                  disabled={!selectedTeam}
+                >
+                  Confirm assignment
                 </button>
               </div>
             </form>

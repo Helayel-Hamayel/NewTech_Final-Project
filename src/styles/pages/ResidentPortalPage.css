@@ -763,7 +763,7 @@ html[data-theme="dark"] .resident-kpi-actions {
 .tickets-subnav {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--resident-slate-200);
@@ -800,6 +800,7 @@ html[data-theme="dark"] .resident-kpi-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  margin-top: 20px;
   margin-bottom: 22px;
   padding-bottom: 22px;
   border-bottom: 1px solid var(--resident-slate-200);
@@ -830,6 +831,14 @@ html[data-theme="dark"] .resident-kpi-actions {
 .service-request-form textarea {
   min-height: 80px;
   resize: vertical;
+}
+
+.service-request-form input:focus,
+.service-request-form select:focus,
+.service-request-form textarea:focus {
+  border-color: var(--resident-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13);
+  outline: none;
 }
 
 .service-request-form label:nth-child(2),
@@ -1056,9 +1065,6 @@ html[data-theme="dark"] .billing-table tbody tr:hover {
   background: var(--resident-card-alt);
 }
 
-html[data-theme="dark"] .issue-form input,
-html[data-theme="dark"] .issue-form select,
-html[data-theme="dark"] .issue-form textarea,
 html[data-theme="dark"] .appeal-form textarea,
 html[data-theme="dark"] .service-request-form input,
 html[data-theme="dark"] .service-request-form select,
@@ -1072,7 +1078,6 @@ html[data-theme="dark"] .property-hero-art,
 html[data-theme="dark"] .property-stats div,
 html[data-theme="dark"] .ticket-card,
 html[data-theme="dark"] .citation-card,
-html[data-theme="dark"] .submitted-issue-card,
 html[data-theme="dark"] .appeal-summary {
   background: var(--resident-card-alt);
 }
@@ -1169,11 +1174,6 @@ html[data-theme="dark"] .billing-table tbody tr:hover {
 html[data-theme="dark"] .property-tags span {
   background: #2a3b4b;
   color: #c4d5e2;
-}
-
-html[data-theme="dark"] .issues-panel {
-  background: #203b3c;
-  border-color: rgba(112, 190, 181, 0.24);
 }
 
 html[data-theme="dark"] .citation-photo {
@@ -1306,8 +1306,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
 }
 .billing-history-card h2,
 .property-section h2,
-.tickets-section h2,
-.issues-panel h2 {
+.tickets-section h2 {
   margin: 0;
   font-size: 1.35rem;
 }
@@ -1528,7 +1527,6 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   text-align: right;
 }
 .property-contact-list,
-.submitted-issues-list,
 .citation-grid {
   display: grid;
   gap: 10px;
@@ -1595,48 +1593,6 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   color: #247443;
 }
 
-.issues-panel {
-  padding: 22px;
-  background: #f7fbfb;
-  border-color: #d5e8e6;
-}
-.issues-panel .resident-card-header {
-  align-items: flex-start;
-}
-.issues-panel .resident-card-header p:last-child {
-  margin: 8px 0 0;
-  color: var(--resident-slate-600);
-  font-size: 0.88rem;
-}
-.issues-accent {
-  color: #36a39a;
-  font-size: 2rem;
-  line-height: 1;
-}
-.issue-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 20px;
-  margin-bottom: 22px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-top: 1px solid #d5e8e6;
-  border-bottom: 1px solid #d5e8e6;
-}
-.issue-form label {
-  display: grid;
-  gap: 6px;
-  color: var(--resident-slate-700);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-.issue-form label:nth-of-type(2) {
-  grid-column: 1 / -1;
-}
-.issue-form input,
-.issue-form select,
-.issue-form textarea,
 .appeal-form textarea {
   width: 100%;
   box-sizing: border-box;
@@ -1647,27 +1603,15 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   padding: 10px 11px;
   outline: none;
 }
-.issue-form textarea {
-  min-height: 84px;
-  resize: vertical;
-}
-.issue-form input:focus,
-.issue-form select:focus,
-.issue-form textarea:focus,
 .appeal-form textarea:focus {
   border-color: var(--resident-blue);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13);
 }
-.issue-form button {
-  grid-column: 1 / -1;
-  justify-self: start;
-}
-.issues-subheading {
+.requests-subheading {
   margin: 24px 0 12px;
   color: var(--resident-ink);
   font-size: 1rem;
 }
-.submitted-issue-card,
 .citation-card,
 .ticket-card {
   border: 1px solid var(--resident-slate-200);
@@ -1675,7 +1619,6 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   background: white;
   padding: 16px;
 }
-.submitted-issue-header,
 .citation-card-header,
 .ticket-card-top {
   display: flex;
@@ -1683,19 +1626,11 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   align-items: flex-start;
   gap: 14px;
 }
-.submitted-issue-card h4,
 .citation-card h3,
 .ticket-card h3 {
   margin: 4px 0 0;
   color: var(--resident-ink);
   font-size: 1rem;
-}
-.submitted-issue-card p {
-  font-size: 0.86rem;
-  line-height: 1.5;
-}
-.submitted-issue-card button {
-  margin-top: 4px;
 }
 .tickets-section {
   padding: 22px;
@@ -2250,13 +2185,6 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   .property-title-row .status-badge {
     display: inline-flex;
     margin-top: 14px;
-  }
-  .issue-form {
-    grid-template-columns: 1fr;
-  }
-  .issue-form label:nth-of-type(2),
-  .issue-form button {
-    grid-column: auto;
   }
   .appeal-layout {
     grid-template-columns: 1fr;

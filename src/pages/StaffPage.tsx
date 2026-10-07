@@ -9,6 +9,7 @@ import {
 import BillingLedger from "../components/Staff/BillingLedger";
 import CitationDisputes from "../components/Staff/CitationDisputes";
 import MaintenanceDispatch from "../components/Staff/MaintenanceDispatch";
+import StaffServiceRequestInbox from "../components/Staff/StaffServiceRequestInbox";
 import StaffOverview from "../components/Staff/StaffOverview";
 import StaffTopBar from "../components/Staff/StaffTopBar";
 import "../styles/pages/StaffDashboardPage.css";
@@ -18,6 +19,8 @@ export default function StaffPage() {
     activeTab,
     setActiveTab,
     unreadTabs,
+    serviceRequests,
+    setServiceRequests,
     maintenanceTickets,
     setMaintenanceTickets,
   } = useOutletContext<StaffLayoutContext>();
@@ -62,6 +65,14 @@ export default function StaffPage() {
           pendingDisputes={pendingDisputes}
           openTickets={openTickets}
         />
+
+        {activeTab === "requests" ? (
+          <StaffServiceRequestInbox
+            requests={serviceRequests}
+            search={search}
+            setRequests={setServiceRequests}
+          />
+        ) : null}
 
         {activeTab === "disputes" ? (
           <CitationDisputes
