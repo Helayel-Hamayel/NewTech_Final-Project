@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FileCheck2, LogOut, Map, ReceiptText, Wrench } from "lucide-react";
 import { staffData } from "../../data/staffData";
 import type { StaffTab } from "../../data/staffData";
 import ThemeToggle from "../common/ThemeToggle";
 import "../../styles/common/Staff/StaffHeader.css";
+import { useUser } from "../../contexts/useUser";
 
 type StaffHeaderProps = {
   activeTab: StaffTab;
@@ -30,11 +32,21 @@ export default function StaffHeader({
   openTickets,
 }: StaffHeaderProps) {
   const navigate = useNavigate();
+  const { signOut } = useUser();
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
   const initials = staffData.name
     .split(" ")
     .map((part) => part[0])
     .join("");
+
+  async function confirmSignOut() {
+    try {
+      await signOut();
+      navigate("/login", { replace: true });
+    } catch {
+      toast.error("Could not sign out. Please try again.");
+    }
+  }
 
   return (
     <aside className="sidebar" aria-label="Staff sidebar">
@@ -128,7 +140,7 @@ export default function StaffHeader({
               <div className="staff-signout-actions">
                 <button
                   type="button"
-                  onClick={() => navigate("/login", { replace: true })}
+                  onClick={confirmSignOut}
                 >
                   Sign out
                 </button>

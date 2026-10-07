@@ -15,8 +15,11 @@ export default function DemoAccess() {
         <span className="demo-access-kicker" id="demo-access-heading">
           Demo access
         </span>
-        <span className="demo-access-note">Choose a workspace</span>
+        <span className="demo-access-note">Choose a sample workspace</span>
       </div>
+      <p className="demo-access-disclaimer">
+        Demo changes are temporary and are not saved or sent to staff.
+      </p>
 
       {demoAccounts.map((account) => (
         <Link

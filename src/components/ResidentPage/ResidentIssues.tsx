@@ -65,7 +65,11 @@ export default function ResidentIssues({
         <div>
           <p className="section-label">Community care</p>
           <h2 id="resident-issues-heading">Report an issue</h2>
-          <p>Send a local concern to a Field Guard for inspection.</p>
+          <p>Submit a community concern for review.</p>
+          <p className="resident-muted" role="note">
+            Demo only: this report is temporary, is not sent to staff, and will
+            be removed when the page is refreshed.
+          </p>
         </div>
         <span className="issues-accent" aria-hidden="true">
           ●

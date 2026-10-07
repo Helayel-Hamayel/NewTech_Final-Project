@@ -1,18 +1,6 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { UserContext, type User } from "./userContextValue";
 
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: "RESIDENT" | "FIELD_GUARD" | "STAFF";
-};
-type UserContextType = {
-  user: User | null;
-  saveUser: (user: User) => void;
-  clearUser: () => void;
-};
-
-const UserContext = createContext<UserContextType | null>(null);
 function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
@@ -59,23 +47,24 @@ function UserProvider({ children }: { children: ReactNode }) {
     setUser(loggedInUser);
   }
 
-  function clearUser() {
+  async function signOut() {
+    if (user) {
+      const response = await fetch("http://localhost:4000/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok && response.status !== 401) {
+        throw new Error("Could not sign out. Please try again.");
+      }
+    }
+
     setUser(null);
   }
-  const value = { user, saveUser, clearUser };
+  const value = { user, saveUser, signOut };
   if (loading) {
     return <p>Loading your session...</p>;
   }
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-}
-
-export function useUser() {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("useUser must be used inside UserProvider");
-  }
-
-  return context;
 }
 export default UserProvider;

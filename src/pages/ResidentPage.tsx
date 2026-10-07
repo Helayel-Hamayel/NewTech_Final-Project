@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Building2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
 import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
@@ -10,6 +11,7 @@ import Properties from "../components/ResidentPage/Properties";
 import ResidentPortalNav from "../components/ResidentPage/ResidentPortalNav";
 import { downloadInvoicePdf } from "../helpers/pdf/invoicePdf";
 import { useCitationState } from "../contexts/useCitationState";
+import { useUser } from "../contexts/useUser";
 import type { PortalTab } from "../components/ResidentPage/types";
 import {
   type Fine,
@@ -28,6 +30,7 @@ import "../styles/pages/ResidentPortalPage.css";
 
 export default function ResidentPage() {
   const navigate = useNavigate();
+  const { signOut } = useUser();
   const { citationState } = useCitationState();
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
@@ -98,6 +101,15 @@ export default function ResidentPage() {
     setIsSignoutOpen(true);
   }
 
+  async function confirmSignOut() {
+    try {
+      await signOut();
+      navigate("/login", { replace: true });
+    } catch {
+      toast.error("Could not sign out. Please try again.");
+    }
+  }
+
   function handleDownloadInvoice(invoice: Invoice) {
     downloadInvoicePdf(invoice);
   }
@@ -146,7 +158,7 @@ export default function ResidentPage() {
                   <div className="signout-toast-actions">
                     <button
                       type="button"
-                      onClick={() => navigate("/login", { replace: true })}
+                      onClick={confirmSignOut}
                     >
                       Sign out
                     </button>

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/useUser";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -42,9 +42,9 @@ export default function LoginForm() {
       } else {
         setError("Your account has an unsupported role.");
       }
-    } catch (err) {
-      setError("An error happened wit the server");
-      console.log(err);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setError("Unable to reach the server. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -75,14 +75,6 @@ export default function LoginForm() {
           value={password}
           required
         />
-      </div>
-
-      <div className="login-form-options">
-        <label className="login-remember">
-          <input type="checkbox" name="remember" />
-          <span>Remember me</span>
-        </label>
-        <a href="#forgot-password">Forgot password</a>
       </div>
 
       <button className="login-submit" type="submit" disabled={loading}>

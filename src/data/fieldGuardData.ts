@@ -9,6 +9,7 @@ export type FieldGuardIssue = {
   location: string;
   createdAt: string;
   resolvedAt?: string;
+  vehicleRegistration?: string;
 };
 
 export type FieldGuardReport = {
@@ -29,7 +30,7 @@ export const fieldGuardData: {
   issues: FieldGuardIssue[];
   reports: FieldGuardReport[];
 } = {
-  name: "Alex Morgan",
+  name: "J. Mbeki",
   issues: [
     {
       _id: "issue-001",

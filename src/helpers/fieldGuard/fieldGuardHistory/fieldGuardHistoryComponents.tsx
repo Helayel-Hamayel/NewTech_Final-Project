@@ -14,8 +14,8 @@ export function HistoryFilters({ search, status, setSearch, setStatus }: History
   return (
     <div className="field-guard-history-filters">
       <div className="field-guard-history-search">
-        <label htmlFor="history-search">Search by issue number</label>
-        <input id="history-search" type="search" placeholder="Issue-001" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <label htmlFor="history-search">Search by issue number or plate</label>
+        <input id="history-search" type="search" placeholder="Issue-001 or 12-345-67" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
       <div className="field-guard-filter-options" role="group" aria-label="Issue status">
         {["All", "Accepted", "Pending", "Rejected"].map((value) => (
@@ -118,9 +118,15 @@ export function HistoryDetails({ issue }: SelectedIssue) {
           <dd>{issue.description}</dd>
         </div>
         <div>
-          <dt><Coins aria-hidden="true" />Estimated cost</dt>
+          <dt><Coins aria-hidden="true" />Indicative fine</dt>
           <dd>{formatCost(issue.amount)}</dd>
         </div>
+        {issue.vehicleRegistration ? (
+          <div>
+            <dt>Vehicle registration</dt>
+            <dd>{issue.vehicleRegistration}</dd>
+          </div>
+        ) : null}
         <div>
           <div>
             <dt><Tag aria-hidden="true" />Category</dt>
