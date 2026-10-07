@@ -13,39 +13,34 @@ import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage
 import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
 import StaffLayout from "./layouts/StaffLayout";
 import StaffPage from "./pages/StaffPage";
+import UserProvider from "./contexts/UserContext.tsx";
 
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <ToastContainer
-          position="top-center"
-          newestOnTop
-          closeOnClick
-          pauseOnHover
-        />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/resident" element={<ResidentPage />} />
+      <UserProvider>
+        <BrowserRouter>
+          <ToastContainer position="top-center" newestOnTop closeOnClick pauseOnHover />
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/resident" element={<ResidentPage />} />
 
-          <Route path="/staff" element={<StaffLayout />}>
-            <Route index element={<StaffPage />} />
-          </Route>
+            <Route path="/staff" element={<StaffLayout />}>
+              <Route index element={<StaffPage />} />
+            </Route>
 
-          <Route path="/field-guard" element={<FieldGuardLayout />}>
-            <Route index element={<FieldGuardPage />} />
-            <Route
-              path="create-issue"
-              element={<FieldGuardImplementIssuePage />}
-            />
-            <Route path="report" element={<FieldGuardReportsPage />} />
-            <Route path="history" element={<FieldGuardHistoryPage />} />
-          </Route>
+            <Route path="/field-guard" element={<FieldGuardLayout />}>
+              <Route index element={<FieldGuardPage />} />
+              <Route path="create-issue" element={<FieldGuardImplementIssuePage />} />
+              <Route path="report" element={<FieldGuardReportsPage />} />
+              <Route path="history" element={<FieldGuardHistoryPage />} />
+            </Route>
 
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </UserProvider>
     </ThemeProvider>
   );
 }

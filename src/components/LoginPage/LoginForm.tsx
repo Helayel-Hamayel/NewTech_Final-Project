@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { saveUser } = useUser();
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,7 +32,7 @@ export default function LoginForm() {
       }
 
       const data = await res.json();
-
+      saveUser(data.user);
       if (data.user.role === "FIELD_GUARD") {
         navigate("/field-guard", { replace: true });
       } else if (data.user.role === "STAFF") {
