@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./components/common/NotFound";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { CitationStateProvider } from "./contexts/CitationStateContext";
 import LoginPage from "./pages/LoginPage";
 import ResidentPage from "./pages/ResidentPage";
 
@@ -18,9 +19,15 @@ import UserProvider from "./contexts/UserContext.tsx";
 function App() {
   return (
     <ThemeProvider>
-      <UserProvider>
+      <CitationStateProvider>
+        <UserProvider>
         <BrowserRouter>
-          <ToastContainer position="top-center" newestOnTop closeOnClick pauseOnHover />
+          <ToastContainer
+            position="top-center"
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+          />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/resident" element={<ResidentPage />} />
@@ -31,7 +38,10 @@ function App() {
 
             <Route path="/field-guard" element={<FieldGuardLayout />}>
               <Route index element={<FieldGuardPage />} />
-              <Route path="create-issue" element={<FieldGuardImplementIssuePage />} />
+              <Route
+                path="create-issue"
+                element={<FieldGuardImplementIssuePage />}
+              />
               <Route path="report" element={<FieldGuardReportsPage />} />
               <Route path="history" element={<FieldGuardHistoryPage />} />
             </Route>
@@ -40,7 +50,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </UserProvider>
+
+       </UserProvider>
+      </CitationStateProvider>
     </ThemeProvider>
   );
 }
