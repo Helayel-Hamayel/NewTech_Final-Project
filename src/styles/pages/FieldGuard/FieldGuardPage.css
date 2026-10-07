@@ -1,0 +1,15 @@
+.field-guard-overview .field-guard-stat-card {
+  border-top: 3px solid #93c5fd;
+}
+
+.field-guard-overview .field-guard-stat-card--accepted {
+  border-top-color: #22c55e;
+}
+
+.field-guard-overview .field-guard-stat-card--rejected {
+  border-top-color: #ef4444;
+}
+
+.field-guard-overview .field-guard-overview-panels {
+  padding-top: 1px;
+}

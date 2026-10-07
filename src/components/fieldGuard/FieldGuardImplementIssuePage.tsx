@@ -2,28 +2,39 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Camera, Check, MapPin, Search, Ticket } from "lucide-react";
 import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
 
-const states = ["NY", "NJ", "CT", "PA", "CA", "TX", "FL", "IL"];
-
 const infractions = [
-  { name: "Disabled Spot — No Permit", fine: 250 },
-  { name: "Expired Meter", fine: 75 },
-  { name: "Illegal Sidewalk Parking", fine: 150 },
-  { name: "Fire Hydrant Zone", fine: 200 },
-  { name: "Illegal Dumping", fine: 500 },
-  { name: "Double Parking", fine: 100 },
-  { name: "No Stopping Zone", fine: 125 },
-  { name: "Block Driveway", fine: 175 },
+  { name: "Accessible parking without a permit", fine: 1000 },
+  { name: "Blue-and-white parking without payment", fine: 100 },
+  { name: "Parking on the sidewalk", fine: 500 },
+  { name: "Parking at a bus stop", fine: 250 },
+  { name: "Double parking / obstructing traffic", fine: 250 },
+  { name: "Stopping on a red-and-white curb", fine: 250 },
+  { name: "Parking during prohibited hours", fine: 100 },
 ];
 
-const currency = new Intl.NumberFormat("en-US", {
+const currency = new Intl.NumberFormat("en-IL", {
   style: "currency",
-  currency: "USD",
+  currency: "ILS",
+  currencyDisplay: "narrowSymbol",
   maximumFractionDigits: 0,
 });
 
+const israeliPlatePattern = /^(?:\d{2}-\d{3}-\d{2}|\d{3}-\d{2}-\d{3})$/;
+
+function formatIsraeliPlate(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length === 8) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5)}`;
+  }
+
+  return `${digits.slice(0, 2)}-${digits.slice(2, 5)}${
+    digits.length > 5 ? `-${digits.slice(5)}` : ""
+  }`;
+}
+
 export default function FieldGuardImplementIssuePage() {
   const [lookup, setLookup] = useState("");
-  const [state, setState] = useState("NY");
   const [plate, setPlate] = useState("");
   const [infractionName, setInfractionName] = useState(infractions[0].name);
   const [photoCaptured, setPhotoCaptured] = useState(false);
@@ -31,13 +42,13 @@ export default function FieldGuardImplementIssuePage() {
   const selectedInfraction =
     infractions.find((infraction) => infraction.name === infractionName) ??
     infractions[0];
+  const isPlateValid = israeliPlatePattern.test(plate);
 
   useEffect(() => {
     if (!ticketIssued) return;
 
     const timeout = window.setTimeout(() => {
       setLookup("");
-      setState("NY");
       setPlate("");
       setInfractionName(infractions[0].name);
       setPhotoCaptured(false);
@@ -49,7 +60,7 @@ export default function FieldGuardImplementIssuePage() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!plate.trim() || ticketIssued) return;
+    if (!isPlateValid || ticketIssued) return;
     setTicketIssued(true);
   }
 
@@ -58,8 +69,8 @@ export default function FieldGuardImplementIssuePage() {
       <header className="field-citation-heading">
         <div>
           <p className="field-citation-eyebrow">FIELD OPERATIONS</p>
-          <h1 id="citation-title">Issue Citation</h1>
-          <p>Record a parking or property infraction.</p>
+          <h1 id="citation-title">Issue Parking Report</h1>
+          <p>Record a municipal parking violation in Tel Aviv-Yafo.</p>
         </div>
         <span className="field-citation-ticket-mark" aria-hidden="true">
           <Ticket size={21} />
@@ -68,7 +79,7 @@ export default function FieldGuardImplementIssuePage() {
 
       <form className="field-citation-form" onSubmit={handleSubmit}>
         <div className="field-citation-lookup">
-          <label htmlFor="citation-lookup">Plate / property lookup</label>
+          <label htmlFor="citation-lookup">Vehicle / address lookup</label>
           <div className="field-citation-search">
             <Search size={18} aria-hidden="true" />
             <input
@@ -76,45 +87,30 @@ export default function FieldGuardImplementIssuePage() {
               type="search"
               value={lookup}
               onChange={(event) => setLookup(event.target.value)}
-              placeholder="Search plate or property"
+              placeholder="Search license plate or street address"
               autoComplete="off"
             />
           </div>
         </div>
 
-        <div className="field-citation-fields">
-          <div className="field-citation-state">
-            <label htmlFor="citation-state">State</label>
-            <select
-              id="citation-state"
-              value={state}
-              onChange={(event) => setState(event.target.value)}
-              disabled={ticketIssued}
-            >
-              {states.map((stateCode) => (
-                <option key={stateCode} value={stateCode}>
-                  {stateCode}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="field-citation-plate">
-            <label htmlFor="citation-plate">License plate</label>
-            <input
-              id="citation-plate"
-              name="plate"
-              type="text"
-              value={plate}
-              onChange={(event) =>
-                setPlate(event.target.value.toLocaleUpperCase())
-              }
-              placeholder="ENTER PLATE"
-              autoComplete="off"
-              required
-              disabled={ticketIssued}
-              maxLength={10}
-            />
-          </div>
+        <div className="field-citation-plate">
+          <label htmlFor="citation-plate">Vehicle registration number</label>
+          <input
+            id="citation-plate"
+            name="plate"
+            type="text"
+            value={plate}
+            onChange={(event) => setPlate(formatIsraeliPlate(event.target.value))}
+            placeholder="123-45-678"
+            inputMode="numeric"
+            autoComplete="off"
+            required
+            pattern="(?:[0-9]{2}-[0-9]{3}-[0-9]{2}|[0-9]{3}-[0-9]{2}-[0-9]{3})"
+            title="Enter a 7- or 8-digit Israeli vehicle number."
+            disabled={ticketIssued}
+            maxLength={10}
+          />
+          <small className="field-citation-help">7- or 8-digit Israeli plate</small>
         </div>
 
         <div className="field-citation-infraction">
@@ -139,10 +135,11 @@ export default function FieldGuardImplementIssuePage() {
           aria-label="Calculated fine"
         >
           <div>
-            <p>CALCULATED FINE</p>
+            <p>CALCULATED FINE · TEL AVIV-YAFO</p>
             <strong>{currency.format(selectedInfraction.fine)}</strong>
           </div>
           <span>{infractionName}</span>
+          <small>Indicative amount; the official notice determines the final fine.</small>
         </section>
 
         <button
@@ -170,17 +167,17 @@ export default function FieldGuardImplementIssuePage() {
         <button
           className={`field-citation-submit${ticketIssued ? " is-issued" : ""}`}
           type="submit"
-          disabled={!plate.trim() || ticketIssued}
+          disabled={!isPlateValid || ticketIssued}
         >
           {ticketIssued ? (
             <>
               <Check size={19} aria-hidden="true" />
-              Digital Ticket Issued!
+              Parking Report Issued!
             </>
           ) : (
             <>
               <Ticket size={19} aria-hidden="true" />
-              Issue Ticket
+              Issue Parking Report
             </>
           )}
         </button>
@@ -188,7 +185,7 @@ export default function FieldGuardImplementIssuePage() {
 
       <p className="field-citation-location">
         <MapPin size={15} aria-hidden="true" />
-        Zone 3 · Location recorded at issue time
+        Tel Aviv-Yafo · Zone 3 · Location recorded at issue time
       </p>
     </section>
   );

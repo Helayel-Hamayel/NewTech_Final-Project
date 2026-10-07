@@ -63,7 +63,6 @@
 }
 
 .field-citation-search,
-.field-citation-state select,
 .field-citation-plate input,
 .field-citation-infraction select {
   min-height: 46px;
@@ -102,13 +101,6 @@
   color: #64748b;
 }
 
-.field-citation-fields {
-  display: grid;
-  grid-template-columns: 104px minmax(0, 1fr);
-  gap: 12px;
-}
-
-.field-citation-state select,
 .field-citation-plate input,
 .field-citation-infraction select {
   width: 100%;
@@ -118,7 +110,6 @@
   font-size: 0.91rem;
 }
 
-.field-citation-state select:focus,
 .field-citation-plate input:focus,
 .field-citation-infraction select:focus {
   border-color: #3b82f6;
@@ -132,6 +123,13 @@
   letter-spacing: 0.09em;
 }
 
+.field-citation-help {
+  display: block;
+  margin-top: 6px;
+  color: #94a3b8;
+  font-size: 0.68rem;
+}
+
 .field-citation-form select option {
   color: #f1f5f9;
   background: #0b1423;
@@ -139,6 +137,7 @@
 
 .field-citation-fine {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -166,6 +165,13 @@
   color: #bfdbfe;
   font-size: 0.76rem;
   text-align: right;
+}
+
+.field-citation-fine > small {
+  flex-basis: 100%;
+  color: #94a3b8;
+  font-size: 0.68rem;
+  line-height: 1.4;
 }
 
 .field-citation-photo {
@@ -288,7 +294,6 @@ html[data-theme="light"] .field-citation-form label {
 }
 
 html[data-theme="light"] .field-citation-search,
-html[data-theme="light"] .field-citation-state select,
 html[data-theme="light"] .field-citation-plate input,
 html[data-theme="light"] .field-citation-infraction select {
   color: #0f172a;
@@ -305,6 +310,11 @@ html[data-theme="light"] .field-citation-plate input::placeholder {
   color: #94a3b8;
 }
 
+html[data-theme="light"] .field-citation-help,
+html[data-theme="light"] .field-citation-fine > small {
+  color: #64748b;
+}
+
 html[data-theme="light"] .field-citation-form select option {
   color: #0f172a;
   background: #fff;
@@ -317,6 +327,10 @@ html[data-theme="light"] .field-citation-fine {
 
 html[data-theme="light"] .field-citation-fine strong {
   color: #0f172a;
+}
+
+html[data-theme="light"] .field-citation-fine > span {
+  color: #1d4ed8;
 }
 
 html[data-theme="light"] .field-citation-photo {

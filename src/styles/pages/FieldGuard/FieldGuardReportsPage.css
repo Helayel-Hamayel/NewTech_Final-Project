@@ -1,0 +1,38 @@
+.field-guard-report-stats .field-guard-stat-card {
+  border-top: 3px solid #cbd5e1;
+}
+
+.field-guard-report-stats .field-guard-stat-card--new {
+  border-top-color: #f59e0b;
+}
+
+.field-guard-report-stats .field-guard-stat-card--progress {
+  border-top-color: #3b82f6;
+}
+
+.field-guard-report-stats .field-guard-stat-card--resolved {
+  border-top-color: #22c55e;
+}
+
+.field-guard-report-stats .field-guard-stat-card--resolved dd {
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+}
+
+.field-guard-report-stats .field-guard-stat-card--resolved {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+}
+
+.field-guard-report-stats .field-guard-stat-card--resolved dt {
+  width: 100%;
+}
+
+.field-guard-report-stats .field-guard-stat-card--resolved dd {
+  white-space: nowrap;
+}
+
+.field-guard-report-details-panel {
+  min-height: 180px;
+}

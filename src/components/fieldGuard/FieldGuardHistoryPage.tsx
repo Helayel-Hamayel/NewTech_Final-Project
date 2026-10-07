@@ -8,7 +8,7 @@ import {
   formatCost,
 } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
 import { HistoryFilters, HistoryList, HistoryDetails } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryComponents";
-
+import "../../styles/pages/FieldGuard/FieldGuardHistoryPage.css";
 
 export default function FieldGuardHistoryPage() {
   const [search, setSearch] = useState("");
@@ -20,38 +20,41 @@ export default function FieldGuardHistoryPage() {
   const selectedIssue = issues.find((issue) => issue._id === selectedId) ?? null;
 
   return (
-    <section aria-labelledby="history-title">
-      <div>
+    <section className="field-guard-screen field-guard-history" aria-labelledby="history-title">
+      <div className="field-guard-page-heading">
+        <p className="field-guard-eyebrow">CITATION RECORDS</p>
         <h1 id="history-title">Issue History</h1>
         <p>Review issued violations, their status, and estimated costs.</p>
       </div>
-      <dl>
-        <div>
+      <dl className="field-guard-stat-grid field-guard-history-stats">
+        <div className="field-guard-stat-card">
           <dt>Total issues</dt>
           <dd>{counts.total}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card field-guard-stat-card--accepted">
           <dt><FieldGuardStatusIcon status="ACCEPTED" />Accepted</dt>
           <dd>{counts.accepted}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card field-guard-stat-card--rejected">
           <dt><FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
           <dd>{counts.rejected}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card">
           <dt>Total cost</dt>
           <dd>{formatCost(counts.totalCost)}</dd>
         </div>
       </dl>
-      <div>
-        <section aria-label="Issues">
+      <div className="field-guard-workspace">
+        <section className="field-guard-panel field-guard-history-list-panel" aria-label="Issues">
           <HistoryFilters search={search} status={status} setSearch={setSearch} setStatus={setStatus} />
           <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={setSelectedId} />
-          <p role="status">
+          <p className="field-guard-result-count" role="status">
             {visibleIssues.length} out of {issues.length} issues
           </p>
         </section>
-        <HistoryDetails issue={selectedIssue} />
+        <div className="field-guard-panel field-guard-history-details-panel">
+          <HistoryDetails issue={selectedIssue} />
+        </div>
       </div>
     </section>
   );

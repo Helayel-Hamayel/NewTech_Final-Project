@@ -35,15 +35,15 @@ function formatDate(value: string) {
 export function ReportFilters({ status, priority, setStatus, setPriority }: ReportFiltersProps) {
 
   return (
-    <div>
-      <div>
-        <span id="reports-status-label">Status</span>
-        <div role="group" aria-labelledby="reports-status-label">
+    <div className="field-guard-filters">
+      <div className="field-guard-filter-group">
+        <span className="field-guard-filter-label" id="reports-status-label">Status</span>
+        <div className="field-guard-filter-options" role="group" aria-labelledby="reports-status-label">
           {["All", "New", "In Progress", "Resolved", "Rejected"].map((value) => (
             <button
+              className="field-guard-filter-button"
               key={value}
               type="button"
-
               onClick={() => setStatus(value)}
               aria-pressed={status === value}
             >
@@ -52,14 +52,14 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
           ))}
         </div>
       </div>
-      <div>
-        <span id="reports-priority-label">Priority</span>
-        <div role="group" aria-labelledby="reports-priority-label">
+      <div className="field-guard-filter-group">
+        <span className="field-guard-filter-label" id="reports-priority-label">Priority</span>
+        <div className="field-guard-filter-options" role="group" aria-labelledby="reports-priority-label">
           {["All", "Low", "Medium", "High"].map((value) => (
             <button
+              className="field-guard-filter-button"
               key={value}
               type="button"
-
               onClick={() => setPriority(value)}
               aria-pressed={priority === value}
             >
@@ -74,37 +74,37 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
 
 export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectReport }: ReportsListProps) {
   if (reports.length === 0) {
-    return <p role="status">{emptyMessage}</p>;
+    return <p className="field-guard-empty" role="status">{emptyMessage}</p>;
   }
   return (
-    <ul>
+    <ul className="field-guard-record-list field-guard-report-list">
       {reports.map((report) => (
         <li
-
+          className={`field-guard-report-row${selectedReportId === report._id ? " is-selected" : ""}`}
           key={report._id}
           onClick={() => onSelectReport(report._id)}
         >
           <span
-
+            className={`field-guard-priority-dot field-guard-priority-dot--${report.priority.toLowerCase()}`}
             role="img"
             aria-label={`${report.priority.toLowerCase()} priority`}
             title={`${report.priority.toLowerCase()} priority`}
           />
-          <div>
-            <div>
-              <div>
+          <div className="field-guard-report-row-content">
+            <div className="field-guard-report-row-top">
+              <div className="field-guard-record-meta">
                 <span><Tag aria-hidden="true" />{report.displayId}</span>
-                <span>{report.category}</span>
+                <span className="field-guard-category">{report.category}</span>
               </div>
-              <span>
+              <span className={`field-guard-status field-guard-status--${report.status.toLowerCase().replaceAll(" ", "-")}`}>
                 <FieldGuardStatusIcon status={report.status} />{report.status}
               </span>
             </div>
-            <div>
+            <div className="field-guard-report-row-heading">
               <h2>
                 <button
+                  className="field-guard-record-title-button"
                   type="button"
-
                   onClick={(event) => {
                     event.stopPropagation();
                     onSelectReport(report._id);
@@ -114,9 +114,9 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
                   {report.title}
                 </button>
               </h2>
-              <time dateTime={report.createdAt}><CalendarDays aria-hidden="true" />{formatDate(report.createdAt)}</time>
+              <time className="field-guard-record-date" dateTime={report.createdAt}><CalendarDays aria-hidden="true" />{formatDate(report.createdAt)}</time>
             </div>
-            <p title={report.description}>
+            <p className="field-guard-report-description" title={report.description}>
               {report.description}
             </p>
           </div>
@@ -129,21 +129,24 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
 export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
   if (!report) {
     return (
-      <section>
+      <section className="field-guard-details-empty">
         <p>Select a report to view its details.</p>
       </section>
     );
   }
 
   return (
-    <section aria-label={`Details for ${report.displayId}`}>
-      <div>
-        <h2><Tag aria-hidden="true" />{report.displayId}</h2>
-        <span>
+    <section className="field-guard-report-details" aria-label={`Details for ${report.displayId}`}>
+      <div className="field-guard-details-heading">
+        <div>
+          <p className="field-guard-eyebrow">REPORT DETAILS</p>
+          <h2><Tag aria-hidden="true" />{report.displayId}</h2>
+        </div>
+        <span className={`field-guard-status field-guard-status--${report.status.toLowerCase().replaceAll(" ", "-")}`}>
           <FieldGuardStatusIcon status={report.status} />{report.status}
         </span>
       </div>
-      <dl>
+      <dl className="field-guard-detail-list">
         <div>
           <dt><User aria-hidden="true" />Citizen</dt>
           <dd><span>{report.residentName}</span><span><Phone aria-hidden="true" />{report.residentPhone}</span></dd>
@@ -171,12 +174,12 @@ export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
         </div>
       </dl>
       {report.status === "NEW" && (
-        <button type="button" onClick={() => onChangeStatus(report._id)}>
+        <button className="field-guard-primary-action" type="button" onClick={() => onChangeStatus(report._id)}>
           Take action
         </button>
       )}
       {report.status === "IN PROGRESS" && (
-        <button type="button" onClick={() => onChangeStatus(report._id)}>
+        <button className="field-guard-secondary-action" type="button" onClick={() => onChangeStatus(report._id)}>
           Abort
         </button>
       )}

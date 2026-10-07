@@ -41,7 +41,7 @@ export default function FieldGuardHeader({
           </span>
           <div>
             <strong>J. Mbeki</strong>
-            <span>#G-114 · Zone 3 · Sep 7, 2026</span>
+            <span>#G-114 · Zone 3 · 07.09.2026</span>
           </div>
           <span className="field-guard-shift">
             <span className="field-guard-pulse" aria-hidden="true" />
@@ -94,18 +94,29 @@ export default function FieldGuardHeader({
       </div>
 
       <nav className="field-guard-nav" aria-label="Field Guard navigation">
-        {navigationItems.map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            className={activeTab === id ? "active" : ""}
-            type="button"
-            aria-current={activeTab === id ? "page" : undefined}
-            onClick={() => onTabChange(id)}
-          >
-            <Icon size={16} aria-hidden="true" />
-            {label}
-          </button>
-        ))}
+        <div className="field-guard-nav-list">
+          <span
+            className="field-guard-nav-indicator"
+            aria-hidden="true"
+            style={{
+              transform: `translateX(${navigationItems.findIndex(
+                ({ id }) => id === activeTab,
+              ) * 100}%)`,
+            }}
+          />
+          {navigationItems.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              className={`field-guard-nav-button${activeTab === id ? " is-active" : ""}`}
+              type="button"
+              aria-current={activeTab === id ? "page" : undefined}
+              onClick={() => onTabChange(id)}
+            >
+              <Icon size={16} aria-hidden="true" />
+              {label}
+            </button>
+          ))}
+        </div>
       </nav>
     </header>
   );
