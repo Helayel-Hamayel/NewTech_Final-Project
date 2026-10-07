@@ -212,7 +212,7 @@
 	letter-spacing: 0.08em;
 }
 
-.login-field input[type="text"],
+.login-field input[type="email"],
 .login-field input[type="password"] {
 	width: 100%;
 	min-height: 48px;

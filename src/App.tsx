@@ -14,11 +14,13 @@ import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage
 import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
 import StaffLayout from "./layouts/StaffLayout";
 import StaffPage from "./pages/StaffPage";
+import UserProvider from "./contexts/UserContext.tsx";
 
 function App() {
   return (
     <ThemeProvider>
       <CitationStateProvider>
+        <UserProvider>
         <BrowserRouter>
           <ToastContainer
             position="top-center"
@@ -48,6 +50,8 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+
+       </UserProvider>
       </CitationStateProvider>
     </ThemeProvider>
   );

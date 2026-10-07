@@ -1,7 +1,11 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FilePlusCorner, Flag, History, LayoutDashboard } from "lucide-react";
 import "../../styles/common/fieldGuard/FieldGuardHeader.css";
+import Logout from "../common/Logout.tsx";
+import { useUser } from "../../contexts/UserContext.tsx";
 export default function FieldGuardHeader() {
+  const { user } = useUser();
+
   return (
     <header className="field-guard-header">
       <nav className="field-guard-nav" aria-label="Field Guard navigation">
@@ -21,10 +25,10 @@ export default function FieldGuardHeader() {
           <History />
           History
         </NavLink>
+        <p>{user?.name}</p>
+        <p>{user?.email}</p>
       </nav>
-      <Link className="field-guard-signout" to="/login" replace>
-        Sign out
-      </Link>
+      <Logout />
     </header>
   );
 }
