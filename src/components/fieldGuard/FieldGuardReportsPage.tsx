@@ -4,6 +4,7 @@ import { fieldGuardData } from "../../data/fieldGuardData";
 import { ReportFilters, ReportsList, ReportDetails } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportsHelpers";
 import { getReportCounts } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportCounts";
 import { filterReports } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportFilters";
+import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
 
 export default function FieldGuardReportsPage() {
   const [status, setStatus] = useState("All");
@@ -26,33 +27,34 @@ export default function FieldGuardReportsPage() {
   }
 
   return (
-    <section aria-labelledby="reports-title">
-      <div>
+    <section className="field-guard-screen field-guard-reports" aria-labelledby="reports-title">
+      <div className="field-guard-page-heading">
+        <p className="field-guard-eyebrow">CITIZEN SUBMISSIONS</p>
         <h1 id="reports-title">Reports</h1>
         <p>Review reports and track their progress.</p>
       </div>
-      <dl>
-        <div>
+      <dl className="field-guard-stat-grid field-guard-report-stats">
+        <div className="field-guard-stat-card">
           <dt>Total reports</dt>
           <dd>{counts.total}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card field-guard-stat-card--new">
           <dt><FieldGuardStatusIcon status="NEW" />New</dt>
           <dd>{counts.new}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card field-guard-stat-card--progress">
           <dt><FieldGuardStatusIcon status="IN PROGRESS" />In progress</dt>
           <dd>{counts.inProgress}</dd>
         </div>
-        <div>
+        <div className="field-guard-stat-card field-guard-stat-card--resolved">
           <dt><FieldGuardStatusIcon status="RESOLVED" />Resolved / <FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
           <dd>
             <span>{counts.resolved} </span>/<span> {counts.rejected}</span>
           </dd>
         </div>
       </dl>
-      <div>
-        <section aria-label="Reports list">
+      <div className="field-guard-workspace">
+        <section className="field-guard-panel field-guard-report-list-panel" aria-label="Reports list">
           <ReportFilters status={status} priority={priority} setStatus={setStatus} setPriority={setPriority} />
           <ReportsList
             reports={filteredReports}
@@ -61,7 +63,9 @@ export default function FieldGuardReportsPage() {
             emptyMessage={reports.length === 0 ? "No reports yet." : "No reports match these filters."}
           />
         </section>
-        <ReportDetails report={selectedReport} onChangeStatus={changeReportStatus} />
+        <div className="field-guard-panel field-guard-report-details-panel">
+          <ReportDetails report={selectedReport} onChangeStatus={changeReportStatus} />
+        </div>
       </div>
     </section>
   );

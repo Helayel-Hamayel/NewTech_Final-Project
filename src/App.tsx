@@ -8,10 +8,6 @@ import LoginPage from "./pages/LoginPage";
 import ResidentPage from "./pages/ResidentPage";
 
 import FieldGuardLayout from "./layouts/FieldGuardLayout";
-import FieldGuardPage from "./pages/FieldGuardPage";
-import FieldGuardReportsPage from "./components/FieldGuard/FieldGuardReportsPage";
-import FieldGuardHistoryPage from "./components/FieldGuard/FieldGuardHistoryPage";
-import FieldGuardImplementIssuePage from "./components/FieldGuard/FieldGuardImplementIssuePage";
 import StaffLayout from "./layouts/StaffLayout";
 import StaffPage from "./pages/StaffPage";
 import UserProvider from "./contexts/UserContext.tsx";
@@ -36,15 +32,11 @@ function App() {
               <Route index element={<StaffPage />} />
             </Route>
 
-            <Route path="/field-guard" element={<FieldGuardLayout />}>
-              <Route index element={<FieldGuardPage />} />
-              <Route
-                path="create-issue"
-                element={<FieldGuardImplementIssuePage />}
-              />
-              <Route path="report" element={<FieldGuardReportsPage />} />
-              <Route path="history" element={<FieldGuardHistoryPage />} />
-            </Route>
+            <Route path="/field-guard" element={<FieldGuardLayout />} />
+            <Route
+              path="/field-guard/*"
+              element={<Navigate to="/field-guard" replace />}
+            />
 
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<NotFound />} />

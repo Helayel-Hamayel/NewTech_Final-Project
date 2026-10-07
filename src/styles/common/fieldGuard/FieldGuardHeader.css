@@ -1,55 +1,362 @@
 .field-guard-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 16px clamp(16px, 4vw, 56px);
-	background: #0f172a;
-	color: #e2e8f0;
+  width: 100%;
+  padding: 18px max(16px, calc((100% - 640px) / 2));
+  color: #e2e8f0;
+  background: #0f172a;
+  border-bottom: 1px solid #263449;
+}
+
+.field-guard-header-main,
+.field-guard-officer,
+.field-guard-header-actions,
+.field-guard-nav,
+.field-guard-nav-list,
+.field-guard-nav-button {
+  display: flex;
+  align-items: center;
+}
+
+.field-guard-header-main {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.field-guard-officer {
+  min-width: 0;
+  gap: 11px;
+}
+
+.field-guard-officer-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #93c5fd;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+}
+
+.field-guard-officer > div {
+  display: grid;
+  gap: 3px;
+}
+
+.field-guard-officer strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.field-guard-officer > div > span {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.field-guard-shift {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 2px;
+  padding: 6px 9px;
+  color: #86efac;
+  background: #052e21;
+  border: 1px solid #14532d;
+  border-radius: 999px;
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.field-guard-pulse {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgb(74 222 128 / 65%);
+  animation: field-guard-pulse 1.7s infinite;
+}
+
+.field-guard-header-actions {
+  flex: 0 0 auto;
+  gap: 9px;
+}
+
+.field-guard-signout-wrap {
+  position: relative;
+}
+
+.field-guard-signout {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: #cbd5e1;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.field-guard-signout:hover {
+  color: #fff;
+  background: #334155;
+}
+
+.field-guard-signout-popover {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 10px);
+  right: 0;
+  display: grid;
+  gap: 6px;
+  width: min(290px, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 16px;
+  color: #e2e8f0;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 13px;
+  box-shadow: 0 18px 38px rgb(2 6 23 / 40%);
+}
+
+.field-guard-signout-popover strong {
+  font-size: 0.9rem;
+}
+
+.field-guard-signout-popover > span {
+  color: #a9bac9;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.field-guard-signout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.field-guard-signout-actions button {
+  min-height: 34px;
+  padding: 0 10px;
+  color: #e2e8f0;
+  background: rgb(100 116 139 / 18%);
+  border: 1px solid rgb(148 163 184 / 20%);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.field-guard-signout-actions button:first-child {
+  color: #fff;
+  background: #a53f55;
+  border-color: #be6070;
+}
+
+.field-guard-signout-actions button:hover {
+  filter: brightness(1.08);
 }
 
 .field-guard-nav {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
+  min-width: 0;
+  overflow-x: auto;
+  margin-top: 17px;
+  padding: 5px;
+  border: 1px solid rgb(148 163 184 / 20%);
+  border-radius: 14px;
+  background: rgb(2 6 23 / 56%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 6%),
+    0 8px 20px rgb(2 6 23 / 16%);
+  scrollbar-width: none;
 }
 
-.field-guard-nav a,
-.field-guard-signout {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	border-radius: 9px;
-	color: inherit;
-	padding: 9px 11px;
-	text-decoration: none;
-	font-size: 0.88rem;
-	font-weight: 700;
+.field-guard-nav::-webkit-scrollbar {
+  display: none;
 }
 
-.field-guard-nav a:hover,
-.field-guard-nav a.active,
-.field-guard-signout:hover {
-	background: #2563eb;
-	color: #fff;
+.field-guard-nav-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
 }
 
-.field-guard-nav a:focus-visible,
-.field-guard-signout:focus-visible {
-	outline: 3px solid #93c5fd;
-	outline-offset: 2px;
+.field-guard-nav-indicator {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  border: 1px solid rgb(125 211 252 / 34%);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgb(37 99 235 / 92%), rgb(14 116 144 / 92%));
+  box-shadow:
+    0 6px 14px rgb(14 116 144 / 28%),
+    inset 0 1px 0 rgb(255 255 255 / 16%);
+  pointer-events: none;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (max-width: 640px) {
-	.field-guard-header {
-		align-items: stretch;
-		flex-direction: column;
-		padding: 16px;
-	}
+.field-guard-nav-button {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  width: 100%;
+  gap: clamp(6px, 0.6vw, 9px);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: rgb(226 232 240 / 72%);
+  padding: clamp(0.58rem, 0.7vw, 0.8rem) clamp(0.55rem, 1vw, 1rem);
+  cursor: pointer;
+  font: inherit;
+  font-size: clamp(0.72rem, 0.85vw, 0.88rem);
+  font-weight: 650;
+  transition: color 160ms ease, transform 160ms ease;
+}
 
-	.field-guard-nav a,
-	.field-guard-signout {
-		flex: 1 1 auto;
-		justify-content: center;
-	}
+.field-guard-nav-button.is-active {
+  color: #fff;
+}
+
+.field-guard-nav-button:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.field-guard-header button:focus-visible,
+.field-guard-nav-button:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+@keyframes field-guard-pulse {
+  70% {
+    box-shadow: 0 0 0 6px rgb(74 222 128 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(74 222 128 / 0%);
+  }
+}
+
+html[data-theme="light"] .field-guard-header {
+  color: #e2e8f0;
+  background: #0f172a;
+  border-bottom-color: #263449;
+  box-shadow: none;
+}
+
+html[data-theme="light"] .field-guard-nav {
+  background: #172033;
+  border-color: rgb(148 163 184 / 18%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    0 4px 12px rgb(2 6 23 / 12%);
+}
+
+html[data-theme="light"] .field-guard-nav-button {
+  color: rgb(226 232 240 / 72%);
+}
+
+html[data-theme="light"] .field-guard-nav-button.is-active {
+  color: #fff;
+}
+
+html[data-theme="light"] .field-guard-nav-button:not(.is-active):hover {
+  color: #fff;
+  background: rgb(148 163 184 / 12%);
+}
+
+html[data-theme="light"] .field-guard-signout {
+  color: #cbd5e1;
+  background: #1e293b;
+  border-color: #475569;
+}
+
+html[data-theme="light"] .field-guard-signout:hover {
+  color: #fff;
+  background: #334155;
+}
+
+html[data-theme="light"] .field-guard-signout-popover {
+  color: #0f172a;
+  background: #fff;
+  border-color: #cbd5e1;
+  box-shadow: 0 18px 38px rgb(15 23 42 / 18%);
+}
+
+html[data-theme="light"] .field-guard-signout-popover > span {
+  color: #64748b;
+}
+
+html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
+  color: #334155;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 560px) {
+  .field-guard-header {
+    padding: 14px 16px 0;
+  }
+
+  .field-guard-header-main {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .field-guard-officer {
+    flex-wrap: wrap;
+  }
+
+  .field-guard-shift {
+    margin-left: 51px;
+  }
+
+  .field-guard-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .field-guard-nav {
+    overflow-x: auto;
+  }
+
+  .field-guard-nav-list {
+    min-width: 500px;
+  }
+
+  .field-guard-nav-button {
+    gap: 6px;
+    padding: 9px 7px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-guard-pulse,
+  .field-guard-nav-indicator,
+  .field-guard-nav-button {
+    animation: none;
+    transition: none;
+  }
 }
