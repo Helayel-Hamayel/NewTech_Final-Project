@@ -1,8 +1,6 @@
 import type {
   Fine,
   Invoice,
-  MaintenanceTicket,
-  ResidentIssue,
   ResidentServiceRequest,
   UtilityType,
 } from "../../data/residentPortal";
@@ -25,16 +23,13 @@ export type BillingProps = {
 };
 
 export type MyTicketsProps = {
-  tickets: MaintenanceTicket[];
   serviceRequests: ResidentServiceRequest[];
   fines: Fine[];
-  issues: ResidentIssue[];
   onOpenAppeal: (fine: Fine) => void;
   selectedAppealFine: Fine | null;
   appealStatement: string;
   onAppealStatementChange: (value: string) => void;
   onSubmitAppeal: () => void;
   onCloseAppeal: () => void;
-  onAddIssue: (issue: ResidentIssue) => void;
   onAddServiceRequest: (request: ResidentServiceRequest) => void;
 };

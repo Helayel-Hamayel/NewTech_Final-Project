@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FileCheck2, LogOut, Map, ReceiptText, Wrench } from "lucide-react";
+import {
+  ClipboardList,
+  FileCheck2,
+  LogOut,
+  Map,
+  ReceiptText,
+  Wrench,
+} from "lucide-react";
 import { staffData } from "../../data/staffData";
 import type { StaffTab } from "../../data/staffData";
 import ThemeToggle from "../common/ThemeToggle";
@@ -15,11 +22,13 @@ type StaffHeaderProps = {
   pendingDisputes: number;
   overdueAccounts: number;
   openTickets: number;
+  pendingServiceRequests: number;
 };
 
 const navigationItems = [
   { id: "disputes", label: "Citation Disputes", icon: FileCheck2 },
   { id: "billing", label: "Billing Ledger", icon: ReceiptText },
+  { id: "requests", label: "Resident Requests", icon: ClipboardList },
   { id: "maintenance", label: "Maintenance Dispatch", icon: Wrench },
 ] satisfies Array<{ id: StaffTab; label: string; icon: typeof FileCheck2 }>;
 
@@ -30,6 +39,7 @@ export default function StaffHeader({
   pendingDisputes,
   overdueAccounts,
   openTickets,
+  pendingServiceRequests,
 }: StaffHeaderProps) {
   const navigate = useNavigate();
   const { signOut } = useUser();
@@ -83,12 +93,12 @@ export default function StaffHeader({
             }}
           />
           {navigationItems.map(({ id, label, icon: Icon }) => {
-            const badgeCount =
-              id === "disputes"
-                ? pendingDisputes
-                : id === "billing"
-                  ? overdueAccounts
-                  : openTickets;
+            const badgeCount = {
+              requests: pendingServiceRequests,
+              disputes: pendingDisputes,
+              billing: overdueAccounts,
+              maintenance: openTickets,
+            }[id];
             return (
               <button
                 key={id}

@@ -5,8 +5,10 @@ import StaffHeader from "../components/Staff/StaffHeader";
 import { useCitationState } from "../contexts/useCitationState";
 import {
   billingAccounts,
+  seededStaffServiceRequests,
   seededStaffTickets,
   staffDisputesData,
+  type StaffServiceRequest,
   type StaffMaintenanceTicket,
   type StaffTab,
 } from "../data/staffData";
@@ -16,12 +18,16 @@ export type StaffLayoutContext = {
   activeTab: StaffTab;
   setActiveTab: (tab: StaffTab) => void;
   unreadTabs: Record<StaffTab, boolean>;
+  serviceRequests: StaffServiceRequest[];
+  setServiceRequests: Dispatch<SetStateAction<StaffServiceRequest[]>>;
   maintenanceTickets: StaffMaintenanceTicket[];
   setMaintenanceTickets: Dispatch<SetStateAction<StaffMaintenanceTicket[]>>;
 };
 
 export default function StaffLayout() {
   const [activeTab, setActiveTab] = useState<StaffTab>("disputes");
+  const [serviceRequests, setServiceRequests] =
+    useState<StaffServiceRequest[]>(seededStaffServiceRequests);
   const [maintenanceTickets, setMaintenanceTickets] =
     useState<StaffMaintenanceTicket[]>(seededStaffTickets);
   const { citationState } = useCitationState();
@@ -34,7 +40,13 @@ export default function StaffLayout() {
   const openTickets = maintenanceTickets.filter(
     (ticket) => ticket.status !== "Completed",
   ).length;
+  const pendingServiceRequests = serviceRequests.filter(
+    (request) => request.status === "Pending",
+  ).length;
   const currentItemIds: Record<StaffTab, string[]> = {
+    requests: serviceRequests
+      .filter((request) => request.status === "Pending")
+      .map((request) => request.id),
     disputes: staffDisputesData
       .filter((dispute) => citationState[dispute.fineId] === "PENDING")
       .map((dispute) => dispute._id),
@@ -47,12 +59,16 @@ export default function StaffLayout() {
   };
   const [seenItemIds, setSeenItemIds] = useState<Record<StaffTab, string[]>>(
     () => ({
+      requests: [],
       disputes: currentItemIds.disputes,
       billing: [],
       maintenance: [],
     }),
   );
   const unreadTabs: Record<StaffTab, boolean> = {
+    requests: currentItemIds.requests.some(
+      (id) => !seenItemIds.requests.includes(id),
+    ),
     disputes: currentItemIds.disputes.some(
       (id) => !seenItemIds.disputes.includes(id),
     ),
@@ -81,6 +97,7 @@ export default function StaffLayout() {
         pendingDisputes={pendingDisputes}
         overdueAccounts={overdueAccounts}
         openTickets={openTickets}
+        pendingServiceRequests={pendingServiceRequests}
       />
       <main className="staff-content">
         <Outlet
@@ -88,6 +105,8 @@ export default function StaffLayout() {
             activeTab,
             setActiveTab: handleTabChange,
             unreadTabs,
+            serviceRequests,
+            setServiceRequests,
             maintenanceTickets,
             setMaintenanceTickets,
           } satisfies StaffLayoutContext}
