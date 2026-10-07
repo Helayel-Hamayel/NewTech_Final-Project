@@ -51,8 +51,8 @@
 
 .login-background-overlay {
 	background:
-		linear-gradient(90deg, #020617d9 0%, #0f172aa6 45%, #0f172a80 100%),
-		linear-gradient(180deg, #02061766 0%, #020617b3 100%);
+		linear-gradient(90deg, #0206176c 0%, #0f172a53 45%, #0f172a40 100%),
+		linear-gradient(180deg, #02061733 0%, #0206175a 100%);
 }
 
 .login-shell {
