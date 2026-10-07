@@ -1,0 +1,360 @@
+.field-citation {
+  max-width: 512px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #111c2e;
+  border: 1px solid #29374c;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgb(2 6 23 / 24%);
+}
+
+.field-citation-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.field-citation-heading h1 {
+  margin: 3px 0 5px;
+  color: #f8fafc;
+  font-size: clamp(1.45rem, 5vw, 1.8rem);
+  letter-spacing: -0.035em;
+}
+
+.field-citation-heading p:last-child {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.field-citation-eyebrow {
+  margin: 0;
+  color: #60a5fa;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.field-citation-ticket-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #93c5fd;
+  background: #172b46;
+  border: 1px solid #23446c;
+  border-radius: 12px;
+}
+
+.field-citation-form {
+  display: grid;
+  gap: 18px;
+}
+
+.field-citation-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.field-citation-search,
+.field-citation-state select,
+.field-citation-plate input,
+.field-citation-infraction select {
+  min-height: 46px;
+  color: #f1f5f9;
+  background: #0b1423;
+  border: 1px solid #334155;
+  border-radius: 9px;
+}
+
+.field-citation-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  color: #64748b;
+}
+
+.field-citation-search:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 15%);
+}
+
+.field-citation-search input {
+  width: 100%;
+  min-width: 0;
+  color: #f1f5f9;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.field-citation-search input::placeholder,
+.field-citation-plate input::placeholder {
+  color: #64748b;
+}
+
+.field-citation-fields {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.field-citation-state select,
+.field-citation-plate input,
+.field-citation-infraction select {
+  width: 100%;
+  padding: 0 12px;
+  outline: none;
+  font: inherit;
+  font-size: 0.91rem;
+}
+
+.field-citation-state select:focus,
+.field-citation-plate input:focus,
+.field-citation-infraction select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 15%);
+}
+
+.field-citation-plate input {
+  font-family: "Courier New", monospace;
+  font-size: 1.08rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.field-citation-form select option {
+  color: #f1f5f9;
+  background: #0b1423;
+}
+
+.field-citation-fine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 16px;
+  background: linear-gradient(110deg, #102846, #132337);
+  border: 1px solid #24466a;
+  border-radius: 11px;
+}
+
+.field-citation-fine p {
+  margin: 0 0 5px;
+  color: #93c5fd;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.field-citation-fine strong {
+  color: #f8fafc;
+  font-size: 1.55rem;
+  letter-spacing: -0.035em;
+}
+
+.field-citation-fine > span {
+  color: #bfdbfe;
+  font-size: 0.76rem;
+  text-align: right;
+}
+
+.field-citation-photo {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  color: #cbd5e1;
+  background: #0d1727;
+  border: 1px dashed #52647c;
+  border-radius: 11px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.field-citation-photo:hover {
+  background: #142238;
+  border-color: #60a5fa;
+}
+
+.field-citation-photo > span {
+  display: grid;
+  gap: 4px;
+}
+
+.field-citation-photo strong {
+  color: #e2e8f0;
+  font-size: 0.84rem;
+}
+
+.field-citation-photo small {
+  color: #94a3b8;
+  font-size: 0.73rem;
+}
+
+.field-citation-photo.is-captured {
+  color: #86efac;
+  background: #09251d;
+  border-color: #22c55e;
+  border-style: solid;
+}
+
+.field-citation-photo.is-captured strong {
+  color: #bbf7d0;
+}
+
+.field-citation-submit {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 16px;
+  color: #fff;
+  background: #2563eb;
+  border: 1px solid #3b82f6;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.93rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.field-citation-submit:not(:disabled):hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.field-citation-submit:disabled {
+  color: #64748b;
+  background: #1e293b;
+  border-color: #334155;
+  cursor: not-allowed;
+}
+
+.field-citation-submit.is-issued {
+  color: #dcfce7;
+  background: #166534;
+  border-color: #22c55e;
+  cursor: default;
+}
+
+.field-citation-location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 17px 0 0;
+  color: #64748b;
+  font-size: 0.72rem;
+}
+
+.field-citation-form button:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+html[data-theme="light"] .field-citation {
+  background: #fff;
+  border-color: #dbe3ed;
+  box-shadow: 0 16px 44px rgb(15 23 42 / 8%);
+}
+
+html[data-theme="light"] .field-citation-heading h1 {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .field-citation-heading p:last-child,
+html[data-theme="light"] .field-citation-location {
+  color: #64748b;
+}
+
+html[data-theme="light"] .field-citation-form label {
+  color: #334155;
+}
+
+html[data-theme="light"] .field-citation-search,
+html[data-theme="light"] .field-citation-state select,
+html[data-theme="light"] .field-citation-plate input,
+html[data-theme="light"] .field-citation-infraction select {
+  color: #0f172a;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+html[data-theme="light"] .field-citation-search input {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .field-citation-search input::placeholder,
+html[data-theme="light"] .field-citation-plate input::placeholder {
+  color: #94a3b8;
+}
+
+html[data-theme="light"] .field-citation-form select option {
+  color: #0f172a;
+  background: #fff;
+}
+
+html[data-theme="light"] .field-citation-fine {
+  background: linear-gradient(110deg, #eff6ff, #f8fafc);
+  border-color: #bfdbfe;
+}
+
+html[data-theme="light"] .field-citation-fine strong {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .field-citation-photo {
+  color: #334155;
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+html[data-theme="light"] .field-citation-photo strong {
+  color: #1e293b;
+}
+
+html[data-theme="light"] .field-citation-photo small {
+  color: #64748b;
+}
+
+html[data-theme="light"] .field-citation-photo.is-captured {
+  background: #f0fdf4;
+  border-color: #22c55e;
+}
+
+html[data-theme="light"] .field-citation-photo.is-captured strong {
+  color: #166534;
+}
+
+html[data-theme="light"] .field-citation-submit:disabled {
+  color: #94a3b8;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 480px) {
+  .field-citation {
+    padding: 20px 16px;
+    border-radius: 15px;
+  }
+
+  .field-citation-form {
+    gap: 16px;
+  }
+}

@@ -1,55 +1,316 @@
 .field-guard-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 16px clamp(16px, 4vw, 56px);
-	background: #0f172a;
-	color: #e2e8f0;
+  width: 100%;
+  padding: 18px max(16px, calc((100% - 640px) / 2));
+  color: #e2e8f0;
+  background: #0f172a;
+  border-bottom: 1px solid #263449;
+}
+
+.field-guard-header-main,
+.field-guard-officer,
+.field-guard-header-actions,
+.field-guard-nav,
+.field-guard-nav button {
+  display: flex;
+  align-items: center;
+}
+
+.field-guard-header-main {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.field-guard-officer {
+  min-width: 0;
+  gap: 11px;
+}
+
+.field-guard-officer-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #93c5fd;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+}
+
+.field-guard-officer > div {
+  display: grid;
+  gap: 3px;
+}
+
+.field-guard-officer strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.field-guard-officer > div > span {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.field-guard-shift {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 2px;
+  padding: 6px 9px;
+  color: #86efac;
+  background: #052e21;
+  border: 1px solid #14532d;
+  border-radius: 999px;
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.field-guard-pulse {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgb(74 222 128 / 65%);
+  animation: field-guard-pulse 1.7s infinite;
+}
+
+.field-guard-header-actions {
+  flex: 0 0 auto;
+  gap: 9px;
+}
+
+.field-guard-signout-wrap {
+  position: relative;
+}
+
+.field-guard-signout {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: #cbd5e1;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.field-guard-signout:hover {
+  color: #fff;
+  background: #334155;
+}
+
+.field-guard-signout-popover {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 10px);
+  right: 0;
+  display: grid;
+  gap: 6px;
+  width: min(290px, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 16px;
+  color: #e2e8f0;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 13px;
+  box-shadow: 0 18px 38px rgb(2 6 23 / 40%);
+}
+
+.field-guard-signout-popover strong {
+  font-size: 0.9rem;
+}
+
+.field-guard-signout-popover > span {
+  color: #a9bac9;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.field-guard-signout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.field-guard-signout-actions button {
+  min-height: 34px;
+  padding: 0 10px;
+  color: #e2e8f0;
+  background: rgb(100 116 139 / 18%);
+  border: 1px solid rgb(148 163 184 / 20%);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.field-guard-signout-actions button:first-child {
+  color: #fff;
+  background: #a53f55;
+  border-color: #be6070;
+}
+
+.field-guard-signout-actions button:hover {
+  filter: brightness(1.08);
 }
 
 .field-guard-nav {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
+  gap: 5px;
+  margin-top: 17px;
+  padding-top: 13px;
+  border-top: 1px solid #263449;
 }
 
-.field-guard-nav a,
-.field-guard-signout {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	border-radius: 9px;
-	color: inherit;
-	padding: 9px 11px;
-	text-decoration: none;
-	font-size: 0.88rem;
-	font-weight: 700;
+.field-guard-nav button {
+  gap: 7px;
+  border-radius: 8px;
+  color: #94a3b8;
+  background: transparent;
+  border: 0;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
 }
 
-.field-guard-nav a:hover,
-.field-guard-nav a.active,
-.field-guard-signout:hover {
-	background: #2563eb;
-	color: #fff;
+.field-guard-nav button:hover,
+.field-guard-nav button.active {
+  color: #f8fafc;
+  background: #1e293b;
 }
 
-.field-guard-nav a:focus-visible,
-.field-guard-signout:focus-visible {
-	outline: 3px solid #93c5fd;
-	outline-offset: 2px;
+.field-guard-header button:focus-visible,
+.field-guard-nav button:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
 }
 
-@media (max-width: 640px) {
-	.field-guard-header {
-		align-items: stretch;
-		flex-direction: column;
-		padding: 16px;
-	}
+@keyframes field-guard-pulse {
+  70% {
+    box-shadow: 0 0 0 6px rgb(74 222 128 / 0%);
+  }
 
-	.field-guard-nav a,
-	.field-guard-signout {
-		flex: 1 1 auto;
-		justify-content: center;
-	}
+  100% {
+    box-shadow: 0 0 0 0 rgb(74 222 128 / 0%);
+  }
+}
+
+html[data-theme="light"] .field-guard-header {
+  color: #334155;
+  background: #fff;
+  border-bottom-color: #cbd5e1;
+  box-shadow: 0 2px 12px rgb(15 23 42 / 5%);
+}
+
+html[data-theme="light"] .field-guard-officer-icon {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+html[data-theme="light"] .field-guard-officer strong {
+  color: #0f172a;
+}
+
+html[data-theme="light"] .field-guard-officer > div > span {
+  color: #64748b;
+}
+
+html[data-theme="light"] .field-guard-nav {
+  border-top-color: #e2e8f0;
+}
+
+html[data-theme="light"] .field-guard-nav button {
+  color: #475569;
+}
+
+html[data-theme="light"] .field-guard-nav button:hover,
+html[data-theme="light"] .field-guard-nav button.active {
+  color: #1d4ed8;
+  background: #eff6ff;
+}
+
+html[data-theme="light"] .field-guard-signout {
+  color: #334155;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+html[data-theme="light"] .field-guard-signout:hover {
+  background: #e2e8f0;
+}
+
+html[data-theme="light"] .field-guard-signout-popover {
+  color: #0f172a;
+  background: #fff;
+  border-color: #cbd5e1;
+  box-shadow: 0 18px 38px rgb(15 23 42 / 18%);
+}
+
+html[data-theme="light"] .field-guard-signout-popover > span {
+  color: #64748b;
+}
+
+html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
+  color: #334155;
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+@media (max-width: 560px) {
+  .field-guard-header {
+    padding: 14px 16px 0;
+  }
+
+  .field-guard-header-main {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .field-guard-officer {
+    flex-wrap: wrap;
+  }
+
+  .field-guard-shift {
+    margin-left: 51px;
+  }
+
+  .field-guard-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .field-guard-nav {
+    justify-content: space-between;
+    gap: 2px;
+    overflow-x: auto;
+  }
+
+  .field-guard-nav button {
+    flex: 0 0 auto;
+    padding: 9px 7px;
+    font-size: 0.69rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-guard-pulse {
+    animation: none;
+  }
 }

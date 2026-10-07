@@ -1,0 +1,24 @@
+.field-guard-layout {
+  min-height: 100vh;
+  color: #e2e8f0;
+  background: #0f172a;
+}
+
+.field-guard-main {
+  width: min(100% - 32px, 640px);
+  min-height: calc(100vh - 135px);
+  margin: 0 auto;
+  padding: 26px 0 40px;
+}
+
+html[data-theme="light"] .field-guard-layout {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+@media (max-width: 560px) {
+  .field-guard-main {
+    width: min(100% - 24px, 640px);
+    padding-top: 20px;
+  }
+}
