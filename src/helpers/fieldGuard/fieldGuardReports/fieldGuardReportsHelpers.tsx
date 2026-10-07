@@ -1,6 +1,7 @@
 import { Tag, CalendarDays, User, MapPin, FileText, Flag, Phone } from "lucide-react";
 import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
 import type { fieldGuardData } from "../../../data/fieldGuardData";
+import { formatIsraeliDateTime } from "../../formatting/israeliDate";
 
 type GuardReport = (typeof fieldGuardData.reports)[number];
 type DisplayReport = GuardReport & { displayId: string };
@@ -24,12 +25,7 @@ type ReportFiltersProps = {
 };
 
 function formatDate(value: string) {
-  const date = new Date(value);
-
-  return `${date.toLocaleDateString("en-GB")} @ ${date.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
+  return formatIsraeliDateTime(value);
 }
 
 export function ReportFilters({ status, priority, setStatus, setPriority }: ReportFiltersProps) {

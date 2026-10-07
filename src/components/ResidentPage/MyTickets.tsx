@@ -5,6 +5,7 @@ import type {
   ResidentServiceRequest,
 } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
+import { formatIsraeliDate } from "../../helpers/formatting/israeliDate";
 import ResidentIssues from "./ResidentIssues";
 import type { MyTicketsProps } from "./types";
 
@@ -58,11 +59,7 @@ export default function MyTickets({
       preferredDate: requestForm.preferredDate,
       phone: requestForm.phone,
       attachment: requestForm.attachment,
-      reportedDate: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
+      reportedDate: formatIsraeliDate(new Date()),
       stage: "Reported",
     };
     onAddServiceRequest(request);
@@ -185,7 +182,7 @@ export default function MyTickets({
                 onChange={(event) =>
                   updateRequestForm("phone", event.target.value)
                 }
-                placeholder="(555) 010-0000"
+                placeholder="050-555-0000"
               />
             </label>
             <label>

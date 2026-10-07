@@ -1,4 +1,6 @@
-export const currency = new Intl.NumberFormat('en-US', {
+export const currency = new Intl.NumberFormat("en-IL", {
   style: 'currency',
-  currency: 'USD',
-})
+  currency: "ILS",
+  currencyDisplay: "narrowSymbol",
+  maximumFractionDigits: 0,
+});

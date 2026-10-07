@@ -4,11 +4,8 @@ import type {
   CitationStatus,
 } from "../../contexts/CitationState";
 import type { StaffDispute } from "../../data/staffData";
-
-const currency = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
+import { currency } from "../../helpers/formatting/currency";
+import { formatIsraeliDate } from "../../helpers/formatting/israeliDate";
 
 type CitationDisputesProps = {
   disputes: StaffDispute[];
@@ -62,10 +59,7 @@ export default function CitationDisputes({
                   <td className="staff-resident-cell">
                     <strong>{dispute.residentName}</strong>
                     <time dateTime={dispute.submittedAt}>
-                      {new Date(dispute.submittedAt).toLocaleDateString(
-                        "en-US",
-                        { month: "short", day: "numeric", timeZone: "UTC" },
-                      )}
+                      {formatIsraeliDate(dispute.submittedAt)}
                     </time>
                   </td>
                   <td>{dispute.fieldEvidence}</td>

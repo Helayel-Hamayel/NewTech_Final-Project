@@ -1,4 +1,5 @@
 import type { fieldGuardData } from "../../../data/fieldGuardData";
+import { formatIsraeliDateTime } from "../../formatting/israeliDate";
 
 const currency = new Intl.NumberFormat("en-IL", {
   style: "currency",
@@ -46,14 +47,7 @@ export function filterHistoryIssues(
 }
 
 export function formatHistoryDate(value: string) {
-  const date = new Date(value);
-  return `${date.toLocaleDateString("en-GB")} @ ${date.toLocaleTimeString(
-    "en-GB",
-    {
-      hour: "2-digit",
-      minute: "2-digit",
-    },
-  )}`;
+  return formatIsraeliDateTime(value);
 }
 
 export function formatCost(amount: number) {

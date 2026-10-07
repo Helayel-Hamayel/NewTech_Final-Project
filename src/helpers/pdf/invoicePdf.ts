@@ -2,7 +2,13 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Invoice } from "../../data/residentPortal";
 import { resident } from "../../data/residentPortal";
-import { currency } from "../formatting/currency";
+
+const pdfCurrency = new Intl.NumberFormat("en-IL", {
+  style: "currency",
+  currency: "ILS",
+  currencyDisplay: "code",
+  maximumFractionDigits: 0,
+});
 
 export function downloadInvoicePdf(invoice: Invoice) {
   const document = new jsPDF({ unit: "mm", format: "a4" });
@@ -16,11 +22,11 @@ export function downloadInvoicePdf(invoice: Invoice) {
   document.setTextColor(ink[0], ink[1], ink[2]);
   document.setFont("helvetica", "bold");
   document.setFontSize(19);
-  document.text("City of Millbrook", margin, 25);
+  document.text("Tel Aviv-Yafo Municipality", margin, 25);
   document.setFont("helvetica", "normal");
   document.setFontSize(8);
   document.setTextColor(muted[0], muted[1], muted[2]);
-  document.text("CITY OF MILLBROOK  ·  RESIDENT SERVICES", margin, 32);
+  document.text("TEL AVIV-YAFO MUNICIPALITY  ·  RESIDENT SERVICES", margin, 32);
   document.setTextColor(ink[0], ink[1], ink[2]);
   document.setFont("helvetica", "bold");
   document.setFontSize(22);
@@ -66,10 +72,10 @@ export function downloadInvoicePdf(invoice: Invoice) {
     startY: 89,
     head: [["Description", "Amount"]],
     body: [
-      ["Rent", currency.format(invoice.rent)],
-      ["Water", currency.format(invoice.water)],
-      ["Electricity", currency.format(invoice.electricity)],
-      ["Fines", currency.format(invoice.fines)],
+      ["Rent", pdfCurrency.format(invoice.rent).replace(/\u00a0/g, " ")],
+      ["Water", pdfCurrency.format(invoice.water).replace(/\u00a0/g, " ")],
+      ["Electricity", pdfCurrency.format(invoice.electricity).replace(/\u00a0/g, " ")],
+      ["Fines", pdfCurrency.format(invoice.fines).replace(/\u00a0/g, " ")],
     ],
     theme: "grid",
     styles: {
@@ -105,7 +111,7 @@ export function downloadInvoicePdf(invoice: Invoice) {
   document.setTextColor(ink[0], ink[1], ink[2]);
   document.setFontSize(14);
   document.text(
-    currency.format(invoice.total),
+    pdfCurrency.format(invoice.total).replace(/\u00a0/g, " "),
     pageWidth - margin,
     finalY + 14,
     {
@@ -120,12 +126,12 @@ export function downloadInvoicePdf(invoice: Invoice) {
   document.setFontSize(8);
   document.setTextColor(muted[0], muted[1], muted[2]);
   document.text(
-    "Resident Services  ·  (555) 010-2041  ·  billing@millbrook.gov",
+    "Resident Services  ·  03-555-2041  ·  billing@telaviv-yafo.example",
     margin,
     pageHeight - 24,
   );
   document.text(
-    "City of Millbrook · Resident payment record",
+    "Tel Aviv-Yafo Municipality · Resident payment record",
     pageWidth - margin,
     pageHeight - 24,
     {
