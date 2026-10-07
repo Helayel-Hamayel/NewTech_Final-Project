@@ -1,7 +1,5 @@
-const currency = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
+import { billingAccounts } from "../../data/staffData";
+import { currency } from "../../helpers/formatting/currency";
 
 type StaffOverviewProps = {
   pendingDisputes: number;
@@ -12,6 +10,11 @@ export default function StaffOverview({
   pendingDisputes,
   openTickets,
 }: StaffOverviewProps) {
+  const outstandingBalance = billingAccounts.reduce(
+    (total, account) => total + account.balance,
+    0,
+  );
+
   return (
     <section className="staff-kpis" aria-label="Municipal overview">
       <article className="staff-kpi staff-kpi--amber">
@@ -31,7 +34,7 @@ export default function StaffOverview({
       </article>
       <article className="staff-kpi staff-kpi--rose">
         <p>Total Outstanding</p>
-        <strong>{currency.format(4469.5)}</strong>
+        <strong>{currency.format(outstandingBalance)}</strong>
         <span>Across all accounts</span>
       </article>
     </section>

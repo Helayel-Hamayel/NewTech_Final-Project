@@ -1,9 +1,5 @@
 import type { BillingAccount } from "../../data/staffData";
-
-const currency = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
+import { currency } from "../../helpers/formatting/currency";
 
 type BillingLedgerProps = {
   accounts: BillingAccount[];
@@ -38,6 +34,7 @@ export default function BillingLedger({
               <th scope="col">Water</th>
               <th scope="col">Electricity</th>
               <th scope="col">Rent</th>
+              <th scope="col">Fines</th>
               <th scope="col">Balance</th>
               <th scope="col">Last Paid</th>
               <th scope="col">Status</th>
@@ -54,6 +51,7 @@ export default function BillingLedger({
                 <td>{currency.format(account.water)}</td>
                 <td>{currency.format(account.electricity)}</td>
                 <td>{currency.format(account.rent)}</td>
+                <td>{currency.format(account.fines)}</td>
                 <td className="staff-amount">
                   {currency.format(account.balance)}
                 </td>
@@ -69,7 +67,7 @@ export default function BillingLedger({
             ))}
             {accounts.length === 0 ? (
               <tr>
-                <td className="staff-empty" colSpan={9}>
+                <td className="staff-empty" colSpan={10}>
                   No accounts match “{search}”.
                 </td>
               </tr>

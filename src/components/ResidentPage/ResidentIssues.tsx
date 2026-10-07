@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 import type { ResidentIssue } from "../../data/residentPortal";
+import { formatIsraeliDate } from "../../helpers/formatting/israeliDate";
 
 type ResidentIssuesProps = {
   issues: ResidentIssue[];
@@ -46,11 +47,7 @@ export default function ResidentIssues({
       subject: form.category,
       id: `ISS-${3002 + issues.length}`,
       photo: form.photo || "No photo attached",
-      reportedDate: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
+      reportedDate: formatIsraeliDate(new Date()),
       status: "Submitted",
     });
     setForm(emptyForm);
@@ -115,7 +112,7 @@ export default function ResidentIssues({
             type="tel"
             value={form.phone}
             onChange={(event) => updateForm("phone", event.target.value)}
-            placeholder="(555) 010-0000"
+            placeholder="050-555-0000"
           />
         </label>
         <label>

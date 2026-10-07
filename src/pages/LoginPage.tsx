@@ -64,9 +64,9 @@ export default function LoginPage() {
               <div>
                 <h2 id="registration-heading">Need an account?</h2>
                 <p>
-                  New residents must register in person at the Municipal
-                  Operations office. Bring valid identification and proof of
-                  residency. Staff will verify your details and issue temporary
+                  New residents can register at a Tel Aviv-Yafo Municipality
+                  service center. Bring valid identification and proof of
+                  address. Staff will verify your details and issue temporary
                   credentials for your first sign-in.
                 </p>
               </div>

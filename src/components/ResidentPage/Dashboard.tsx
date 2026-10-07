@@ -10,6 +10,11 @@ import {
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
+import {
+  resident,
+  residentProperty,
+  seededInvoices,
+} from "../../data/residentPortal";
 import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
 
@@ -24,14 +29,20 @@ export default function Dashboard({
 }: DashboardProps) {
   const { isDark } = useTheme();
   const [checkoutPayments, setCheckoutPayments] = useState<number | null>(null);
-  const totalBalance = 1250 + 86 + unpaidFineTotal;
+  const currentInvoice = seededInvoices.find((invoice) => invoice.status === "Due");
+  const currentUtilityBill = currentInvoice
+    ? currentInvoice.water + currentInvoice.electricity
+    : 0;
+  const usageUnit = utilityType === "Water" ? "m³" : "kWh";
+  const totalBalance =
+    residentProperty.monthlyRent + currentUtilityBill + unpaidFineTotal;
 
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
       <header className="resident-page-intro">
         <div className="resident-page-intro-copy">
-          <h1 id="dashboard-heading">Good morning, Maria Reyes</h1>
-          <p>14 Maple Street, Unit 2B · Resident ID: RES-00441</p>
+          <h1 id="dashboard-heading">Good morning, {resident.name}</h1>
+          <p>{residentProperty.address} · Resident ID: {resident.id}</p>
         </div>
         <section
           className="resident-card resident-status-card"
@@ -39,7 +50,9 @@ export default function Dashboard({
         >
           <p className="section-label">Account status</p>
           <h3 id="status-heading">Active</h3>
-          <p className="resident-status-line">Lease valid to Dec 2026</p>
+          <p className="resident-status-line">
+            Lease valid to {residentProperty.leaseEnd}
+          </p>
         </section>
       </header>
 
@@ -59,11 +72,11 @@ export default function Dashboard({
           <dl className="resident-balance-list">
             <div>
               <dt>Rent</dt>
-              <dd>{currency.format(1250)}</dd>
+              <dd>{currency.format(residentProperty.monthlyRent)}</dd>
             </div>
             <div>
               <dt>Utilities</dt>
-              <dd>{currency.format(86)}</dd>
+              <dd>{currency.format(currentUtilityBill)}</dd>
             </div>
             <div>
               <dt>Unpaid fines</dt>
@@ -157,7 +170,9 @@ export default function Dashboard({
           </div>
         </div>
         <figure className="resident-chart">
-          <figcaption>{utilityType} usage, March–August 2026</figcaption>
+          <figcaption>
+            {utilityType} usage ({usageUnit}), March–August 2026
+          </figcaption>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={utilityUsage}>
               <CartesianGrid
@@ -174,6 +189,7 @@ export default function Dashboard({
                 stroke={isDark ? "#526579" : "#cbd5e1"}
               />
               <Tooltip
+                formatter={(value) => [`${value} ${usageUnit}`, utilityType]}
                 contentStyle={{
                   backgroundColor: isDark ? "#1c2a3b" : "#ffffff",
                   border: `1px solid ${isDark ? "#526579" : "#e2e8f0"}`,
@@ -194,8 +210,8 @@ export default function Dashboard({
         <aside className="resident-current-bill">
           <div>
             <h4>Current bill</h4>
-            <p>{currency.format(86)}</p>
-            <span>Due Sep 30, 2026</span>
+            <p>{currency.format(currentUtilityBill)}</p>
+            <span>Due 30 Sep 2026</span>
           </div>
           <button
             className="resident-secondary-btn"

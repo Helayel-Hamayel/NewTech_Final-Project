@@ -1,5 +1,6 @@
 import { Tag, CalendarDays } from "lucide-react";
 import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
+import { formatIsraeliDateTime } from "../formatting/israeliDate";
 type RecentEntry = {
   _id: string;
   description: string;
@@ -15,11 +16,7 @@ type RecentPanelProps = {
 };
 
 function formatDate(value: string) {
-  const date = new Date(value);
-  return `${date.toLocaleDateString("en-GB")} @ ${date.toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
+  return formatIsraeliDateTime(value);
 }
 
 export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {

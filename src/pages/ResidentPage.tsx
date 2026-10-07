@@ -43,7 +43,7 @@ export default function ResidentPage() {
     seededMaintenanceTickets.map((ticket) => ({
       ...ticket,
       description: "Existing service request",
-      phone: "(555) 010-4412",
+      phone: "050-555-4412",
       preferredDate: ticket.reportedDate,
       attachment: "",
     })),
@@ -123,8 +123,8 @@ export default function ResidentPage() {
               <Building2 size={20} strokeWidth={2.2} />
             </span>
             <div className="resident-brand-copy">
-              <p>City of</p>
-              <p>Millbrook</p>
+              <p>Tel Aviv-Yafo</p>
+              <p>Municipality</p>
             </div>
           </div>
 
@@ -177,7 +177,7 @@ export default function ResidentPage() {
       }
       footer={
         <footer className="resident-footer">
-          © 2026 City of Millbrook · Municipal Operations v2.4.1
+          © 2026 Tel Aviv-Yafo Municipality · Municipal Services v2.4.1
         </footer>
       }
     >

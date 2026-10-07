@@ -44,7 +44,7 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
             <p className="billing-total">
               {currency.format(currentBalanceDue)}
             </p>
-            <span>Due Sep 30, 2026</span>
+            <span>Due 30 Sep 2026</span>
           </div>
           <button
             className="resident-primary-btn"

@@ -8,8 +8,8 @@ export default function LoginHeader() {
           <Building2 size={22} strokeWidth={2.1} />
         </span>
         <div className="login-brand-copy">
-          <p>City of</p>
-          <p>Millbrook</p>
+          <p>Tel Aviv-Yafo</p>
+          <p>Municipality</p>
         </div>
       </div>
 
