@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { staffData } from "../../data/staffData";
 import type { StaffTab } from "../../data/staffData";
+import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
 import "../../styles/common/Staff/StaffHeader.css";
 import { useUser } from "../../contexts/useUser";
@@ -59,7 +60,26 @@ export default function StaffHeader({
   }
 
   return (
-    <aside className="sidebar" aria-label="Staff sidebar">
+    <>
+      <MobileDrawer
+        brandIcon={<Map />} userName={staffData.name} subtitle="Municipal Staff"
+        items={navigationItems.map((item) => ({
+          ...item,
+          badge: {
+            requests: pendingServiceRequests,
+            disputes: pendingDisputes,
+            billing: overdueAccounts,
+            maintenance: openTickets,
+          }[item.id],
+        }))}
+        activeId={activeTab}
+        onSelect={onTabChange}
+      />
+    <aside
+      className="sidebar"
+      id="staff-navigation"
+      aria-label="Staff sidebar"
+    >
       <div className="brand">
         <span className="brand-mark" aria-hidden="true">
           <Map size={28} />
@@ -167,5 +187,6 @@ export default function StaffHeader({
       </div>
       <p className="version">Municipal Operations v2.4.1</p>
     </aside>
+    </>
   );
 }

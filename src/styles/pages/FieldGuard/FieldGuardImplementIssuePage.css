@@ -395,3 +395,33 @@ html[data-theme="light"] .field-citation-submit:disabled {
     gap: 16px;
   }
 }
+
+@media (max-width: 360px) {
+  .field-citation {
+    padding: 16px 12px;
+  }
+
+  .field-citation-heading {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .field-citation-ticket-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .field-citation-fine {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .field-citation-fine > span {
+    flex-basis: 100%;
+    text-align: left;
+  }
+
+  .field-citation-actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -60,3 +60,23 @@ button,
 input {
   font: inherit;
 }
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+.portal-menu-backdrop {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}

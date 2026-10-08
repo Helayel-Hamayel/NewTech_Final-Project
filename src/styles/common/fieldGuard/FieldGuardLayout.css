@@ -695,3 +695,30 @@ html[data-theme="dark"] .field-guard-status--in-progress {
     padding-top: 20px;
   }
 }
+
+@media (max-width: 400px) {
+  .field-guard-main {
+    width: min(100% - 16px, 640px);
+    padding-bottom: 24px;
+  }
+
+  .field-guard-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-guard-record,
+  .field-guard-report-row,
+  .field-guard-history-row {
+    padding: 10px;
+  }
+
+  .field-guard-panel-heading,
+  .field-guard-details-heading {
+    align-items: flex-start;
+  }
+
+  .field-guard-history-summary {
+    justify-items: start;
+    margin-top: 8px;
+  }
+}

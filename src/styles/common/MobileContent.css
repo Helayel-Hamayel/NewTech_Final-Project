@@ -1,0 +1,640 @@
+/* Phone-friendly page content shared by the Resident, Staff and Field Guard portals. */
+@media (max-width: 768px) {
+  /* Tables become stacked cards. Labels come from column order. */
+  .billing-table-wrap,
+  .staff-table-scroll {
+    overflow-x: visible;
+    min-width: 0;
+  }
+
+  .billing-table.billing-table,
+  .staff-table.staff-table {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .billing-table.billing-table thead,
+  .staff-table.staff-table thead {
+    display: none;
+  }
+
+  .billing-table.billing-table tbody,
+  .staff-table.staff-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .billing-table.billing-table tr,
+  .staff-table.staff-table tr {
+    display: block;
+    padding: 6px 14px;
+    border: 1px solid rgba(100, 116, 139, 0.28);
+    border-radius: 12px;
+    background: var(--resident-white, #fff);
+  }
+
+  html[data-theme="dark"] .billing-table.billing-table tr,
+  html[data-theme="dark"] .staff-table.staff-table tr {
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  .billing-table.billing-table td,
+  .staff-table.staff-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.16);
+    text-align: right;
+  }
+
+  .billing-table.billing-table td:last-child,
+  .staff-table.staff-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .billing-table.billing-table td::before,
+  .staff-table.staff-table td::before {
+    flex: 0 0 auto;
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .billing-table.billing-table td > .billing-subtext {
+    display: inline;
+    margin: 0;
+  }
+
+  .staff-table.staff-table td.staff-empty {
+    display: block;
+    text-align: center;
+  }
+
+  .staff-table.staff-table td.staff-empty::before {
+    content: none;
+  }
+
+  /* Resident invoices */
+  .billing-table.billing-table td:nth-child(1)::before { content: "Invoice"; }
+  .billing-table.billing-table td:nth-child(2)::before { content: "Period"; }
+  .billing-table.billing-table td:nth-child(3)::before { content: "Charges"; }
+  .billing-table.billing-table td:nth-child(3) {
+    align-items: flex-start;
+  }
+  .billing-table.billing-table td:nth-child(3) > .billing-subtext {
+    display: block;
+  }
+  .billing-table.billing-table td:nth-child(4)::before { content: "Total"; }
+  .billing-table.billing-table td:nth-child(5)::before { content: "Status"; }
+  .billing-table.billing-table td:nth-child(6) {
+    justify-content: stretch;
+  }
+  .billing-table.billing-table td:nth-child(6) button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Staff: citation disputes */
+  .staff-disputes-table.staff-table td:nth-child(3)::before { content: "Field evidence"; }
+  .staff-disputes-table.staff-table td:nth-child(4)::before { content: "Resident evidence"; }
+  .staff-disputes-table.staff-table td:nth-child(5)::before { content: "Violation"; }
+  .staff-disputes-table.staff-table td:nth-child(6)::before { content: "Reason"; }
+  .staff-disputes-table.staff-table td:nth-child(7)::before { content: "Amount"; }
+  .staff-disputes-table.staff-table td:nth-child(8) {
+    justify-content: stretch;
+  }
+  .staff-disputes-table.staff-table td:nth-child(8) .staff-row-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .staff-disputes-table.staff-table td:nth-child(8) .staff-row-actions button {
+    justify-content: center;
+    min-height: 40px;
+  }
+
+  /* Staff: billing ledger */
+  .staff-billing-table.staff-table td:nth-child(1)::before { content: "Property"; }
+  .staff-billing-table.staff-table td:nth-child(2)::before { content: "Account"; }
+  .staff-billing-table.staff-table td:nth-child(3)::before { content: "Resident"; }
+  .staff-billing-table.staff-table td:nth-child(4)::before { content: "Water"; }
+  .staff-billing-table.staff-table td:nth-child(5)::before { content: "Electricity"; }
+  .staff-billing-table.staff-table td:nth-child(6)::before { content: "Rent"; }
+  .staff-billing-table.staff-table td:nth-child(7)::before { content: "Fines"; }
+  .staff-billing-table.staff-table td:nth-child(8)::before { content: "Balance"; }
+  .staff-billing-table.staff-table td:nth-child(9)::before { content: "Last paid"; }
+  .staff-billing-table.staff-table td:nth-child(10)::before { content: "Status"; }
+
+  .staff-disputes-table.staff-table td:nth-child(1)::before { content: "Ticket"; }
+
+  .staff-table.staff-table td.staff-resident-cell {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 16px;
+    text-align: right;
+  }
+
+  .staff-table.staff-table td.staff-resident-cell::before {
+    grid-row: 1 / span 2;
+    align-self: center;
+    content: "Resident";
+  }
+
+  .staff-table.staff-table td.staff-resident-cell > * {
+    grid-column: 2;
+  }
+
+  /* Kanban columns scroll sideways with a visible peek of the next column. */
+  .staff-kanban-scroll {
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .staff-kanban-column {
+    flex: 0 0 min(84vw, 320px);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Keep long dropdown options and inputs inside the viewport. */
+  select,
+  input,
+  textarea {
+    max-width: 100%;
+  }
+}
+
+/* Compact dashboard layout: use the width instead of one item per row. */
+@media (max-width: 768px) {
+  .resident-page-intro.resident-page-intro {
+    display: grid;
+    gap: 12px;
+  }
+
+  .resident-page-intro .resident-status-card.resident-status-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2px 12px;
+    margin-top: 0;
+    padding: 12px 16px;
+  }
+
+  .resident-status-card .section-label {
+    margin: 0;
+    width: 100%;
+  }
+
+  .resident-status-card h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .resident-status-card .resident-status-line {
+    margin: 0;
+  }
+
+  .resident-summary-grid.resident-summary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .resident-summary-grid .resident-balance-card {
+    grid-column: 1 / -1;
+  }
+
+  .resident-summary-grid .resident-balance-card .resident-balance-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .resident-summary-grid .resident-balance-card .resident-balance-list div + div {
+    padding: 0 0 0 10px;
+    border-top: 0;
+    border-left: 1px solid rgba(191, 219, 254, 0.28);
+  }
+
+  .resident-summary-grid .resident-balance-list dd {
+    font-size: 1rem;
+  }
+
+  .resident-summary-grid .resident-kpi-card {
+    min-height: 0;
+    padding: 12px 12px 0;
+  }
+
+  .resident-summary-grid .resident-kpi-content {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .resident-summary-grid .resident-kpi-content h3 {
+    max-width: none;
+    font-size: 0.95rem;
+  }
+
+  .resident-kpi-metric {
+    justify-items: start;
+    grid-auto-flow: column;
+    align-items: baseline;
+    justify-content: start;
+    gap: 8px;
+  }
+
+  .resident-kpi-metric .resident-kpi-value {
+    font-size: 2.25rem;
+  }
+
+  .resident-kpi-metric .resident-kpi-label {
+    max-width: none;
+    text-align: left;
+  }
+
+  .resident-summary-grid .resident-kpi-card .resident-kpi-actions {
+    margin: 10px -12px 0;
+  }
+
+  .resident-summary-grid .resident-kpi-card button {
+    min-height: 40px;
+    font-size: 0.7rem;
+  }
+
+  .resident-list-item.resident-list-item {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .resident-list-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+  }
+}
+
+/* Two-up grid inside table cards, instead of one field per row. */
+@media (max-width: 768px) {
+  .resident-balance-card .resident-card-actions.resident-card-actions {
+    width: auto;
+  }
+
+  .resident-page-intro .resident-intro-badge {
+    justify-self: start;
+    margin-top: 0;
+  }
+
+  .billing-summary-grid.billing-summary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .billing-summary-grid .billing-balance-card {
+    grid-column: 1 / -1;
+  }
+
+  .billing-summary-grid .billing-stat-card {
+    padding: 14px;
+  }
+
+  .billing-table.billing-table tr,
+  .staff-table.staff-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+    padding: 12px 14px;
+  }
+
+  .billing-table.billing-table td,
+  .staff-table.staff-table td {
+    display: block;
+    min-width: 0;
+    padding: 8px 0;
+    text-align: left;
+  }
+
+  .billing-table.billing-table td::before,
+  .staff-table.staff-table td::before {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .staff-table.staff-table td.staff-resident-cell {
+    display: block;
+  }
+
+  .staff-table.staff-table td.staff-resident-cell::before {
+    display: block;
+  }
+
+  .staff-table.staff-table td.staff-resident-cell > * {
+    display: block;
+  }
+
+  .billing-table.billing-table td:nth-child(3),
+  .billing-table.billing-table td:nth-child(6),
+  .staff-disputes-table.staff-table td:nth-child(6),
+  .staff-disputes-table.staff-table td:nth-child(8),
+  .staff-table.staff-table td.staff-empty {
+    grid-column: 1 / -1;
+  }
+
+  .billing-table.billing-table td:nth-child(3) > .billing-subtext {
+    display: inline-block;
+    margin-right: 12px;
+  }
+
+  .billing-table.billing-table td:nth-child(6) {
+    padding-bottom: 0;
+  }
+
+  .staff-disputes-table.staff-table td:nth-child(1) { order: 1; }
+  .staff-disputes-table.staff-table td:nth-child(7) { order: 2; }
+  .staff-disputes-table.staff-table td:nth-child(2) { order: 3; }
+  .staff-disputes-table.staff-table td:nth-child(5) { order: 4; }
+  .staff-disputes-table.staff-table td:nth-child(3) { order: 5; }
+  .staff-disputes-table.staff-table td:nth-child(4) { order: 6; }
+  .staff-disputes-table.staff-table td:nth-child(6) { order: 7; }
+  .staff-disputes-table.staff-table td:nth-child(8) { order: 8; }
+
+  .staff-billing-table.staff-table tr {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 10px;
+  }
+
+  .staff-billing-table.staff-table td:nth-child(1),
+  .staff-billing-table.staff-table td:nth-child(10) {
+    grid-column: 1 / -1;
+  }
+
+  .staff-billing-table.staff-table td:nth-child(3) {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .billing-table.billing-table td:nth-child(1) > .billing-subtext {
+    display: none;
+  }
+
+  .resident-page-panel .resident-card,
+  .resident-page-panel .billing-history-card {
+    padding: 14px;
+  }
+
+  .resident-page-panel .resident-balance-card {
+    padding: 16px 16px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .property-glance .property-stats.property-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .property-glance .property-stats.property-stats div {
+    padding-block: 12px;
+    border-right: 1px solid var(--resident-slate-200);
+    border-bottom: 1px solid var(--resident-slate-200);
+  }
+
+  .property-glance .property-stats.property-stats div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .property-glance .property-stats.property-stats div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  .resident-list-meta {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .staff-table.staff-table td.staff-resident-cell,
+  .staff-table.staff-table td.staff-resident-cell > * {
+    text-align: left;
+  }
+
+  .staff-table.staff-table td.staff-resident-cell::before {
+    grid-row: auto;
+  }
+
+  .staff-table.staff-table td,
+  .billing-table.billing-table td {
+    border-top: 0;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.14);
+  }
+
+  .staff-billing-table.staff-table td:nth-child(10),
+  .staff-disputes-table.staff-table td:nth-child(8),
+  .billing-table.billing-table td:nth-child(6) {
+    border-bottom: 0;
+  }
+}
+
+/* Field Guard: two-up stat tiles, no oversized empty detail panel. */
+@media (max-width: 768px) {
+  .field-guard-stat-grid.field-guard-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .field-guard-stat-grid .field-guard-stat-card {
+    min-height: 52px;
+    padding: 8px 12px;
+  }
+
+  .field-guard-stat-grid .field-guard-stat-card dt {
+    font-size: 0.64rem;
+    line-height: 1.2;
+  }
+
+  .field-guard-details-empty.field-guard-details-empty {
+    min-height: 0;
+    padding: 6px 0;
+  }
+
+  .field-guard-details-panel,
+  .field-guard-history-details-panel,
+  .field-guard-report-details-panel {
+    min-height: 0;
+  }
+
+  .field-guard-panel {
+    padding: 12px;
+  }
+}
+
+/* Staff: request inbox heading needs the same inset as other panels. */
+@media (max-width: 768px) {
+  .staff-service-requests .staff-maintenance-heading {
+    padding: 14px 14px 0;
+  }
+
+  .staff-service-requests .staff-service-request-demo-note {
+    margin: 10px 14px 0;
+  }
+
+  .staff-service-requests .staff-service-request-list {
+    padding: 12px 14px 14px;
+    gap: 10px;
+  }
+
+  .staff-service-request-card {
+    padding: 12px;
+  }
+}
+
+/* Resident My services: pair short form fields, tighten request cards. */
+@media (max-width: 768px) {
+  .service-request-form.service-request-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 12px;
+  }
+
+  .service-request-form > label:nth-child(1),
+  .service-request-form > label:nth-child(2),
+  .service-request-form > label:nth-child(5),
+  .service-request-form > button {
+    grid-column: 1 / -1;
+  }
+
+  .service-request-form textarea {
+    min-height: 64px;
+  }
+
+  .ticket-card {
+    padding: 12px;
+  }
+
+  .ticket-list.ticket-list {
+    gap: 10px;
+  }
+}
+
+/* Staff maintenance dispatch: status tabs, one column at a time. */
+.staff-kanban-tabs {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .staff-kanban-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .staff-kanban-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    min-height: 52px;
+    padding: 6px 2px;
+    border: 1px solid var(--staff-border, rgba(100, 116, 139, 0.3));
+    border-bottom-width: 3px;
+    border-radius: 10px;
+    background: var(--staff-card-bg, #fff);
+    color: var(--staff-muted, #64748b);
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .staff-kanban-tab span {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .staff-kanban-tab strong {
+    color: var(--staff-ink, #0f172a);
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .staff-kanban-tab--slate { border-bottom-color: #64748b; }
+  .staff-kanban-tab--amber { border-bottom-color: #f59e0b; }
+  .staff-kanban-tab--blue { border-bottom-color: #3b82f6; }
+  .staff-kanban-tab--emerald { border-bottom-color: #10b981; }
+
+  .staff-kanban-tab.is-active {
+    border-color: #1b5cff;
+    background: rgba(27, 92, 255, 0.08);
+  }
+
+  .staff-kanban-tab.is-active span {
+    color: #1b5cff;
+  }
+
+  .staff-kanban-scroll.staff-kanban-scroll {
+    margin-right: 0;
+    overflow: visible;
+  }
+
+  .staff-kanban.staff-kanban {
+    display: block;
+    min-width: 0;
+    padding-right: 0;
+  }
+
+  .staff-kanban-column {
+    display: none;
+    flex: none;
+    width: 100%;
+  }
+
+  .staff-kanban-column.is-mobile-active {
+    display: block;
+  }
+
+  .staff-kanban-column > header {
+    display: none;
+  }
+
+  .staff-kanban-column .staff-ticket-list {
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+    padding: 0;
+    gap: 10px;
+  }
+
+  .staff-kanban-column .staff-maintenance-card {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .staff-kanban-column .staff-assign-team {
+    margin-top: auto;
+    min-height: 38px;
+  }
+
+  .staff-kanban-column .staff-column-empty {
+    grid-column: 1 / -1;
+    padding: 24px 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .staff-kanban-column .staff-ticket-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,8 +1,16 @@
 import { useState } from "react";
-import { Building2, LogOut } from "lucide-react";
+import {
+  Building2,
+  ClipboardList,
+  FileText,
+  Home,
+  LayoutDashboard,
+  LogOut,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
+import MobileDrawer from "../components/common/MobileDrawer";
 import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
 import Dashboard from "../components/ResidentPage/Dashboard";
@@ -26,6 +34,17 @@ import {
   type UtilityType,
 } from "../data/residentPortal";
 import "../styles/pages/ResidentPortalPage.css";
+
+const residentDrawerItems: Array<{
+  id: PortalTab;
+  label: string;
+  icon: typeof LayoutDashboard;
+}> = [
+  { id: "Dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "Billing", label: "Billing", icon: FileText },
+  { id: "My Services", label: "My Services", icon: ClipboardList },
+  { id: "Properties", label: "Properties", icon: Home },
+];
 
 export default function ResidentPage() {
   const navigate = useNavigate();
@@ -118,6 +137,44 @@ export default function ResidentPage() {
     downloadInvoicePdf(invoice);
   }
 
+  function renderSignoutControl(popoverId: string) {
+    const titleId = `${popoverId}-title`;
+
+    return (
+      <div className="resident-signout-wrap">
+        <button
+          className="resident-signout"
+          type="button"
+          onClick={handleSignOut}
+          aria-expanded={isSignoutOpen}
+          aria-controls={popoverId}
+        >
+          <LogOut className="resident-signout-icon" aria-hidden="true" />
+          Sign out
+        </button>
+        {isSignoutOpen ? (
+          <div
+            className="signout-popover"
+            id={popoverId}
+            role="dialog"
+            aria-labelledby={titleId}
+          >
+            <strong id={titleId}>Sign out of CivicHub?</strong>
+            <span>Your current portal session will end.</span>
+            <div className="signout-toast-actions">
+              <button type="button" onClick={confirmSignOut}>
+                Sign out
+              </button>
+              <button type="button" onClick={() => setIsSignoutOpen(false)}>
+                Stay signed in
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <SharedLayout
       header={
@@ -133,49 +190,17 @@ export default function ResidentPage() {
           </div>
 
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
+          <MobileDrawer
+            brandIcon={<Building2 />} userName={resident.name} subtitle="Resident Portal"
+            items={residentDrawerItems}
+            activeId={activeTab}
+            onSelect={setActiveTab}
+          />
 
           <div className="resident-user-meta">
             <ThemeToggle />
             <span className="resident-header-divider" aria-hidden="true" />
-            <div className="resident-signout-wrap">
-              <button
-                className="resident-signout"
-                type="button"
-                onClick={handleSignOut}
-                aria-expanded={isSignoutOpen}
-                aria-controls="signout-popover"
-              >
-                <LogOut className="resident-signout-icon" aria-hidden="true" />
-                Sign out
-              </button>
-              {isSignoutOpen ? (
-                <div
-                  className="signout-popover"
-                  id="signout-popover"
-                  role="dialog"
-                  aria-labelledby="signout-popover-title"
-                >
-                  <strong id="signout-popover-title">
-                    Sign out of CivicHub?
-                  </strong>
-                  <span>Your current portal session will end.</span>
-                  <div className="signout-toast-actions">
-                    <button
-                      type="button"
-                      onClick={confirmSignOut}
-                    >
-                      Sign out
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsSignoutOpen(false)}
-                    >
-                      Stay signed in
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-            </div>
+            {renderSignoutControl("signout-popover")}
           </div>
         </header>
       }

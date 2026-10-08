@@ -43,6 +43,8 @@ export default function MaintenanceDispatch({
   setTickets,
 }: MaintenanceDispatchProps) {
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  const [mobileStatus, setMobileStatus] =
+    useState<StaffMaintenanceTicket["status"]>("Unassigned");
   const [assignmentTicketId, setAssignmentTicketId] = useState<string | null>(
     null,
   );
@@ -128,6 +130,27 @@ export default function MaintenanceDispatch({
             New Ticket
           </button>
         </div>
+        <div
+          className="staff-kanban-tabs"
+          role="tablist"
+          aria-label="Ticket status"
+        >
+          {ticketColumns.map((status) => (
+            <button
+              key={status}
+              type="button"
+              role="tab"
+              aria-selected={mobileStatus === status}
+              className={`staff-kanban-tab staff-kanban-tab--${columnClass[status]}${mobileStatus === status ? " is-active" : ""}`}
+              onClick={() => setMobileStatus(status)}
+            >
+              <span>{status}</span>
+              <strong>
+                {matchingTickets.filter((t) => t.status === status).length}
+              </strong>
+            </button>
+          ))}
+        </div>
         <div className="staff-kanban-scroll" aria-label="Maintenance board">
           <div className="staff-kanban">
             {ticketColumns.map((status) => {
@@ -136,7 +159,7 @@ export default function MaintenanceDispatch({
               );
               return (
                 <section
-                  className={`staff-kanban-column staff-kanban-column--${columnClass[status]}`}
+                  className={`staff-kanban-column staff-kanban-column--${columnClass[status]}${mobileStatus === status ? " is-mobile-active" : ""}`}
                   key={status}
                   aria-labelledby={`column-${columnClass[status]}`}
                 >
