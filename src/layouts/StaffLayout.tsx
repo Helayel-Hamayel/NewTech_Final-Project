@@ -22,7 +22,7 @@ export default function StaffLayout() {
   const [reportsLoading, setReportsLoading] = useState(true);
   const [reportsError, setReportsError] = useState("");
   const maintenanceTickets = serviceRequests.filter(
-    (request) => request.assignedTo === "Maintenance Team" || request.status === "Rejected",
+    (request) => request.assignedTo === "Maintenance Team" || (request.status === "Rejected" && !request.assignedTo),
   );
   const { citationState } = useCitationState();
   const pendingDisputes = staffDisputesData.filter((dispute) => citationState[dispute.fineId] === "PENDING").length;

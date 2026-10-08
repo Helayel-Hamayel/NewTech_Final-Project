@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import type { ReportFromBackend } from "../data/staffData";
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
 import { fieldGuardData, type FieldGuardIssue } from "../data/fieldGuardData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";
@@ -8,14 +10,48 @@ type FieldGuardPageProps = {
 };
 
 export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
-  const { name, reports } = fieldGuardData;
-  const acceptedCount = issues.filter(
-    (issue) => issue.status === "ACCEPTED",
-  ).length;
-  const rejectedCount = issues.filter(
-    (issue) => issue.status === "REJECTED",
-  ).length;
+  const { name } = fieldGuardData;
 
+  const [reports, setReports] = useState<ReportFromBackend[]>([]);
+  const [reportsLoading, setReportsLoading] = useState(true);
+  const [reportsError, setReportsError] = useState("");
+  const acceptedCount = issues.filter((issue) => issue.status === "ACCEPTED").length;
+  const rejectedCount = issues.filter((issue) => issue.status === "REJECTED").length;
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadReports() {
+      try {
+        const response = await fetch("http://localhost:4000/reports", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load your reports.");
+        }
+
+        const data: ReportFromBackend[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setReports(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setReportsError(error instanceof Error ? error.message : "Could not load your reports.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setReportsLoading(false);
+        }
+      }
+    }
+
+    loadReports();
+
+    return () => controller.abort();
+  }, []);
   return (
     <section className="field-guard-screen field-guard-overview" aria-labelledby="field-guard-title">
       <div className="field-guard-page-heading">
@@ -50,7 +86,13 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
       </dl>
       <div className="field-guard-overview-panels">
         <RecentPanel title="Recent issues" prefix="Issue" entries={issues} />
-        <RecentPanel title="Recent reports" prefix="Report" entries={reports} />
+        {reportsLoading ? (
+          <p role="status">Loading reports...</p>
+        ) : reportsError ? (
+          <p role="alert">{reportsError}</p>
+        ) : (
+          <RecentPanel title="Recent reports" prefix="Report" entries={reports} />
+        )}{" "}
       </div>
     </section>
   );
