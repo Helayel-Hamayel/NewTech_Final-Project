@@ -1,5 +1,4 @@
 import { Bell, Search } from "lucide-react";
-import { staffData } from "../../data/staffData";
 import type { StaffTab } from "../../data/staffData";
 
 const tabTitles: Record<StaffTab, string> = {
@@ -26,11 +25,6 @@ export default function StaffTopBar({
   onSearchChange,
   onOpenDisputes,
 }: StaffTopBarProps) {
-  const initials = staffData.name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
-
   return (
     <header className="staff-topbar">
       <h1>{tabTitles[activeTab]}</h1>
@@ -60,9 +54,6 @@ export default function StaffTopBar({
             </span>
           ) : null}
         </button>
-        <span className="staff-user-avatar" aria-label={staffData.name}>
-          {initials}
-        </span>
       </div>
     </header>
   );

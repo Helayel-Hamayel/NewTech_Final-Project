@@ -2205,3 +2205,276 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
     border-bottom: 0;
   }
 }
+
+@media (max-width: 600px) {
+  .resident-page-shell {
+    width: min(100% - 16px, 1100px);
+    padding: 12px 0 28px;
+  }
+
+  .resident-page-panel,
+  .resident-card {
+    border-radius: 14px;
+  }
+
+  .resident-topbar {
+    gap: 14px;
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .resident-brand-copy p:last-child {
+    font-size: 1.05rem;
+  }
+
+  .resident-user-meta {
+    gap: 8px;
+  }
+
+  .resident-nav-list {
+    min-width: 460px;
+  }
+
+  .resident-content {
+    padding: 14px 12px 18px;
+  }
+
+  .resident-view {
+    gap: 16px;
+  }
+
+  .resident-page-intro h1 {
+    font-size: 1.75rem;
+  }
+
+  .resident-page-intro p {
+    font-size: 0.84rem;
+  }
+
+  .resident-balance-card {
+    padding: 20px 18px 0;
+  }
+
+  .resident-balance-header {
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .resident-balance-header .section-label {
+    font-size: 1rem;
+  }
+
+  .resident-balance-total {
+    font-size: 2.25rem;
+  }
+
+  .resident-balance-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  .resident-balance-list div + div {
+    padding-top: 10px;
+    padding-left: 0;
+    border-top: 1px solid rgba(191, 219, 254, 0.28);
+    border-left: 0;
+  }
+
+  .resident-balance-card .resident-card-actions {
+    flex-direction: row;
+    align-items: stretch;
+    margin: 18px -18px 0;
+  }
+
+  .resident-balance-card .resident-card-actions button {
+    min-height: 52px;
+    font-size: 0.84rem;
+  }
+
+  .resident-card-actions {
+    width: 100%;
+  }
+
+  .resident-card-actions .resident-primary-btn,
+  .resident-card-actions .resident-secondary-btn {
+    width: 100%;
+  }
+
+  .resident-utility-toggle {
+    width: 100%;
+  }
+
+  .resident-utility-toggle button {
+    flex: 1;
+    padding-inline: 0.45rem;
+  }
+
+  .resident-current-bill {
+    gap: 12px;
+  }
+}
+
+.resident-menu-toggle {
+  display: none;
+}
+
+.resident-drawer-actions {
+  display: none;
+}
+
+.resident-drawer-header {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .resident-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    min-height: 66px;
+    padding: 12px 16px 12px 72px;
+  }
+
+  .resident-menu-toggle {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 61;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgba(148, 163, 184, 0.32);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--resident-white);
+    cursor: pointer;
+  }
+
+  .resident-user-meta {
+    display: none;
+  }
+
+  .portal-menu-backdrop {
+    position: fixed;
+    z-index: 55;
+    inset: 0;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(2, 6, 23, 0.52);
+    cursor: pointer;
+  }
+
+  .resident-nav {
+    position: fixed;
+    z-index: 60;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: min(292px, calc(100vw - 44px));
+    max-width: none;
+    padding: 16px;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0 16px 16px 0;
+    background: #0f172a;
+    box-shadow: 18px 0 42px rgba(2, 6, 23, 0.34);
+    transform: translateX(-105%);
+    transition: transform 220ms ease;
+  }
+
+  .resident-nav.is-open {
+    transform: translateX(0);
+  }
+
+  .resident-nav-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .resident-drawer-header {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    padding-left: 56px;
+    margin-bottom: 18px;
+  }
+
+  .resident-drawer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .resident-drawer-brand .resident-brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .resident-drawer-brand .resident-brand-copy p:last-child {
+    font-size: 1rem;
+  }
+
+  .resident-drawer-actions {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.22);
+  }
+
+  .resident-drawer-actions .theme-toggle,
+  .resident-drawer-actions .resident-signout {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+    border-color: #ef4444;
+    background: #b91c1c;
+    color: #fff;
+  }
+
+  .resident-drawer-actions .resident-signout:hover {
+    border-color: #f87171;
+    background: #991b1b;
+    color: #fff;
+  }
+
+  .resident-drawer-actions .resident-signout-wrap {
+    width: 100%;
+  }
+
+  .resident-drawer-actions .signout-popover {
+    position: fixed;
+    z-index: 70;
+    top: auto;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
+  }
+
+  .resident-nav-indicator {
+    display: none;
+  }
+
+  .resident-nav-button {
+    justify-content: flex-start;
+    padding: 0.85rem 0.9rem;
+    color: rgba(226, 232, 240, 0.84);
+  }
+
+  .resident-nav-button.is-active {
+    border-color: rgba(125, 211, 252, 0.34);
+    background: linear-gradient(135deg, #2563eb, #0e7490);
+  }
+}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Activity,
+  Building2,
   FilePlusCorner,
   Flag,
   History,
@@ -10,6 +11,7 @@ import {
   LogOut,
 } from "lucide-react";
 import "../../styles/common/fieldGuard/FieldGuardHeader.css";
+import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
 import { useUser } from "../../contexts/useUser";
 
@@ -46,6 +48,16 @@ export default function FieldGuardHeader({
 
   return (
     <header className="field-guard-header">
+      <div className="field-guard-mobile-brand">
+        <span className="field-guard-mobile-brand-mark" aria-hidden="true">
+          <Building2 size={20} strokeWidth={2.2} />
+        </span>
+        <div>
+          <p>Tel Aviv-Yafo</p>
+          <p>Municipality</p>
+        </div>
+      </div>
+
       <div className="field-guard-header-main">
         <div className="field-guard-officer">
           <span className="field-guard-officer-icon" aria-hidden="true">
@@ -105,7 +117,16 @@ export default function FieldGuardHeader({
         </div>
       </div>
 
-      <nav className="field-guard-nav" aria-label="Field Guard navigation">
+      <MobileDrawer
+        brandIcon={<Activity />} userName={"J. Mbeki"} subtitle="Field Guard"
+        items={navigationItems}
+        activeId={activeTab}
+        onSelect={onTabChange}
+      />      <nav
+        className="field-guard-nav"
+        id="field-guard-navigation"
+        aria-label="Field Guard navigation"
+      >
         <div className="field-guard-nav-list">
           <span
             className="field-guard-nav-indicator"

@@ -239,6 +239,14 @@
 
 .sidebar-footer .sign-out {
   justify-content: flex-start;
+  border: 1px solid #ef4444;
+  background: #b91c1c;
+  color: #fff;
+}
+
+.sidebar-footer .sign-out:hover {
+  background: #991b1b;
+  color: #fff;
 }
 
 .staff-signout-popover {
@@ -316,18 +324,50 @@ html[data-theme="dark"] .sidebar {
   background: #0b1320;
 }
 
+.staff-menu-toggle {
+  display: none;
+}
+
 @media (max-width: 700px) {
+  .staff-menu-toggle {
+    position: fixed;
+    z-index: 61;
+    top: 12px;
+    left: 14px;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    background: #1e293b;
+    color: #f8fafc;
+    box-shadow: 0 6px 16px rgba(2, 6, 23, 0.18);
+    cursor: pointer;
+  }
+
   .sidebar {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    min-height: 0;
-    padding: 11px 14px 10px;
-    overflow: visible;
+    position: fixed;
+    z-index: 60;
+    inset: 0 auto 0 0;
+    width: min(292px, calc(100vw - 44px));
+    max-width: none;
+    min-height: 100dvh;
+    padding: 24px 16px 18px;
+    overflow-y: auto;
+    box-shadow: 18px 0 42px rgba(2, 6, 23, 0.34);
+    transform: translateX(-105%);
+    transition: transform 220ms ease;
+  }
+
+  .sidebar.is-mobile-menu-open {
+    transform: translateX(0);
   }
 
   .brand {
-    flex: 1 1 185px;
+    flex: 0 0 auto;
+    min-height: 42px;
+    padding-left: 56px;
   }
 
   .brand-mark {
@@ -342,8 +382,7 @@ html[data-theme="dark"] .sidebar {
   }
 
   .profile {
-    flex: 0 1 auto;
-    margin: 0;
+    margin: 18px 5px 0;
   }
 
   .avatar {
@@ -352,50 +391,42 @@ html[data-theme="dark"] .sidebar {
   }
 
   .dispatch {
-    margin: 0;
+    margin: 7px 5px 26px 49px;
   }
 
   .nav {
-    display: flex;
-    flex: 1 0 100%;
-    gap: 5px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    display: grid;
+    gap: 6px;
+    overflow: visible;
   }
 
   .nav-container {
-    flex: 1 0 100%;
-    min-width: 0;
-    margin: 0;
-    padding: 4px;
-    border-radius: 11px;
-  }
-
-  .nav::-webkit-scrollbar {
-    display: none;
+    margin: 0 -5px;
+    padding: 5px;
+    border-radius: 13px;
   }
 
   .nav button {
-    width: auto;
-    min-width: max-content;
-    min-height: 36px;
-    padding: 0 9px;
-    font-size: 10px;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 0 10px;
+    font-size: 11px;
   }
 
   .nav-indicator {
-    display: none;
+    display: block;
   }
 
   .nav button.active {
-    border: 1px solid rgba(125, 211, 252, 0.34);
-    background: linear-gradient(135deg, #2563eb, #0e7490);
-    box-shadow: 0 4px 12px rgba(14, 116, 144, 0.2);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .nav button svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 
   .nav-badge {
@@ -405,48 +436,34 @@ html[data-theme="dark"] .sidebar {
   }
 
   .sidebar-footer {
-    position: absolute;
-    top: 11px;
-    right: 13px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 0;
+    position: static;
+    display: grid;
+    padding-top: 20px;
   }
 
   .sidebar-footer > .theme-toggle {
-    width: auto;
-    min-height: 32px;
-    padding: 0 7px;
-    font-size: 0;
-  }
-
-  .sidebar-footer > .theme-toggle svg {
-    width: 18px;
-    height: 18px;
+    width: 100%;
+    min-height: initial;
+    padding: 8px 11px;
+    font-size: 0.75rem;
   }
 
   .sidebar-footer .sign-out {
-    width: auto;
-    min-height: 32px;
-    padding: 0 7px;
-    font-size: 0;
-  }
-
-  .sidebar-footer .sign-out svg {
-    width: 18px;
-    height: 18px;
+    width: 100%;
+    min-height: 42px;
+    padding: 0 10px;
+    font-size: 11px;
   }
 
   .staff-signout-popover {
-    top: 52px;
-    right: 0;
-    bottom: auto;
-    left: auto;
+    top: auto;
+    right: auto;
+    bottom: 82px;
+    left: 16px;
   }
 
   .version {
-    display: none;
+    display: block;
   }
 }
 
@@ -456,10 +473,36 @@ html[data-theme="dark"] .sidebar {
   }
 
   .brand {
-    flex-basis: 100%;
+    flex-basis: auto;
   }
 
   .profile {
     margin-right: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .sidebar {
+    padding-inline: 10px;
+  }
+
+  .brand {
+    flex-basis: calc(100% - 78px);
+    min-width: 0;
+  }
+
+  .brand-title,
+  .city {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sidebar-footer {
+    right: 10px;
+  }
+
+  .nav button {
+    min-height: 34px;
   }
 }
