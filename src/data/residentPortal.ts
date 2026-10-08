@@ -1,37 +1,36 @@
-export type UtilityType = 'Water' | 'Electricity'
+export type UtilityType = "Water" | "Electricity";
 
 export type Fine = {
-  id: string
-  residentId: string
-  status: 'Unpaid' | 'Appealed' | 'Waived'
-  violation: string
-  location: string
-  date: string
-  amount: number
-  photo: string
-}
+  id: string;
+  residentId: string;
+  status: "Unpaid" | "Appealed" | "Waived";
+  violation: string;
+  location: string;
+  date: string;
+  amount: number;
+  photo: string;
+};
 
-export type MaintenanceTicketStage = 'Reported' | 'Dispatched' | 'In Progress' | 'Resolved'
+export type MaintenanceTicketStage = "Reported" | "Dispatched" | "In Progress" | "Resolved";
 
-export type ResidentIssueStatus =
-  | "Submitted"
-  | "Field Guard Review"
-  | "Field Guard Checked";
+export type ResidentIssueStatus = "Submitted" | "Field Guard Review" | "Field Guard Checked";
 
 export type MaintenanceTicket = {
-  id: string
-  type: string
-  location: string
-  reportedDate: string
-  stage: MaintenanceTicketStage
-}
+  id: string;
+  type: string;
+  location: string;
+  reportedDate: string;
+  stage: MaintenanceTicketStage;
+};
 
 export type ResidentServiceRequest = Omit<MaintenanceTicket, "stage"> & {
-  stage: MaintenanceTicketStage | ResidentIssueStatus;
+  stage: MaintenanceTicketStage | ResidentIssueStatus | "Rejected";
   description: string;
   phone: string;
   preferredDate: string;
   attachment: string;
+  rejectionReason?: string;
+  resolvedAt?: string | null;
 };
 
 export type ResidentIssue = {
@@ -108,10 +107,7 @@ export const residentProperty: ResidentProperty = {
   ],
 };
 
-export const utilityUsage: Record<
-  UtilityType,
-  Array<{ month: string; usage: number }>
-> = {
+export const utilityUsage: Record<UtilityType, Array<{ month: string; usage: number }>> = {
   Water: [
     { month: "Mar 2026", usage: 18 },
     { month: "Apr 2026", usage: 21 },
@@ -246,8 +242,7 @@ export const seededResidentIssues: ResidentIssue[] = [
     phone: "050-555-4412",
     subject: "Illegal parked car in resident area",
     category: "Parking",
-    description:
-      "A vehicle is blocking the residential parking spaces near the east entrance.",
+    description: "A vehicle is blocking the residential parking spaces near the east entrance.",
     photo: "Parking issue photo",
     location: "14 Rothschild Boulevard, east entrance",
     reportedDate: "17 Sep 2026",

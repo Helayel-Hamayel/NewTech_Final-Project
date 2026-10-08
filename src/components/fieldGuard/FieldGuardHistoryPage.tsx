@@ -1,4 +1,4 @@
-import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
 import { useState } from "react";
 import {
   prepareHistoryIssues,

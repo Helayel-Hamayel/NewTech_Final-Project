@@ -1,4 +1,4 @@
-import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
 import { useState } from "react";
 import { fieldGuardData } from "../../data/fieldGuardData";
 import { ReportFilters, ReportsList, ReportDetails } from "../../helpers/fieldGuard/fieldGuardReports/fieldGuardReportsHelpers";
