@@ -173,15 +173,15 @@ export default function ResidentPage() {
     <SharedLayout
       header={
         <header className="resident-topbar">
-          <div className="resident-brand">
+          <section className="resident-brand">
             <span className="resident-brand-mark" aria-hidden="true">
               <Building2 size={20} strokeWidth={2.2} />
             </span>
-            <div className="resident-brand-copy">
+            <section className="resident-brand-copy">
               <p>Tel Aviv-Yafo</p>
               <p>Municipality</p>
-            </div>
-          </div>
+            </section>
+          </section>
 
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
           <MobileDrawer
@@ -191,10 +191,10 @@ export default function ResidentPage() {
             onSelect={setActiveTab}
           />
 
-          <div className="resident-user-meta">
+          <section className="resident-user-meta">
             <ThemeToggle />
             <span className="resident-header-divider" aria-hidden="true" />
-            <div className="resident-signout-wrap">
+            <section className="resident-signout-wrap">
               <button
                 className="resident-signout"
                 type="button"
@@ -205,28 +205,28 @@ export default function ResidentPage() {
                 Sign out
               </button>
               {isSignoutOpen ? (
-                <div className="signout-popover" id="signout-popover" role="dialog" aria-labelledby="signout-popover-title">
+                <section className="signout-popover" id="signout-popover" role="dialog" aria-labelledby="signout-popover-title">
                   <strong id="signout-popover-title">Sign out of CivicHub?</strong>
                   <span>Your current portal session will end.</span>
-                  <div className="signout-toast-actions">
+                  <section className="signout-toast-actions">
                     <button type="button" onClick={confirmSignOut}>
                       Sign out
                     </button>
                     <button type="button" onClick={() => setIsSignoutOpen(false)}>
                       Stay signed in
                     </button>
-                  </div>
-                </div>
+                  </section>
+                </section>
               ) : null}
-            </div>
-          </div>
+            </section>
+          </section>
         </header>
       }
       footer={<footer className="resident-footer">© 2026 Tel Aviv-Yafo Municipality · Municipal Services v2.4.1</footer>}>
       <main className="resident-page">
-        <div className="resident-page-shell">
+        <section className="resident-page-shell">
           <section className="resident-page-panel">
-            <div className="resident-content">
+            <section className="resident-content">
               {activeTab === "Dashboard" ? (
                 <Dashboard
                   unpaidFines={unpaidFines}
@@ -262,9 +262,9 @@ export default function ResidentPage() {
               ) : (
                 <Properties />
               )}
-            </div>
+            </section>
           </section>
-        </div>
+        </section>
       </main>
     </SharedLayout>
   );

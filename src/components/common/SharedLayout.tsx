@@ -15,10 +15,10 @@ export default function SharedLayout({
   footer,
 }: SharedLayoutProps) {
   return (
-    <div>
+    <section>
       {header !== undefined ? header : <Header />}
       <main>{children}</main>
       {footer !== undefined ? footer : <Footer />}
-    </div>
+    </section>
   );
 }

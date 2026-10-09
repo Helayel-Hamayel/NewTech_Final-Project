@@ -125,7 +125,7 @@ export default function StaffLayout() {
   }
 
   return (
-    <div className="staff-shell">
+    <section className="staff-shell">
       <StaffHeader
         activeTab={activeTab}
         onTabChange={handleTabChange}
@@ -152,6 +152,6 @@ export default function StaffLayout() {
           }
         />
       </main>
-    </div>
+    </section>
   );
 }

@@ -28,7 +28,7 @@ export default function StaffTopBar({
   return (
     <header className="staff-topbar">
       <h1>{tabTitles[activeTab]}</h1>
-      <div className="staff-topbar-tools">
+      <section className="staff-topbar-tools">
         <label className="staff-search">
           <Search size={17} aria-hidden="true" />
           <input
@@ -54,7 +54,7 @@ export default function StaffTopBar({
             </span>
           ) : null}
         </button>
-      </div>
+      </section>
     </header>
   );
 }

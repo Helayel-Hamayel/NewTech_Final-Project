@@ -25,8 +25,8 @@ export default function PaymentCheckout({
   }
 
   return (
-    <div className="resident-dialog-backdrop" role="presentation">
-      <div
+    <section className="resident-dialog-backdrop" role="presentation">
+      <section
         className="resident-dialog payment-dialog"
         role="dialog"
         aria-modal="true"
@@ -48,10 +48,10 @@ export default function PaymentCheckout({
               Review your balance and choose whether to pay it once or split it
               into installments.
             </p>
-            <div className="payment-dialog-total">
+            <section className="payment-dialog-total">
               <span>Total balance</span>
               <strong>{currency.format(amount)}</strong>
-            </div>
+            </section>
             <label className="payment-count-field">
               Number of payments
               <input
@@ -71,7 +71,7 @@ export default function PaymentCheckout({
                 ? "Pay the full balance today."
                 : `${currency.format(amount / checkoutPayments)} per payment, before any provider fees.`}
             </p>
-            <div className="payment-dialog-actions">
+            <section className="payment-dialog-actions">
               <button
                 className="resident-secondary-btn"
                 type="button"
@@ -86,10 +86,10 @@ export default function PaymentCheckout({
               >
                 Continue to checkout
               </button>
-            </div>
+            </section>
           </>
         ) : demoPaymentComplete ? (
-          <div className="payment-complete" role="status">
+          <section className="payment-complete" role="status">
             <strong>Demo payment complete</strong>
             <p>
               No real payment was processed. Secure checkout integration is a
@@ -98,7 +98,7 @@ export default function PaymentCheckout({
             <button className="resident-primary-btn" type="button" onClick={onClose}>
               Done
             </button>
-          </div>
+          </section>
         ) : (
           <form className="demo-payment-form" onSubmit={handleDemoPaymentSubmit}>
             <p className="section-label">Demo secure checkout</p>
@@ -107,12 +107,12 @@ export default function PaymentCheckout({
               This is a functional demo. Real secure payment processing is a
               work in progress.
             </p>
-            <div className="payment-dialog-total">
+            <section className="payment-dialog-total">
               <span>
                 {checkoutPayments} payment{checkoutPayments === 1 ? "" : "s"}
               </span>
               <strong>{currency.format(amount / checkoutPayments)}</strong>
-            </div>
+            </section>
             <label className="payment-count-field">
               Cardholder name
               <input required type="text" placeholder="Maria Reyes" />
@@ -125,7 +125,7 @@ export default function PaymentCheckout({
                 placeholder="4242 4242 4242 4242"
               />
             </label>
-            <div className="demo-payment-row">
+            <section className="demo-payment-row">
               <label className="payment-count-field">
                 Expiry
                 <input required placeholder="MM / YY" />
@@ -134,8 +134,8 @@ export default function PaymentCheckout({
                 CVV
                 <input required inputMode="numeric" placeholder="123" />
               </label>
-            </div>
-            <div className="payment-dialog-actions">
+            </section>
+            <section className="payment-dialog-actions">
               <button
                 className="resident-secondary-btn"
                 type="button"
@@ -146,10 +146,10 @@ export default function PaymentCheckout({
               <button className="resident-primary-btn" type="submit">
                 Complete demo payment
               </button>
-            </div>
+            </section>
           </form>
         )}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }

@@ -24,14 +24,14 @@ export default function CitationDisputes({
 }: CitationDisputesProps) {
   return (
     <section className="staff-panel" aria-labelledby="disputes-heading">
-      <div className="staff-panel-heading">
-        <div>
+      <header className="staff-panel-heading">
+        <section>
           <p className="staff-section-label">Review and resolve</p>
           <h2 id="disputes-heading">Citation disputes</h2>
-        </div>
+        </section>
         <span className="staff-result-count">{pendingDisputes} pending</span>
-      </div>
-      <div
+      </header>
+      <section
         className="staff-table-scroll"
         role="region"
         aria-label="Citation disputes table"
@@ -71,7 +71,7 @@ export default function CitationDisputes({
                   </td>
                   <td>
                     {status === "PENDING" ? (
-                      <div className="staff-row-actions">
+                      <section className="staff-row-actions">
                         <button
                           className="staff-approve"
                           type="button"
@@ -90,7 +90,7 @@ export default function CitationDisputes({
                           <X size={14} aria-hidden="true" />
                           Reject
                         </button>
-                      </div>
+                      </section>
                     ) : (
                       <span
                         className={`staff-status-badge staff-status-badge--${status.toLowerCase()}`}
@@ -111,7 +111,7 @@ export default function CitationDisputes({
             ) : null}
           </tbody>
         </table>
-      </div>
+      </section>
     </section>
   );
 }

@@ -27,11 +27,11 @@ export default function FieldGuardHistoryPage({
 
   return (
     <section className="field-guard-screen field-guard-history" aria-labelledby="history-title">
-      <div className="field-guard-page-heading">
+      <header className="field-guard-page-heading">
         <p className="field-guard-eyebrow">CITATION RECORDS</p>
         <h1 id="history-title">Issue History</h1>
         <p>Review issued citations, their status, and indicative fines.</p>
-      </div>
+      </header>
       <dl className="field-guard-stat-grid field-guard-history-stats">
         <div className="field-guard-stat-card">
           <dt>Total issues</dt>
@@ -50,7 +50,7 @@ export default function FieldGuardHistoryPage({
           <dd>{formatCost(counts.totalCost)}</dd>
         </div>
       </dl>
-      <div className="field-guard-workspace">
+      <section className="field-guard-workspace">
         <section className="field-guard-panel field-guard-history-list-panel" aria-label="Issues">
           <HistoryFilters search={search} status={status} setSearch={setSearch} setStatus={setStatus} />
           <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={setSelectedId} />
@@ -58,10 +58,10 @@ export default function FieldGuardHistoryPage({
             {visibleIssues.length} out of {issues.length} issues
           </p>
         </section>
-        <div className="field-guard-panel field-guard-history-details-panel">
+        <section className="field-guard-panel field-guard-history-details-panel" aria-label="Selected issue details">
           <HistoryDetails issue={selectedIssue} />
-        </div>
-      </div>
+        </section>
+      </section>
     </section>
   );
 }

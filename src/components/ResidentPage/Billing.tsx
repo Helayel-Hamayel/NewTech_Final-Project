@@ -19,25 +19,25 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
   return (
     <section className="resident-view" aria-labelledby="billing-heading">
       <header className="resident-page-intro resident-page-intro--split">
-        <div>
+        <section>
           <p className="section-label">Account finance</p>
           <h1 id="billing-heading">Billing &amp; payments</h1>
           <p>
             Review monthly charges, download receipts, and keep your account
             current.
           </p>
-        </div>
-        <div className="resident-intro-badge">
+        </section>
+        <section className="resident-intro-badge">
           <ReceiptText size={18} aria-hidden="true" />
           <span>Updated today</span>
-        </div>
+        </section>
       </header>
-      <div className="billing-summary-grid">
+      <section className="billing-summary-grid" aria-label="Billing summary">
         <article className="billing-balance-card">
-          <div className="billing-icon">
+          <section className="billing-icon">
             <WalletCards size={20} aria-hidden="true" />
-          </div>
-          <div>
+          </section>
+          <section>
             <p className="section-label section-label--light">
               Current balance due
             </p>
@@ -45,7 +45,7 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
               {currency.format(currentBalanceDue)}
             </p>
             <span>Due 30 Sep 2026</span>
-          </div>
+          </section>
           <button
             className="resident-primary-btn"
             type="button"
@@ -67,19 +67,19 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
             invoices settled
           </span>
         </article>
-      </div>
+      </section>
       <section
         className="resident-card billing-history-card"
         aria-labelledby="billing-history-heading"
       >
-        <div className="resident-card-header">
-          <div>
+        <section className="resident-card-header">
+          <section>
             <p className="section-label">Payment history</p>
             <h2 id="billing-history-heading">Invoices</h2>
-          </div>
+          </section>
           <span className="billing-count">{invoices.length} records</span>
-        </div>
-        <div className="billing-table-wrap">
+        </section>
+        <section className="billing-table-wrap">
           <table className="billing-table">
             <thead>
               <tr>
@@ -144,7 +144,7 @@ export default function Billing({ invoices, onDownloadInvoice }: BillingProps) {
               ))}
             </tbody>
           </table>
-        </div>
+        </section>
       </section>
       {checkoutAmount !== null ? (
         <PaymentCheckout

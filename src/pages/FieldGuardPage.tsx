@@ -54,11 +54,11 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
   }, []);
   return (
     <section className="field-guard-screen field-guard-overview" aria-labelledby="field-guard-title">
-      <div className="field-guard-page-heading">
+      <header className="field-guard-page-heading">
         <p className="field-guard-eyebrow">OFFICER WORKSPACE</p>
         <h1 id="field-guard-title">Field Guard Overview</h1>
         <p>Welcome back, {name}. Here is your activity at a glance.</p>
-      </div>
+      </header>
 
       <dl className="field-guard-stat-grid">
         <div className="field-guard-stat-card">
@@ -84,7 +84,7 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
           <dd>{reports.length}</dd>
         </div>
       </dl>
-      <div className="field-guard-overview-panels">
+      <section className="field-guard-overview-panels" aria-label="Recent activity">
         <RecentPanel title="Recent issues" prefix="Issue" entries={issues} />
         {reportsLoading ? (
           <p role="status">Loading reports...</p>
@@ -93,7 +93,7 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
         ) : (
           <RecentPanel title="Recent reports" prefix="Report" entries={reports} />
         )}{" "}
-      </div>
+      </section>
     </section>
   );
 }

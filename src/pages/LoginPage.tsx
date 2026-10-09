@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   return (
     <main className="login-page">
-      <div className="login-background" aria-hidden="true">
+      <section className="login-background" aria-hidden="true">
         {backgrounds.map((background, index) => (
           <img
             className={`login-background-image${index === activeBackground ? " is-active" : ""}`}
@@ -37,20 +37,20 @@ export default function LoginPage() {
             alt=""
           />
         ))}
-        <div className="login-background-overlay" />
-      </div>
-      <div className="login-shell">
+        <section className="login-background-overlay" />
+      </section>
+      <section className="login-shell">
         <LoginHeader />
 
         <section className="login-content" aria-labelledby="login-heading">
-          <div className="login-panel">
-            <div className="login-intro">
+          <section className="login-panel">
+            <header className="login-intro">
               <p className="login-eyebrow">Municipal portal / secure access</p>
               <h1 id="login-heading">Sign in to your account</h1>
               <p className="login-description">
                 Access city services and operations securely.
               </p>
-            </div>
+            </header>
 
             <LoginForm />
             <DemoAccess />
@@ -58,10 +58,10 @@ export default function LoginPage() {
               className="registration-notice"
               aria-labelledby="registration-heading"
             >
-              <div className="registration-notice-mark" aria-hidden="true">
+              <section className="registration-notice-mark" aria-hidden="true">
                 i
-              </div>
-              <div>
+              </section>
+              <section>
                 <h2 id="registration-heading">Need an account?</h2>
                 <p>
                   New residents can register at a Tel Aviv-Yafo Municipality
@@ -69,13 +69,13 @@ export default function LoginPage() {
                   address. Staff will verify your details and issue temporary
                   credentials for your first sign-in.
                 </p>
-              </div>
+              </section>
             </aside>
-          </div>
+          </section>
         </section>
 
         <Footer />
-      </div>
+      </section>
     </main>
   );
 }

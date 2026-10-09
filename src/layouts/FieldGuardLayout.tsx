@@ -15,7 +15,7 @@ export default function FieldGuardLayout() {
   const issues = [...fieldGuardData.issues, ...issuedCitations];
 
   return (
-    <div className="field-guard-layout">
+    <section className="field-guard-layout">
       <FieldGuardHeader activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="field-guard-main">
@@ -36,6 +36,6 @@ export default function FieldGuardLayout() {
         {activeTab === "reports" ? <FieldGuardReportsPage /> : null}
         {activeTab === "history" ? <FieldGuardHistoryPage issues={issues} /> : null}
       </main>
-    </div>
+    </section>
   );
 }

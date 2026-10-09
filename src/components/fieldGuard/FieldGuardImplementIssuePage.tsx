@@ -90,11 +90,11 @@ export default function FieldGuardImplementIssuePage({
   return (
     <section className="field-citation" aria-labelledby="citation-title">
       <header className="field-citation-heading">
-        <div>
+        <section>
           <p className="field-citation-eyebrow">FIELD OPERATIONS</p>
           <h1 id="citation-title">Issue Parking Citation</h1>
           <p>Create a demo citation for Tel Aviv-Yafo.</p>
-        </div>
+        </section>
         <span className="field-citation-ticket-mark" aria-hidden="true">
           <Ticket size={21} />
         </span>
@@ -106,7 +106,7 @@ export default function FieldGuardImplementIssuePage({
       </p>
 
       <form className="field-citation-form" onSubmit={handleSubmit}>
-        <div className="field-citation-plate">
+        <section className="field-citation-plate">
           <label htmlFor="citation-plate">Vehicle registration number</label>
           <input
             id="citation-plate"
@@ -124,9 +124,9 @@ export default function FieldGuardImplementIssuePage({
             maxLength={10}
           />
           <small className="field-citation-help">7- or 8-digit Israeli plate</small>
-        </div>
+        </section>
 
-        <div className="field-citation-infraction">
+        <section className="field-citation-infraction">
           <label htmlFor="citation-infraction">Infraction type</label>
           <select
             id="citation-infraction"
@@ -140,17 +140,17 @@ export default function FieldGuardImplementIssuePage({
               </option>
             ))}
           </select>
-        </div>
+        </section>
 
         <section
           className="field-citation-fine"
           aria-live="polite"
           aria-label="Calculated fine"
         >
-          <div>
+          <section>
             <p>CALCULATED FINE · TEL AVIV-YAFO</p>
             <strong>{currency.format(selectedInfraction.fine)}</strong>
-          </div>
+          </section>
           <span>{infractionName}</span>
           <small>Indicative amount; the official notice determines the final fine.</small>
         </section>
@@ -177,7 +177,7 @@ export default function FieldGuardImplementIssuePage({
           </span>
         </button>
 
-        <div className="field-citation-actions">
+        <section className="field-citation-actions">
           <button
             className="field-citation-reset"
             type="button"
@@ -203,7 +203,7 @@ export default function FieldGuardImplementIssuePage({
               </>
             )}
           </button>
-        </div>
+        </section>
       </form>
 
       <p className="field-citation-location">

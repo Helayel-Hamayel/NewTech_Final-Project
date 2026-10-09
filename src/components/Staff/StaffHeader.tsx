@@ -80,28 +80,28 @@ export default function StaffHeader({
       id="staff-navigation"
       aria-label="Staff sidebar"
     >
-      <div className="brand">
+      <section className="brand">
         <span className="brand-mark" aria-hidden="true">
           <Map size={28} />
         </span>
-        <div>
+        <section>
           <p className="brand-title">Municipal Operations</p>
           <p className="city">Tel Aviv-Yafo Municipality</p>
-        </div>
-      </div>
+        </section>
+      </section>
 
-      <div className="profile">
+      <section className="profile">
         <span className="avatar" aria-hidden="true">
           {initials}
         </span>
         <span className="name">{staffData.name}</span>
-      </div>
+      </section>
       <p className="dispatch">
         <span className="status-dot" aria-hidden="true" />
         Dispatch #{staffData.workName}
       </p>
 
-      <div className="nav-container">
+      <section className="nav-container">
         <nav className="nav" aria-label="Staff navigation">
           <span
             className="nav-indicator"
@@ -142,10 +142,10 @@ export default function StaffHeader({
             );
           })}
         </nav>
-      </div>
-      <div className="sidebar-footer">
+      </section>
+      <section className="sidebar-footer">
         <ThemeToggle />
-        <div className="staff-signout-wrap">
+        <section className="staff-signout-wrap">
           <button
             className="sign-out"
             type="button"
@@ -157,7 +157,7 @@ export default function StaffHeader({
             Sign out
           </button>
           {isSignoutOpen ? (
-            <div
+            <section
               className="staff-signout-popover"
               id="staff-signout-popover"
               role="dialog"
@@ -167,7 +167,7 @@ export default function StaffHeader({
                 Sign out of CivicHub?
               </strong>
               <span>Your current portal session will end.</span>
-              <div className="staff-signout-actions">
+              <section className="staff-signout-actions">
                 <button
                   type="button"
                   onClick={confirmSignOut}
@@ -180,11 +180,11 @@ export default function StaffHeader({
                 >
                   Stay signed in
                 </button>
-              </div>
-            </div>
+              </section>
+            </section>
           ) : null}
-        </div>
-      </div>
+        </section>
+      </section>
       <p className="version">Municipal Operations v2.4.1</p>
     </aside>
     </>
