@@ -255,9 +255,9 @@ select {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(148, 163, 184, 0.32);
-  color: var(--resident-white);
+  background: #b91c1c;
+  border-color: #ef4444;
+  color: #fff;
   padding: clamp(0.38rem, 0.5vw, 0.58rem) clamp(0.7rem, 0.9vw, 1rem);
   font-size: clamp(0.75rem, 0.8vw, 0.9rem);
 }
@@ -2051,6 +2051,11 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
 }
 .resident-primary-btn:hover {
   background: var(--resident-blue-dark);
+}
+.resident-signout:hover {
+  background: #991b1b;
+  border-color: #f87171;
+  color: #fff;
 }
 .resident-secondary-btn:hover {
   border-color: var(--resident-blue);

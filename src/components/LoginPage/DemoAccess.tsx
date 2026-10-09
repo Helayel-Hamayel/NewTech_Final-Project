@@ -1,5 +1,6 @@
 import { ArrowRight, HardHat, House, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUser } from "../../contexts/useUser";
 import { demoAccounts } from "../../data/demoAccounts";
 
 const accountIcons = {
@@ -9,6 +10,8 @@ const accountIcons = {
 };
 
 export default function DemoAccess() {
+  const { saveUser } = useUser();
+
   return (
     <section className="demo-access" aria-labelledby="demo-access-heading">
       <div className="demo-access-heading">
@@ -26,6 +29,7 @@ export default function DemoAccess() {
           className={`demo-account demo-account--${account.role}`}
           to={account.path}
           key={account.name}
+          onClick={() => saveUser(account.user)}
         >
           <span className="demo-account-icon" aria-hidden="true">
             {(() => {
