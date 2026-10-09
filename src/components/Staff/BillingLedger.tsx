@@ -12,14 +12,14 @@ export default function BillingLedger({
 }: BillingLedgerProps) {
   return (
     <section className="staff-panel" aria-labelledby="billing-heading">
-      <div className="staff-panel-heading">
-        <div>
+      <header className="staff-panel-heading">
+        <section>
           <p className="staff-section-label">Resident accounts</p>
           <h2 id="billing-heading">Billing ledger</h2>
-        </div>
+        </section>
         <span className="staff-result-count">{accounts.length} accounts</span>
-      </div>
-      <div
+      </header>
+      <section
         className="staff-table-scroll"
         role="region"
         aria-label="Billing ledger table"
@@ -74,7 +74,7 @@ export default function BillingLedger({
             ) : null}
           </tbody>
         </table>
-      </div>
+      </section>
     </section>
   );
 }

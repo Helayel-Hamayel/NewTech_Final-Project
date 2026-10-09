@@ -85,15 +85,15 @@ export default function MobileDrawer<Id extends string>({
         aria-hidden={!isOpen}
         inert={!isOpen}
       >
-        <div className="mobile-drawer-header">
+        <section className="mobile-drawer-header">
           <span className="mobile-drawer-brand-mark" aria-hidden="true">
             {brandIcon}
           </span>
-          <div className="mobile-drawer-brand-copy">
+          <section className="mobile-drawer-brand-copy">
             <strong>{userName}</strong>
             <span>{subtitle}</span>
-          </div>
-        </div>
+          </section>
+        </section>
 
         <nav className="mobile-drawer-nav">
           {items.map(({ id, label, icon: Icon, badge }) => (
@@ -114,20 +114,20 @@ export default function MobileDrawer<Id extends string>({
           ))}
         </nav>
 
-        <div className="mobile-drawer-footer">
+        <section className="mobile-drawer-footer">
           <ThemeToggle />
           {isConfirmingSignOut ? (
-            <div className="mobile-drawer-confirm" role="dialog" aria-label="Confirm sign out">
+            <section className="mobile-drawer-confirm" role="dialog" aria-label="Confirm sign out">
               <strong>Sign out of CivicHub?</strong>
-              <div>
+              <section>
                 <button type="button" className="is-danger" onClick={confirmSignOut}>
                   Sign out
                 </button>
                 <button type="button" onClick={() => setIsConfirmingSignOut(false)}>
                   Stay signed in
                 </button>
-              </div>
-            </div>
+              </section>
+            </section>
           ) : (
             <button
               className="mobile-drawer-signout"
@@ -139,7 +139,7 @@ export default function MobileDrawer<Id extends string>({
             </button>
           )}
           <p className="mobile-drawer-version">CivicHub v2.4.1</p>
-        </div>
+        </section>
       </aside>
     </>
   );

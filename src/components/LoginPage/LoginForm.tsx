@@ -51,7 +51,7 @@ export default function LoginForm() {
   }
   return (
     <form className="login-form" onSubmit={handleSubmit}>
-      <div className="login-field">
+      <section className="login-field">
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -62,9 +62,9 @@ export default function LoginForm() {
           value={email}
           required
         />
-      </div>
+      </section>
 
-      <div className="login-field">
+      <section className="login-field">
         <label htmlFor="password">Password</label>
         <input
           id="password"
@@ -75,7 +75,7 @@ export default function LoginForm() {
           value={password}
           required
         />
-      </div>
+      </section>
 
       <button className="login-submit" type="submit" disabled={loading}>
         {loading ? "Logging in..." : "Log in securely"}

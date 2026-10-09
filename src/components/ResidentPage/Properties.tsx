@@ -14,37 +14,37 @@ export default function Properties() {
         </p>
       </header>
       <article className="property-hero">
-        <div className="property-hero-art">
+        <section className="property-hero-art">
           <Building2 size={42} aria-hidden="true" />
           <span>{residentProperty.coverPhoto}</span>
-        </div>
-        <div className="property-hero-copy">
-          <div className="property-title-row">
-            <div>
+        </section>
+        <section className="property-hero-copy">
+          <section className="property-title-row">
+            <section>
               <p className="section-label">Primary residence</p>
               <h2>{residentProperty.address}</h2>
               <p>
                 {residentProperty.zone} · {residentProperty.district}
               </p>
-            </div>
+            </section>
             <span className="status-badge status-badge--paid">
               <ShieldCheck size={14} aria-hidden="true" />
               {residentProperty.leaseStatus}
             </span>
-          </div>
-          <div className="property-tags">
+          </section>
+          <section className="property-tags">
             <span>{residentProperty.propertyType}</span>
             <span>{residentProperty.leaseType}</span>
-          </div>
-        </div>
+          </section>
+        </section>
       </article>
       <section className="resident-card property-section property-glance">
-        <div className="resident-card-header">
-          <div>
+        <section className="resident-card-header">
+          <section>
             <p className="section-label">At a glance</p>
             <h2>Property stats</h2>
-          </div>
-        </div>
+          </section>
+        </section>
         <dl className="property-stats">
           <div>
             <dt>Bedrooms</dt>
@@ -64,14 +64,14 @@ export default function Properties() {
           </div>
         </dl>
       </section>
-      <div className="property-grid">
+      <section className="property-grid">
         <section className="resident-card property-section">
-          <div className="resident-card-header">
-            <div>
+          <section className="resident-card-header">
+            <section>
               <p className="section-label">Agreement</p>
               <h2>Lease details</h2>
-            </div>
-          </div>
+            </section>
+          </section>
           <dl className="property-details">
             <div>
               <dt>Start date</dt>
@@ -92,13 +92,13 @@ export default function Properties() {
           </dl>
         </section>
         <section className="resident-card property-section">
-          <div className="resident-card-header">
-            <div>
+          <section className="resident-card-header">
+            <section>
               <p className="section-label">Connected services</p>
               <h2>Utility accounts</h2>
-            </div>
+            </section>
             <Droplets size={20} aria-hidden="true" />
-          </div>
+          </section>
           <ul className="property-contact-list">
             {residentProperty.utilityAccounts.map((utility) => (
               <li
@@ -111,16 +111,16 @@ export default function Properties() {
             ))}
           </ul>
         </section>
-      </div>
-      <div className="property-support-row">
+      </section>
+      <section className="property-support-row">
         <section className="resident-card property-section property-section--support">
-          <div className="resident-card-header">
-            <div>
+          <section className="resident-card-header">
+            <section>
               <p className="section-label">Need help?</p>
               <h2>Emergency contacts</h2>
-            </div>
+            </section>
             <Phone size={20} aria-hidden="true" />
-          </div>
+          </section>
           <ul className="property-contact-list">
             {residentProperty.emergencyContacts.map((contact) => (
               <li key={contact.name}>
@@ -130,7 +130,7 @@ export default function Properties() {
             ))}
           </ul>
         </section>
-      </div>
+      </section>
     </section>
   );
 }

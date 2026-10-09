@@ -12,12 +12,12 @@ type HistoryFiltersProps = {
 
 export function HistoryFilters({ search, status, setSearch, setStatus }: HistoryFiltersProps) {
   return (
-    <div className="field-guard-history-filters">
-      <div className="field-guard-history-search">
+    <section className="field-guard-history-filters">
+      <section className="field-guard-history-search">
         <label htmlFor="history-search">Search by issue number or plate</label>
         <input id="history-search" type="search" placeholder="Issue-001 or 12-345-67" value={search} onChange={(e) => setSearch(e.target.value)} />
-      </div>
-      <div className="field-guard-filter-options" role="group" aria-label="Issue status">
+      </section>
+      <section className="field-guard-filter-options" role="group" aria-label="Issue status">
         {["All", "Accepted", "Pending", "Rejected"].map((value) => (
           <button
             className="field-guard-filter-button"
@@ -28,8 +28,8 @@ export function HistoryFilters({ search, status, setSearch, setStatus }: History
             <FieldGuardStatusIcon status={value} />{value}
           </button>
         ))}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }
 
@@ -60,7 +60,7 @@ export function HistoryList({ issues, selectedId, onSelect }: HistoryListProps) 
             aria-label={`${issue.priority.toLowerCase()} priority`}
             title={`${issue.priority.toLowerCase()} priority`}
           />
-          <div className="field-guard-history-content">
+          <section className="field-guard-history-content">
             <h2>
               <button
                 className="field-guard-record-title-button"
@@ -73,18 +73,18 @@ export function HistoryList({ issues, selectedId, onSelect }: HistoryListProps) 
                 {issue.name}
               </button>
             </h2>
-            <div className="field-guard-record-meta">
+            <section className="field-guard-record-meta">
               <span><Tag aria-hidden="true" />{issue.displayId}</span>
               <span>{issue.violationType}</span>
               <time dateTime={issue.createdAt}><CalendarDays aria-hidden="true" />{formatHistoryDate(issue.createdAt)}</time>
-            </div>
-          </div>
-          <div className="field-guard-history-summary">
+            </section>
+          </section>
+          <section className="field-guard-history-summary">
             <span className="field-guard-history-cost">{formatCost(issue.amount)}</span>
             <span className={`field-guard-status field-guard-status--${issue.status.toLowerCase().replaceAll(" ", "-")}`}>
               <FieldGuardStatusIcon status={issue.status} />{issue.status}
             </span>
-          </div>
+          </section>
         </li>
       ))}
     </ul>
@@ -103,15 +103,15 @@ export function HistoryDetails({ issue }: SelectedIssue) {
   }
   return (
     <section className="field-guard-issue-details" aria-label={`Details for ${issue.displayId}`}>
-      <div className="field-guard-details-heading">
-        <div>
+      <header className="field-guard-details-heading">
+        <section>
           <p className="field-guard-eyebrow">ISSUE DETAILS</p>
           <h2><Tag aria-hidden="true" />{issue.displayId}</h2>
-        </div>
+        </section>
         <span className={`field-guard-status field-guard-status--${issue.status.toLowerCase().replaceAll(" ", "-")}`}>
           <FieldGuardStatusIcon status={issue.status} />{issue.status}
         </span>
-      </div>
+      </header>
       <dl className="field-guard-detail-list">
         <div>
           <dt><FileText aria-hidden="true" />Description</dt>
@@ -128,39 +128,35 @@ export function HistoryDetails({ issue }: SelectedIssue) {
           </div>
         ) : null}
         <div>
-          <div>
-            <dt><Tag aria-hidden="true" />Category</dt>
-            <dd>{issue.violationType}</dd>
-          </div>
-          <div>
-            <dt><Flag aria-hidden="true" />Priority</dt>
-            <dd>
-              <span aria-hidden="true" />
-              <span>{issue.priority}</span>
-            </dd>
-          </div>
+          <dt><Tag aria-hidden="true" />Category</dt>
+          <dd>{issue.violationType}</dd>
+        </div>
+        <div>
+          <dt><Flag aria-hidden="true" />Priority</dt>
+          <dd>
+            <span aria-hidden="true" />
+            <span>{issue.priority}</span>
+          </dd>
         </div>
         <div>
           <dt><MapPin aria-hidden="true" />Location</dt>
           <dd>{issue.location}</dd>
         </div>
         <div>
-          <div>
-            <dt>Submitted</dt>
-            <dd>
-              <time dateTime={issue.createdAt}><CalendarDays aria-hidden="true" />{formatHistoryDate(issue.createdAt)}</time>
-            </dd>
-          </div>
-          <div>
-            <dt>Resolved</dt>
-            <dd>
-              {issue.status !== "PENDING" && issue.resolvedAt ? (
-                <time dateTime={issue.resolvedAt}><CalendarDays aria-hidden="true" />{formatHistoryDate(issue.resolvedAt)}</time>
-              ) : (
-                "Not resolved yet"
-              )}
-            </dd>
-          </div>
+          <dt>Submitted</dt>
+          <dd>
+            <time dateTime={issue.createdAt}><CalendarDays aria-hidden="true" />{formatHistoryDate(issue.createdAt)}</time>
+          </dd>
+        </div>
+        <div>
+          <dt>Resolved</dt>
+          <dd>
+            {issue.status !== "PENDING" && issue.resolvedAt ? (
+              <time dateTime={issue.resolvedAt}><CalendarDays aria-hidden="true" />{formatHistoryDate(issue.resolvedAt)}</time>
+            ) : (
+              "Not resolved yet"
+            )}
+          </dd>
         </div>
       </dl>
     </section>

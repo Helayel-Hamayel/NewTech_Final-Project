@@ -74,15 +74,15 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
   }
   return (
     <section className="staff-maintenance-section" aria-labelledby="maintenance-heading">
-      <div className="staff-maintenance-heading">
-        <div>
+      <header className="staff-maintenance-heading">
+        <section>
           <p className="staff-section-label">City service requests</p>
           <h2 id="maintenance-heading">Maintenance dispatch</h2>
-        </div>
-      </div>
+        </section>
+      </header>
       {updateError && <p role="alert">{updateError}</p>}
-      <div className="staff-kanban-scroll" aria-label="Maintenance board">
-        <div className="staff-kanban">
+      <section className="staff-kanban-scroll" aria-label="Maintenance board">
+        <section className="staff-kanban">
           {columns.map((column) => {
             const columnTickets = matchingTickets.filter((ticket) => ticket.status === column.status);
 
@@ -93,7 +93,7 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
                   <span>{columnTickets.length}</span>
                 </header>
 
-                <div className="staff-ticket-list">
+                <section className="staff-ticket-list">
                   {columnTickets.map((ticket) => (
                     <article className="staff-maintenance-card" key={ticket.id}>
                       <span className="staff-ticket-id">{ticket.id}</span>
@@ -138,12 +138,12 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
                   ))}
 
                   {columnTickets.length === 0 && <p className="staff-column-empty">No tickets here.</p>}
-                </div>
+                </section>
               </section>
             );
           })}
-        </div>
-      </div>
+        </section>
+      </section>
     </section>
   );
 }

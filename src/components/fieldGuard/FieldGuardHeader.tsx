@@ -48,34 +48,34 @@ export default function FieldGuardHeader({
 
   return (
     <header className="field-guard-header">
-      <div className="field-guard-mobile-brand">
+      <section className="field-guard-mobile-brand">
         <span className="field-guard-mobile-brand-mark" aria-hidden="true">
           <Building2 size={20} strokeWidth={2.2} />
         </span>
-        <div>
+        <section>
           <p>Tel Aviv-Yafo</p>
           <p>Municipality</p>
-        </div>
-      </div>
+        </section>
+      </section>
 
-      <div className="field-guard-header-main">
-        <div className="field-guard-officer">
+      <section className="field-guard-header-main">
+        <section className="field-guard-officer">
           <span className="field-guard-officer-icon" aria-hidden="true">
             <Activity size={20} />
           </span>
-          <div>
+          <section>
             <strong>J. Mbeki</strong>
             <span>#G-114 · Zone 3 · 07.09.2026</span>
-          </div>
+          </section>
           <span className="field-guard-shift">
             <span className="field-guard-pulse" aria-hidden="true" />
             SHIFT ACTIVE
           </span>
-        </div>
+        </section>
 
-        <div className="field-guard-header-actions">
+        <section className="field-guard-header-actions">
           <ThemeToggle />
-          <div className="field-guard-signout-wrap">
+          <section className="field-guard-signout-wrap">
             <button
               className="field-guard-signout"
               type="button"
@@ -87,7 +87,7 @@ export default function FieldGuardHeader({
               Sign Out
             </button>
             {isSignoutOpen ? (
-              <div
+              <section
                 className="field-guard-signout-popover"
                 id="field-guard-signout-popover"
                 role="dialog"
@@ -97,7 +97,7 @@ export default function FieldGuardHeader({
                   Sign out of CivicHub?
                 </strong>
                 <span>Your current portal session will end.</span>
-                <div className="field-guard-signout-actions">
+                <section className="field-guard-signout-actions">
                   <button
                     type="button"
                     onClick={confirmSignOut}
@@ -110,12 +110,12 @@ export default function FieldGuardHeader({
                   >
                     Stay signed in
                   </button>
-                </div>
-              </div>
+                </section>
+              </section>
             ) : null}
-          </div>
-        </div>
-      </div>
+          </section>
+        </section>
+      </section>
 
       <MobileDrawer
         brandIcon={<Activity />} userName={"J. Mbeki"} subtitle="Field Guard"
@@ -127,7 +127,7 @@ export default function FieldGuardHeader({
         id="field-guard-navigation"
         aria-label="Field Guard navigation"
       >
-        <div className="field-guard-nav-list">
+        <section className="field-guard-nav-list">
           <span
             className="field-guard-nav-indicator"
             aria-hidden="true"
@@ -149,7 +149,7 @@ export default function FieldGuardHeader({
               {label}
             </button>
           ))}
-        </div>
+        </section>
       </nav>
     </header>
   );

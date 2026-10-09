@@ -185,16 +185,16 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
   return (
     <>
       <section className="staff-panel staff-service-requests" aria-labelledby="service-requests-heading">
-        <div className="staff-maintenance-heading">
-          <div>
+        <header className="staff-maintenance-heading">
+          <section>
             <p className="staff-section-label">Resident submissions</p>
             <h2 id="service-requests-heading">Request inbox</h2>
             <p className="staff-service-requests-description">
               Review each request, route it to the right team, or reject it with a reason.
             </p>
-          </div>
+          </section>
           <span className="staff-service-request-count">{requests.filter((request) => request.status === "Pending").length} pending</span>
-        </div>
+        </header>
         <p className="staff-service-request-demo-note" role="note">
           Assignments are saved. Rejection is still a demo action.
         </p>
@@ -203,16 +203,16 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
             {requests.length === 0 ? "No resident requests yet." : "No requests match your search."}
           </p>
         ) : (
-          <div className="staff-service-request-list">
+          <section className="staff-service-request-list">
             {matchingRequests.map((request) => (
               <article className="staff-service-request-card" key={request.id}>
-                <div className="staff-service-request-card-top">
+                <section className="staff-service-request-card-top">
                   <span className="staff-ticket-id">{request.id}</span>
                   <span
                     className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase()}`}>
                     {request.status}
                   </span>
-                </div>
+                </section>
                 <h3>{request.type}</h3>
                 <p className="staff-service-request-resident">
                   {request.residentName} · {request.location}
@@ -235,22 +235,22 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 </button>
               </article>
             ))}
-          </div>
+          </section>
         )}
       </section>
 
       {selectedRequest ? (
-        <div className="staff-modal-backdrop">
+        <section className="staff-modal-backdrop">
           <section
             className="staff-ticket-dialog staff-service-request-dialog"
             role="dialog"
             aria-modal="true"
             aria-labelledby="service-request-dialog-heading">
-            <div className="staff-dialog-heading">
-              <div>
+            <header className="staff-dialog-heading">
+              <section>
                 <p className="staff-section-label">Request {selectedRequest.id}</p>
                 <h2 id="service-request-dialog-heading">{selectedRequest.type}</h2>
-              </div>
+              </section>
               <button
                 className="staff-dialog-close"
                 type="button"
@@ -259,7 +259,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 onClick={() => setSelectedRequestId(null)}>
                 <X size={19} aria-hidden="true" />
               </button>
-            </div>
+            </header>
 
             <dl className="staff-service-request-details">
               <div>
@@ -298,19 +298,19 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 </dd>
               </div>
             </dl>
-            <div className="staff-service-request-description">
+            <section className="staff-service-request-description">
               <h3>Request details</h3>
               <p>{selectedRequest.description}</p>
-            </div>
+            </section>
 
             {selectedRequest.status === "Rejected" ? (
-              <div className="staff-service-request-rejection">
+              <section className="staff-service-request-rejection">
                 <h3>Rejection reason</h3>
                 <p>{selectedRequest.rejectionReason}</p>
-              </div>
+              </section>
             ) : (
               <>
-                <div className="staff-service-request-routing">
+                <section className="staff-service-request-routing">
                   <h3>Assign request</h3>
 
                   {guardsError && <p role="alert">{guardsError}</p>}
@@ -331,7 +331,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </select>
                   </label>
 
-                  <div>
+                  <section>
                     <button
                       className="staff-route-request"
                       type="button"
@@ -347,11 +347,11 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                       onClick={() => assignRequest("Maintenance Team")}>
                       Assign to Maintenance Team
                     </button>
-                  </div>
+                  </section>
 
                   {assigning && <p role="status">Saving assignment...</p>}
                   {assignmentError && <p role="alert">{assignmentError}</p>}
-                </div>
+                </section>
                 <form className="staff-reject-request-form" onSubmit={rejectRequest}>
                   <label htmlFor="request-rejection-reason">
                     Reason for rejection
@@ -387,7 +387,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
               </>
             )}
           </section>
-        </div>
+        </section>
       ) : null}
     </>
   );

@@ -39,7 +39,7 @@ export default function StaffPage() {
         onOpenDisputes={() => setActiveTab("disputes")}
       />
 
-      <div className="staff-dashboard-content">
+      <section className="staff-dashboard-content" aria-label="Staff workspace">
         <StaffOverview pendingDisputes={pendingDisputes} openTickets={openTickets} />
 
         {activeTab === "requests" ? (
@@ -61,7 +61,7 @@ export default function StaffPage() {
         {activeTab === "maintenance" ? (
           <MaintenanceDispatch tickets={maintenanceTickets} search={search} setRequests={setServiceRequests} />
         ) : null}
-      </div>
+      </section>
     </section>
   );
 }

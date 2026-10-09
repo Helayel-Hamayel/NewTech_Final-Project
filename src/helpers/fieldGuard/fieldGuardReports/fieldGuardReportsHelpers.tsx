@@ -31,10 +31,10 @@ function formatDate(value: string) {
 export function ReportFilters({ status, priority, setStatus, setPriority }: ReportFiltersProps) {
 
   return (
-    <div className="field-guard-filters">
-      <div className="field-guard-filter-group">
+    <section className="field-guard-filters">
+      <section className="field-guard-filter-group">
         <span className="field-guard-filter-label" id="reports-status-label">Status</span>
-        <div className="field-guard-filter-options" role="group" aria-labelledby="reports-status-label">
+        <section className="field-guard-filter-options" role="group" aria-labelledby="reports-status-label">
           {["All", "New", "In Progress", "Resolved", "Rejected"].map((value) => (
             <button
               className="field-guard-filter-button"
@@ -46,11 +46,11 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
               <FieldGuardStatusIcon status={value} />{value}
             </button>
           ))}
-        </div>
-      </div>
-      <div className="field-guard-filter-group">
+        </section>
+      </section>
+      <section className="field-guard-filter-group">
         <span className="field-guard-filter-label" id="reports-priority-label">Priority</span>
-        <div className="field-guard-filter-options" role="group" aria-labelledby="reports-priority-label">
+        <section className="field-guard-filter-options" role="group" aria-labelledby="reports-priority-label">
           {["All", "Low", "Medium", "High"].map((value) => (
             <button
               className="field-guard-filter-button"
@@ -62,9 +62,9 @@ export function ReportFilters({ status, priority, setStatus, setPriority }: Repo
               <FieldGuardStatusIcon status={value} />{value}
             </button>
           ))}
-        </div>
-      </div>
-    </div>
+        </section>
+      </section>
+    </section>
   );
 }
 
@@ -86,17 +86,17 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
             aria-label={`${report.priority.toLowerCase()} priority`}
             title={`${report.priority.toLowerCase()} priority`}
           />
-          <div className="field-guard-report-row-content">
-            <div className="field-guard-report-row-top">
-              <div className="field-guard-record-meta">
+          <section className="field-guard-report-row-content">
+            <section className="field-guard-report-row-top">
+              <section className="field-guard-record-meta">
                 <span><Tag aria-hidden="true" />{report.displayId}</span>
                 <span className="field-guard-category">{report.category}</span>
-              </div>
+              </section>
               <span className={`field-guard-status field-guard-status--${report.status.toLowerCase().replaceAll(" ", "-")}`}>
                 <FieldGuardStatusIcon status={report.status} />{report.status}
               </span>
-            </div>
-            <div className="field-guard-report-row-heading">
+            </section>
+            <header className="field-guard-report-row-heading">
               <h2>
                 <button
                   className="field-guard-record-title-button"
@@ -111,11 +111,11 @@ export function ReportsList({ reports, emptyMessage, selectedReportId, onSelectR
                 </button>
               </h2>
               <time className="field-guard-record-date" dateTime={report.createdAt}><CalendarDays aria-hidden="true" />{formatDate(report.createdAt)}</time>
-            </div>
+            </header>
             <p className="field-guard-report-description" title={report.description}>
               {report.description}
             </p>
-          </div>
+          </section>
         </li>
       ))}
     </ul>
@@ -133,15 +133,15 @@ export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
 
   return (
     <section className="field-guard-report-details" aria-label={`Details for ${report.displayId}`}>
-      <div className="field-guard-details-heading">
-        <div>
+      <header className="field-guard-details-heading">
+        <section>
           <p className="field-guard-eyebrow">REPORT DETAILS</p>
           <h2><Tag aria-hidden="true" />{report.displayId}</h2>
-        </div>
+        </section>
         <span className={`field-guard-status field-guard-status--${report.status.toLowerCase().replaceAll(" ", "-")}`}>
           <FieldGuardStatusIcon status={report.status} />{report.status}
         </span>
-      </div>
+      </header>
       <dl className="field-guard-detail-list">
         <div>
           <dt><User aria-hidden="true" />Citizen</dt>
@@ -159,10 +159,8 @@ export function ReportDetails({ report, onChangeStatus }: ReportDetailsProps) {
         <div>
           <dt><Flag aria-hidden="true" />Priority</dt>
           <dd>
-            <div>
-              <span aria-hidden="true" />
-              <span>{report.priority}</span>
-            </div>
+            <span aria-hidden="true" />
+            <span>{report.priority}</span>
           </dd>
         </div>
         <div>

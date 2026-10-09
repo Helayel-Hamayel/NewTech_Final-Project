@@ -144,11 +144,11 @@ export default function FieldGuardReportsPage() {
   }
   return (
     <section className="field-guard-screen field-guard-reports" aria-labelledby="reports-title">
-      <div className="field-guard-page-heading">
+      <header className="field-guard-page-heading">
         <p className="field-guard-eyebrow">CITIZEN SUBMISSIONS</p>
         <h1 id="reports-title">Reports</h1>
         <p>Review your assigned reports and update their progress.</p>
-      </div>
+      </header>
 
       {loading ? (
         <p role="status">Loading reports...</p>
@@ -192,15 +192,15 @@ export default function FieldGuardReportsPage() {
             </div>
           </dl>
 
-          <div className="field-guard-workspace">
+          <section className="field-guard-workspace">
             <section className="field-guard-panel field-guard-report-list-panel" aria-label="Reports list">
-              <div className="field-guard-filters">
-                <div className="field-guard-filter-group">
+              <section className="field-guard-filters">
+                <section className="field-guard-filter-group">
                   <span className="field-guard-filter-label" id="reports-status-label">
                     Status
                   </span>
 
-                  <div className="field-guard-filter-options" role="group" aria-labelledby="reports-status-label">
+                  <section className="field-guard-filter-options" role="group" aria-labelledby="reports-status-label">
                     {(["All", "DISPATCHED", "IN PROGRESS", "RESOLVED", "REJECTED"] as const).map((value) => (
                       <button
                         className="field-guard-filter-button"
@@ -213,9 +213,9 @@ export default function FieldGuardReportsPage() {
                         {value === "All" ? "All" : statusLabels[value]}
                       </button>
                     ))}
-                  </div>
-                </div>
-              </div>
+                  </section>
+                </section>
+              </section>
               {filteredReports.length === 0 ? (
                 <p className="field-guard-empty" role="status">
                   No reports match this view.
@@ -229,23 +229,23 @@ export default function FieldGuardReportsPage() {
                       onClick={() => {
                         if (!saving) selectReport(report._id);
                       }}>
-                      <div className="field-guard-report-row-content">
-                        <div className="field-guard-report-row-top">
-                          <div className="field-guard-record-meta">
+                      <section className="field-guard-report-row-content">
+                        <section className="field-guard-report-row-top">
+                          <section className="field-guard-record-meta">
                             <span title={report._id}>
                               <Tag aria-hidden="true" />
                               {report._id.slice(-8)}
                             </span>
                             <span className="field-guard-category">{report.category}</span>
-                          </div>
+                          </section>
 
                           <span className={`field-guard-status field-guard-status--${statusClass(report.status)}`}>
                             <FieldGuardStatusIcon status={report.status} />
                             {statusLabels[report.status]}
                           </span>
-                        </div>
+                        </section>
 
-                        <div className="field-guard-report-row-heading">
+                        <header className="field-guard-report-row-heading">
                           <h2>
                             <button
                               className="field-guard-record-title-button"
@@ -264,12 +264,12 @@ export default function FieldGuardReportsPage() {
                             <CalendarDays aria-hidden="true" />
                             {formatDate(report.createdAt)}
                           </time>
-                        </div>
+                        </header>
 
                         <p className="field-guard-report-description" title={report.description}>
                           {report.description}
                         </p>
-                      </div>
+                      </section>
                     </li>
                   ))}
                 </ul>
@@ -283,20 +283,20 @@ export default function FieldGuardReportsPage() {
                 </section>
               ) : (
                 <section className="field-guard-report-details">
-                  <div className="field-guard-details-heading">
-                    <div>
+                  <header className="field-guard-details-heading">
+                    <section>
                       <p className="field-guard-eyebrow">REPORT DETAILS</p>
                       <h2 title={selectedReport._id}>
                         <Tag aria-hidden="true" />
                         {selectedReport._id.slice(-8)}
                       </h2>
-                    </div>
+                    </section>
 
                     <span className={`field-guard-status field-guard-status--${statusClass(selectedReport.status)}`}>
                       <FieldGuardStatusIcon status={selectedReport.status} />
                       {statusLabels[selectedReport.status]}
                     </span>
-                  </div>
+                  </header>
 
                   <dl className="field-guard-detail-list">
                     <div>
@@ -415,7 +415,7 @@ export default function FieldGuardReportsPage() {
                 </section>
               )}
             </section>
-          </div>
+          </section>
         </>
       )}
     </section>

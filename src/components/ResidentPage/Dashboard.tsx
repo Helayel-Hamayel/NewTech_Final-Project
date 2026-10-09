@@ -40,10 +40,10 @@ export default function Dashboard({
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
       <header className="resident-page-intro">
-        <div className="resident-page-intro-copy">
+        <section className="resident-page-intro-copy">
           <h1 id="dashboard-heading">Good morning, {resident.name}</h1>
           <p>{residentProperty.address} · Resident ID: {resident.id}</p>
-        </div>
+        </section>
         <section
           className="resident-card resident-status-card"
           aria-labelledby="status-heading"
@@ -56,19 +56,19 @@ export default function Dashboard({
         </section>
       </header>
 
-      <div className="resident-summary-grid">
+      <section className="resident-summary-grid" aria-label="Account summary">
         <section
           className="resident-card resident-balance-card"
           aria-labelledby="balance-heading"
         >
-          <div className="resident-balance-header">
+          <section className="resident-balance-header">
             <p className="section-label section-label--light">
               Account balance due
             </p>
             <h2 className="resident-balance-total">
               {currency.format(totalBalance)}
             </h2>
-          </div>
+          </section>
           <dl className="resident-balance-list">
             <div>
               <dt>Rent</dt>
@@ -83,7 +83,7 @@ export default function Dashboard({
               <dd>{currency.format(unpaidFineTotal)}</dd>
             </div>
           </dl>
-          <div className="resident-card-actions">
+          <section className="resident-card-actions">
             <button
               className="resident-primary-btn"
               type="button"
@@ -98,58 +98,58 @@ export default function Dashboard({
             >
               Payment Plan
             </button>
-          </div>
+          </section>
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
-          <div className="resident-kpi-content">
+          <section className="resident-kpi-content">
             <h3>
               Active
               <br />
               Fines
             </h3>
-            <div className="resident-kpi-metric">
+            <section className="resident-kpi-metric">
               <p className="resident-kpi-value">{unpaidFines.length}</p>
               <p className="resident-kpi-label">Appealed</p>
-            </div>
-          </div>
-          <div className="resident-kpi-actions">
+            </section>
+          </section>
+          <section className="resident-kpi-actions">
             <button type="button" onClick={() => onNavigate("My Services")}>
               View in My Services
             </button>
-          </div>
+          </section>
         </article>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--sand">
-          <div className="resident-kpi-content">
+          <section className="resident-kpi-content">
             <h3>
               Open
               <br />
               Requests
             </h3>
-            <div className="resident-kpi-metric">
+            <section className="resident-kpi-metric">
               <p className="resident-kpi-value">2</p>
               <p className="resident-kpi-label">Maintenance tickets</p>
-            </div>
-          </div>
-          <div className="resident-kpi-actions">
+            </section>
+          </section>
+          <section className="resident-kpi-actions">
             <button type="button" onClick={() => onNavigate("My Services")}>
               View in My Services
             </button>
-          </div>
+          </section>
         </article>
-      </div>
+      </section>
 
       <section
         className="resident-card resident-utility-card"
         aria-labelledby="utility-heading"
       >
-        <div className="resident-card-header resident-card-header--stacked">
-          <div>
+        <section className="resident-card-header resident-card-header--stacked">
+          <section>
             <p className="section-label">Utility usage</p>
             <h3 id="utility-heading">August 2026</h3>
-          </div>
-          <div
+          </section>
+          <section
             className="resident-utility-toggle"
             aria-label="Utility type selection"
           >
@@ -167,8 +167,8 @@ export default function Dashboard({
             >
               Electricity
             </button>
-          </div>
-        </div>
+          </section>
+        </section>
         <figure className="resident-chart">
           <figcaption>
             {utilityType} usage ({usageUnit}), March–August 2026
@@ -208,11 +208,11 @@ export default function Dashboard({
           </ResponsiveContainer>
         </figure>
         <aside className="resident-current-bill">
-          <div>
+          <section>
             <h4>Current bill</h4>
             <p>{currency.format(currentUtilityBill)}</p>
             <span>Due 30 Sep 2026</span>
-          </div>
+          </section>
           <button
             className="resident-secondary-btn"
             type="button"
@@ -224,11 +224,11 @@ export default function Dashboard({
       </section>
 
       <section className="resident-card" aria-labelledby="fines-heading">
-        <div className="resident-card-header">
-          <div>
+        <section className="resident-card-header">
+          <section>
             <p className="section-label">Citations</p>
             <h3 id="fines-heading">Active fines &amp; citations</h3>
-          </div>
+          </section>
           <button
             className="resident-secondary-btn"
             type="button"
@@ -236,7 +236,7 @@ export default function Dashboard({
           >
             View all fines
           </button>
-        </div>
+        </section>
         {unpaidFines.length === 0 ? (
           <p className="resident-empty-state">No unpaid citations.</p>
         ) : (
@@ -244,17 +244,17 @@ export default function Dashboard({
             {unpaidFines.map((fine) => (
               <li key={fine.id}>
                 <article className="resident-list-item">
-                  <div className="resident-list-meta">
+                  <section className="resident-list-meta">
                     <p className="resident-list-photo">{fine.photo}</p>
-                    <div>
+                    <section>
                       <h4>{fine.id}</h4>
                       <p className="resident-muted">{fine.violation}</p>
                       <p className="resident-muted resident-list-location">
                         {fine.location}
                       </p>
-                    </div>
-                  </div>
-                  <div className="resident-list-details">
+                    </section>
+                  </section>
+                  <section className="resident-list-details">
                     <p>
                       <span>Status</span>{" "}
                       <strong className="status-badge status-badge--unpaid">
@@ -270,7 +270,7 @@ export default function Dashboard({
                     <p>
                       <span>Amount</span> {currency.format(fine.amount)}
                     </p>
-                  </div>
+                  </section>
                   <button
                     className="resident-secondary-btn"
                     type="button"

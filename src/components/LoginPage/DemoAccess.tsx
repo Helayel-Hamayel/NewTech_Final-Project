@@ -14,12 +14,12 @@ export default function DemoAccess() {
 
   return (
     <section className="demo-access" aria-labelledby="demo-access-heading">
-      <div className="demo-access-heading">
+      <header className="demo-access-heading">
         <span className="demo-access-kicker" id="demo-access-heading">
           Demo access
         </span>
         <span className="demo-access-note">Choose a sample workspace</span>
-      </div>
+      </header>
       <p className="demo-access-disclaimer">
         Demo changes are temporary and are not saved or sent to staff.
       </p>

@@ -38,13 +38,13 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
           .reverse();
   return (
     <section className="field-guard-panel field-guard-recent-panel">
-      <div className="field-guard-panel-heading">
-        <div>
+      <header className="field-guard-panel-heading">
+        <section>
           <p className="field-guard-eyebrow">ACTIVITY</p>
           <h2>{title}</h2>
-        </div>
+        </section>
         <span className="field-guard-panel-count">{recentEntries.length}</span>
-      </div>
+      </header>
       <ul className="field-guard-record-list">
         {recentEntries.map((entry) => (
           <li className="field-guard-record" key={entry._id}>
@@ -56,11 +56,11 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
                 title={`${entry.priority.toLowerCase()} priority`}
               />
             )}
-            <div className="field-guard-record-content">
+            <section className="field-guard-record-content">
               <p className="field-guard-record-title" title={entry.description}>
                 {entry.description}
               </p>
-              <div className="field-guard-record-meta">
+              <section className="field-guard-record-meta">
                 <span>
                   <Tag aria-hidden="true" />
                   {entry.displayId}
@@ -69,8 +69,8 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
                   <CalendarDays aria-hidden="true" />
                   {formatDate(entry.createdAt)}
                 </time>
-              </div>
-            </div>
+              </section>
+            </section>
             <span
               className={`field-guard-status field-guard-status--${
                 entry.status === "DISPATCHED" ? "new" : entry.status.toLowerCase().replaceAll(" ", "-")
