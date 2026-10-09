@@ -1,7 +1,6 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { Camera, Check, MapPin, Ticket } from "lucide-react";
+import { useRef, useState, type SubmitEvent } from "react";
+import { Camera, Check, Ticket } from "lucide-react";
 import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
-import type { FieldGuardIssue } from "../../data/fieldGuardData";
 
 const infractions = [
   { name: "Accessible parking without a permit", fine: 1000 },
@@ -22,10 +21,6 @@ const currency = new Intl.NumberFormat("en-IL", {
 
 const israeliPlatePattern = /^(?:\d{2}-\d{3}-\d{2}|\d{3}-\d{2}-\d{3})$/;
 
-type FieldGuardImplementIssuePageProps = {
-  onIssueIssued: (issue: Omit<FieldGuardIssue, "_id">) => void;
-};
-
 function formatIsraeliPlate(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 8);
   if (digits.length <= 2) return digits;
@@ -33,58 +28,74 @@ function formatIsraeliPlate(value: string) {
     return `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5)}`;
   }
 
-  return `${digits.slice(0, 2)}-${digits.slice(2, 5)}${
-    digits.length > 5 ? `-${digits.slice(5)}` : ""
-  }`;
+  return `${digits.slice(0, 2)}-${digits.slice(2, 5)}${digits.length > 5 ? `-${digits.slice(5)}` : ""}`;
 }
 
-export default function FieldGuardImplementIssuePage({
-  onIssueIssued,
-}: FieldGuardImplementIssuePageProps) {
+export default function FieldGuardImplementIssuePage() {
   const [plate, setPlate] = useState("");
   const [infractionName, setInfractionName] = useState(infractions[0].name);
-  const [photoCaptured, setPhotoCaptured] = useState(false);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const [ticketIssued, setTicketIssued] = useState(false);
-  const selectedInfraction =
-    infractions.find((infraction) => infraction.name === infractionName) ??
-    infractions[0];
+  const selectedInfraction = infractions.find((infraction) => infraction.name === infractionName) ?? infractions[0];
   const isPlateValid = israeliPlatePattern.test(plate);
 
-  useEffect(() => {
-    if (!ticketIssued) return;
-
-    const timeout = window.setTimeout(() => {
-      setPlate("");
-      setInfractionName(infractions[0].name);
-      setPhotoCaptured(false);
-      setTicketIssued(false);
-    }, 3000);
-
-    return () => window.clearTimeout(timeout);
-  }, [ticketIssued]);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!isPlateValid || ticketIssued) return;
-    onIssueIssued({
-      name: selectedInfraction.name,
-      description: `Parking violation recorded for vehicle ${plate}.`,
-      amount: selectedInfraction.fine,
-      violationType: selectedInfraction.name,
-      priority: "MEDIUM",
-      status: "PENDING",
-      location: "Tel Aviv-Yafo · Zone 3",
-      createdAt: new Date().toISOString(),
-      vehicleRegistration: plate,
-    });
-    setTicketIssued(true);
+
+    if (!isPlateValid || submitting || ticketIssued) return;
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      if (photo && photo.size > 5 * 1024 * 1024) {
+        throw new Error("The photo must be 5 MB or smaller.");
+      }
+
+      const formData = new FormData();
+
+      formData.append("licensePlate", plate);
+      formData.append("violationType", selectedInfraction.name);
+
+      if (photo) {
+        formData.append("photo", photo);
+      }
+
+      const response = await fetch("http://localhost:4000/fines", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+
+        throw new Error(errorData?.message ?? "Could not create the fine.");
+      }
+
+      setTicketIssued(true);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Could not create the fine.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function resetForm() {
+    if (submitting) return;
+
     setPlate("");
     setInfractionName(infractions[0].name);
-    setPhotoCaptured(false);
+    setPhoto(null);
     setTicketIssued(false);
+    setError("");
+
+    if (photoInputRef.current) {
+      photoInputRef.current.value = "";
+    }
   }
 
   return (
@@ -99,11 +110,6 @@ export default function FieldGuardImplementIssuePage({
           <Ticket size={21} />
         </span>
       </header>
-
-      <p className="field-citation-demo-note" role="note">
-        Demo only: reports stay in this browser session. They are not official
-        citations or sent to city systems.
-      </p>
 
       <form className="field-citation-form" onSubmit={handleSubmit}>
         <section className="field-citation-plate">
@@ -120,7 +126,7 @@ export default function FieldGuardImplementIssuePage({
             required
             pattern="(?:[0-9]{2}-[0-9]{3}-[0-9]{2}|[0-9]{3}-[0-9]{2}-[0-9]{3})"
             title="Enter a 7- or 8-digit Israeli vehicle number."
-            disabled={ticketIssued}
+            disabled={submitting || ticketIssued}
             maxLength={10}
           />
           <small className="field-citation-help">7- or 8-digit Israeli plate</small>
@@ -132,8 +138,7 @@ export default function FieldGuardImplementIssuePage({
             id="citation-infraction"
             value={infractionName}
             onChange={(event) => setInfractionName(event.target.value)}
-            disabled={ticketIssued}
-          >
+            disabled={submitting || ticketIssued}>
             {infractions.map((infraction) => (
               <option key={infraction.name} value={infraction.name}>
                 {infraction.name} · {currency.format(infraction.fine)}
@@ -142,11 +147,7 @@ export default function FieldGuardImplementIssuePage({
           </select>
         </section>
 
-        <section
-          className="field-citation-fine"
-          aria-live="polite"
-          aria-label="Calculated fine"
-        >
+        <section className="field-citation-fine" aria-live="polite" aria-label="Calculated fine">
           <section>
             <p>CALCULATED FINE · TEL AVIV-YAFO</p>
             <strong>{currency.format(selectedInfraction.fine)}</strong>
@@ -155,61 +156,56 @@ export default function FieldGuardImplementIssuePage({
           <small>Indicative amount; the official notice determines the final fine.</small>
         </section>
 
+        <input
+          ref={photoInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          hidden
+          disabled={submitting || ticketIssued}
+          onChange={(event) => {
+            setPhoto(event.target.files?.[0] ?? null);
+          }}
+        />
+
         <button
-          className={`field-citation-photo${photoCaptured ? " is-captured" : ""}`}
+          className={`field-citation-photo${photo ? " is-captured" : ""}`}
           type="button"
-          onClick={() => setPhotoCaptured((captured) => !captured)}
-          aria-pressed={photoCaptured}
-          disabled={ticketIssued}
-        >
-          {photoCaptured ? (
-            <Check size={20} aria-hidden="true" />
-          ) : (
-            <Camera size={20} aria-hidden="true" />
-          )}
+          onClick={() => photoInputRef.current?.click()}
+          disabled={submitting || ticketIssued}>
+          {photo ? <Check size={20} aria-hidden="true" /> : <Camera size={20} aria-hidden="true" />}
+
           <span>
-            <strong>{photoCaptured ? "Photo Captured" : "Photo Evidence"}</strong>
-            <small>
-              {photoCaptured
-                ? "Photo marked for this demo report"
-                : "Demo toggle only; no image is attached"}
-            </small>
+            <strong>{photo ? "Photo selected" : "Photo Evidence"}</strong>
+            <small>{photo ? photo.name : "Choose a JPEG, PNG, or WebP image"}</small>
           </span>
         </button>
 
         <section className="field-citation-actions">
-          <button
-            className="field-citation-reset"
-            type="button"
-            onClick={resetForm}
-            disabled={ticketIssued}
-          >
+          <button className="field-citation-reset" type="button" onClick={resetForm} disabled={submitting}>
             Reset
           </button>
+
           <button
             className={`field-citation-submit${ticketIssued ? " is-issued" : ""}`}
             type="submit"
-            disabled={!isPlateValid || ticketIssued}
-          >
+            disabled={!isPlateValid || submitting || ticketIssued}>
             {ticketIssued ? (
               <>
                 <Check size={19} aria-hidden="true" />
-                Demo Citation Created
+                Fine created
               </>
             ) : (
               <>
                 <Ticket size={19} aria-hidden="true" />
-                Create Demo Citation
+                {submitting ? "Saving..." : "Create fine"}
               </>
             )}
           </button>
         </section>
-      </form>
+        {error && <p role="alert">{error}</p>}
 
-      <p className="field-citation-location">
-        <MapPin size={15} aria-hidden="true" />
-        Tel Aviv-Yafo · Zone 3 · Location recorded at issue time
-      </p>
+        {ticketIssued && <p role="status">Fine saved successfully. Press Reset to create another.</p>}
+      </form>
     </section>
   );
 }

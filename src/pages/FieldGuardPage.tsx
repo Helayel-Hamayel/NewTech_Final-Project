@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../data/staffData";
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
-import { fieldGuardData, type FieldGuardIssue } from "../data/fieldGuardData";
+import { fieldGuardData } from "../data/fieldGuardData";
+import type { FineFromBackend } from "../data/fineData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";
 import "../styles/pages/FieldGuard/FieldGuardPage.css";
 
-type FieldGuardPageProps = {
-  issues: FieldGuardIssue[];
-};
-
-export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
+export default function FieldGuardPage() {
   const { name } = fieldGuardData;
 
   const [reports, setReports] = useState<ReportFromBackend[]>([]);
   const [reportsLoading, setReportsLoading] = useState(true);
   const [reportsError, setReportsError] = useState("");
-  const acceptedCount = issues.filter((issue) => issue.status === "ACCEPTED").length;
-  const rejectedCount = issues.filter((issue) => issue.status === "REJECTED").length;
+  const [fines, setFines] = useState<FineFromBackend[]>([]);
+  const [finesLoading, setFinesLoading] = useState(true);
+  const [finesError, setFinesError] = useState("");
+
+  const paidCount = fines.filter((fine) => fine.status === "PAID").length;
+  const unpaidCount = fines.filter((fine) => fine.status === "UNPAID").length;
+
+  const fineEntries = fines.map((fine) => ({
+    _id: fine._id,
+    description: `${fine.violationType} · ${fine.licensePlate}`,
+    status: fine.status,
+    createdAt: fine.createdAt,
+  }));
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,6 +60,41 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadFines() {
+      try {
+        const response = await fetch("http://localhost:4000/fines", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load your fines.");
+        }
+
+        const data: FineFromBackend[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setFines(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setFinesError(error instanceof Error ? error.message : "Could not load your fines.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setFinesLoading(false);
+        }
+      }
+    }
+
+    loadFines();
+
+    return () => controller.abort();
+  }, []);
   return (
     <section className="field-guard-screen field-guard-overview" aria-labelledby="field-guard-title">
       <header className="field-guard-page-heading">
@@ -62,30 +105,39 @@ export default function FieldGuardPage({ issues }: FieldGuardPageProps) {
 
       <dl className="field-guard-stat-grid">
         <div className="field-guard-stat-card">
-          <dt>ISSUES HANDLED</dt>
-          <dd>{issues.length}</dd>
+          <dt>FINES ISSUED</dt>
+          <dd>{finesLoading || finesError ? "—" : fines.length}</dd>
         </div>
+
         <div className="field-guard-stat-card field-guard-stat-card--accepted">
           <dt>
-            <FieldGuardStatusIcon status="ACCEPTED" />
-            ISSUES ACCEPTED
+            <FieldGuardStatusIcon status="PAID" />
+            PAID FINES
           </dt>
-          <dd>{acceptedCount}</dd>
+          <dd>{finesLoading || finesError ? "—" : paidCount}</dd>
         </div>
-        <div className="field-guard-stat-card field-guard-stat-card--rejected">
+
+        <div className="field-guard-stat-card field-guard-stat-card--new">
           <dt>
-            <FieldGuardStatusIcon status="REJECTED" />
-            ISSUES REJECTED
+            <FieldGuardStatusIcon status="UNPAID" />
+            UNPAID FINES
           </dt>
-          <dd>{rejectedCount}</dd>
+          <dd>{finesLoading || finesError ? "—" : unpaidCount}</dd>
         </div>
+
         <div className="field-guard-stat-card">
-          <dt>REPORTS HANDLED</dt>
-          <dd>{reports.length}</dd>
+          <dt>ASSIGNED REPORTS</dt>
+          <dd>{reportsLoading || reportsError ? "—" : reports.length}</dd>
         </div>
       </dl>
       <section className="field-guard-overview-panels" aria-label="Recent activity">
-        <RecentPanel title="Recent issues" prefix="Issue" entries={issues} />
+        {finesLoading ? (
+          <p role="status">Loading fines...</p>
+        ) : finesError ? (
+          <p role="alert">{finesError}</p>
+        ) : (
+          <RecentPanel title="Recent fines" prefix="Fine" entries={fineEntries} />
+        )}{" "}
         {reportsLoading ? (
           <p role="status">Loading reports...</p>
         ) : reportsError ? (
