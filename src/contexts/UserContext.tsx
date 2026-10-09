@@ -48,6 +48,11 @@ function UserProvider({ children }: { children: ReactNode }) {
   }
 
   async function signOut() {
+    if (user?.isDemo) {
+      setUser(null);
+      return;
+    }
+
     const response = await fetch("http://localhost:4000/auth/logout", {
       method: "POST",
       credentials: "include",
