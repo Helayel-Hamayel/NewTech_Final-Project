@@ -36,3 +36,37 @@
 .field-guard-report-details-panel {
   min-height: 180px;
 }
+
+.field-guard-report-rejection {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.field-guard-report-rejection label {
+  color: var(--field-guard-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.field-guard-report-rejection textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 90px;
+  padding: 10px;
+  border: 1px solid var(--field-guard-muted);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--field-guard-ink);
+  font: inherit;
+  resize: vertical;
+}
+
+.field-guard-report-rejection button {
+  justify-self: start;
+}
+
+.field-guard-reports button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

@@ -6,6 +6,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { CitationStateProvider } from "./contexts/CitationStateContext";
 import LoginPage from "./pages/LoginPage";
 import ResidentPage from "./pages/ResidentPage";
+import ProtectedRoute from "./components/common/ProtectedRoute.tsx";
 
 import FieldGuardLayout from "./layouts/FieldGuardLayout";
 import StaffLayout from "./layouts/StaffLayout";
@@ -17,33 +18,32 @@ function App() {
     <ThemeProvider>
       <CitationStateProvider>
         <UserProvider>
-        <BrowserRouter>
-          <ToastContainer
-            position="top-center"
-            newestOnTop
-            closeOnClick
-            pauseOnHover
-          />
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/resident" element={<ResidentPage />} />
+          <BrowserRouter>
+            <ToastContainer position="top-center" newestOnTop closeOnClick pauseOnHover />
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
 
-            <Route path="/staff" element={<StaffLayout />}>
-              <Route index element={<StaffPage />} />
-            </Route>
+              <Route element={<ProtectedRoute allowedRole="RESIDENT" />}>
+                <Route path="/resident" element={<ResidentPage />} />
+              </Route>
 
-            <Route path="/field-guard" element={<FieldGuardLayout />} />
-            <Route
-              path="/field-guard/*"
-              element={<Navigate to="/field-guard" replace />}
-            />
+              <Route element={<ProtectedRoute allowedRole="STAFF" />}>
+                <Route path="/staff" element={<StaffLayout />}>
+                  <Route index element={<StaffPage />} />
+                </Route>
+              </Route>
 
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route element={<ProtectedRoute allowedRole="FIELD_GUARD" />}>
+                <Route path="/field-guard" element={<FieldGuardLayout />} />
 
-       </UserProvider>
+                <Route path="/field-guard/*" element={<Navigate to="/field-guard" replace />} />
+              </Route>
+
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </UserProvider>
       </CitationStateProvider>
     </ThemeProvider>
   );

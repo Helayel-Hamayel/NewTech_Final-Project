@@ -12,6 +12,7 @@ export default function FieldGuardStatusIcon({ status }: FieldGuardStatusIconPro
     case "PENDING":
     case "IN PROGRESS":
       return <CircleEllipsis aria-hidden="true" />;
+    case "DISPATCHED":
     case "NEW":
       return <CirclePlus aria-hidden="true" />;
     default:

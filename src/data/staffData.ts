@@ -1,3 +1,22 @@
+export type ReportFromBackend = {
+  _id: string;
+  resident: {
+    _id: string;
+    name: string;
+  } | null;
+  assignedFieldGuard: string | null;
+  assignedTeam?: "FIELD_GUARD" | "MAINTENANCE" | null;
+  category: string;
+  description: string;
+  location: string;
+  phone: string;
+  photoUrl: string;
+  status: "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED" | "REJECTED";
+  rejectionReason?: string;
+  resolvedAt?: string | null;
+  createdAt: string;
+};
+
 export type StaffDispute = {
   _id: string;
   ticket: string;
@@ -14,7 +33,7 @@ export type StaffDispute = {
 
 export type StaffTab = "requests" | "disputes" | "billing" | "maintenance";
 
-export type StaffServiceRequestStatus = "Pending" | "Assigned" | "Rejected";
+export type StaffServiceRequestStatus = "Pending" | "Assigned" | "In Progress" | "Resolved" | "Rejected";
 export type StaffServiceRequestDestination = "Field Guard" | "Maintenance Team";
 
 export type StaffServiceRequest = {
@@ -29,6 +48,7 @@ export type StaffServiceRequest = {
   status: StaffServiceRequestStatus;
   assignedTo?: StaffServiceRequestDestination;
   rejectionReason?: string;
+  resolvedAt?: string | null;
 };
 
 export const seededStaffServiceRequests: StaffServiceRequest[] = [
@@ -36,8 +56,7 @@ export const seededStaffServiceRequests: StaffServiceRequest[] = [
     id: "ISS-3001",
     residentName: "Maria Reyes",
     type: "Parking",
-    description:
-      "A vehicle is blocking the residential parking spaces near the east entrance.",
+    description: "A vehicle is blocking the residential parking spaces near the east entrance.",
     location: "14 Rothschild Boulevard, east entrance",
     reported: "7 Oct 2026",
     phone: "050-555-4412",

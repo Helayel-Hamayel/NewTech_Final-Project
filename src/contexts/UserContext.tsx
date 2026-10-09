@@ -48,15 +48,13 @@ function UserProvider({ children }: { children: ReactNode }) {
   }
 
   async function signOut() {
-    if (user) {
-      const response = await fetch("http://localhost:4000/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+    const response = await fetch("http://localhost:4000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
 
-      if (!response.ok && response.status !== 401) {
-        throw new Error("Could not sign out. Please try again.");
-      }
+    if (!response.ok) {
+      throw new Error("Could not sign out. Please try again.");
     }
 
     setUser(null);
