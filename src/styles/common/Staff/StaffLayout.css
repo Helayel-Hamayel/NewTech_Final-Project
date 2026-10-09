@@ -36,7 +36,7 @@ html[data-theme="dark"] .staff-shell {
   color: var(--staff-ink);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .staff-content {
     min-height: calc(100vh - 105px);
     min-height: calc(100dvh - 105px);

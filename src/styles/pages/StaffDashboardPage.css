@@ -1171,7 +1171,7 @@ html[data-theme="dark"] .staff-priority--low {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .staff-page {
     min-height: calc(100vh - 105px);
     min-height: calc(100dvh - 105px);
@@ -1194,7 +1194,14 @@ html[data-theme="dark"] .staff-priority--low {
   .staff-topbar {
     top: 0;
     min-height: 66px;
-    padding: 11px 16px;
+    padding: 11px 16px 11px 64px;
+    border-bottom-color: #263449;
+    background: #0f172a;
+    color: #f8fafc;
+  }
+
+  .staff-topbar h1 {
+    color: #f8fafc;
   }
 
   .staff-topbar-tools {
@@ -1205,6 +1212,24 @@ html[data-theme="dark"] .staff-priority--low {
     width: min(310px, 42vw);
     min-width: 0;
     padding: 9px;
+    border-color: #475569;
+    background: #1e293b;
+    color: #cbd5e1;
+  }
+
+  .staff-search input {
+    color: #f8fafc;
+  }
+
+  .staff-search input::placeholder {
+    color: #94a3b8;
+  }
+
+  .staff-notifications,
+  .staff-user-avatar {
+    border-color: #475569;
+    background: #1e293b;
+    color: #e2e8f0;
   }
 
   .staff-dashboard-content {
@@ -1233,14 +1258,25 @@ html[data-theme="dark"] .staff-priority--low {
 @media (max-width: 480px) {
   .staff-topbar {
     top: 0;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px 14px;
+    min-height: 66px;
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px 14px 12px 64px;
+  }
+
+  .staff-topbar h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .staff-topbar-tools {
-    width: 100%;
+    width: auto;
+    flex: 1;
   }
 
   .staff-search {
@@ -1283,5 +1319,44 @@ html[data-theme="dark"] .staff-priority--low {
     min-height: 32px;
     padding: 0 8px;
     font-size: 0.65rem;
+  }
+
+  .staff-panel-heading {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .staff-result-count,
+  .staff-service-request-count {
+    margin-top: 2px;
+  }
+
+  .staff-ticket-dialog {
+    max-height: calc(100dvh - 24px);
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .staff-dialog-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 360px) {
+  .staff-dashboard-content {
+    padding: 12px;
+  }
+
+  .staff-topbar {
+    padding-inline: 12px;
+  }
+
+  .staff-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-kpi p {
+    min-height: 0;
   }
 }

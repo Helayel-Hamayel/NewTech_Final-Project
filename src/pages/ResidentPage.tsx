@@ -3,6 +3,7 @@ import { Building2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
+import MobileDrawer from "../components/common/MobileDrawer";
 import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
 import Dashboard from "../components/ResidentPage/Dashboard";
@@ -25,6 +26,17 @@ import {
 } from "../data/residentPortal";
 import type { ReportFromBackend } from "../data/staffData";
 import "../styles/pages/ResidentPortalPage.css";
+
+const residentDrawerItems: Array<{
+  id: PortalTab;
+  label: string;
+  icon: typeof LayoutDashboard;
+}> = [
+  { id: "Dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "Billing", label: "Billing", icon: FileText },
+  { id: "My Services", label: "My Services", icon: ClipboardList },
+  { id: "Properties", label: "Properties", icon: Home },
+];
 
 export default function ResidentPage() {
   const navigate = useNavigate();
@@ -165,6 +177,12 @@ export default function ResidentPage() {
           </div>
 
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
+          <MobileDrawer
+            brandIcon={<Building2 />} userName={resident.name} subtitle="Resident Portal"
+            items={residentDrawerItems}
+            activeId={activeTab}
+            onSelect={setActiveTab}
+          />
 
           <div className="resident-user-meta">
             <ThemeToggle />
