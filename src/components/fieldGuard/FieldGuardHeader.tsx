@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  Activity,
-  Building2,
-  FilePlusCorner,
-  Flag,
-  History,
-  LayoutDashboard,
-  LogOut,
-} from "lucide-react";
+import { Activity, Building2, FilePlusCorner, Flag, History, LayoutDashboard, LogOut } from "lucide-react";
 import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
@@ -29,12 +21,9 @@ const navigationItems = [
   { id: "history", label: "History", icon: History },
 ] satisfies Array<{ id: FieldGuardTab; label: string; icon: typeof LayoutDashboard }>;
 
-export default function FieldGuardHeader({
-  activeTab,
-  onTabChange,
-}: FieldGuardHeaderProps) {
+export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardHeaderProps) {
   const navigate = useNavigate();
-  const { signOut } = useUser();
+  const { user, signOut } = useUser();
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
 
   async function confirmSignOut() {
@@ -57,15 +46,16 @@ export default function FieldGuardHeader({
           <p>Municipality</p>
         </section>
       </section>
-
       <section className="field-guard-header-main">
         <section className="field-guard-officer">
           <span className="field-guard-officer-icon" aria-hidden="true">
             <Activity size={20} />
           </span>
           <section>
-            <strong>J. Mbeki</strong>
-            <span>#G-114 · Zone 3 · 07.09.2026</span>
+            <section className="field-guard-user-info">
+              <strong>{user?.name ?? "Field Guard"}</strong>
+              <span>{user?.email ?? ""}</span>
+            </section>
           </section>
           <span className="field-guard-shift">
             <span className="field-guard-pulse" aria-hidden="true" />
@@ -81,8 +71,7 @@ export default function FieldGuardHeader({
               type="button"
               onClick={() => setIsSignoutOpen((isOpen) => !isOpen)}
               aria-expanded={isSignoutOpen}
-              aria-controls="field-guard-signout-popover"
-            >
+              aria-controls="field-guard-signout-popover">
               <LogOut size={16} aria-hidden="true" />
               Sign Out
             </button>
@@ -91,23 +80,14 @@ export default function FieldGuardHeader({
                 className="field-guard-signout-popover"
                 id="field-guard-signout-popover"
                 role="dialog"
-                aria-labelledby="field-guard-signout-title"
-              >
-                <strong id="field-guard-signout-title">
-                  Sign out of CivicHub?
-                </strong>
+                aria-labelledby="field-guard-signout-title">
+                <strong id="field-guard-signout-title">Sign out of CivicHub?</strong>
                 <span>Your current portal session will end.</span>
                 <section className="field-guard-signout-actions">
-                  <button
-                    type="button"
-                    onClick={confirmSignOut}
-                  >
+                  <button type="button" onClick={confirmSignOut}>
                     Sign Out
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsSignoutOpen(false)}
-                  >
+                  <button type="button" onClick={() => setIsSignoutOpen(false)}>
                     Stay signed in
                   </button>
                 </section>
@@ -116,25 +96,21 @@ export default function FieldGuardHeader({
           </section>
         </section>
       </section>
-
       <MobileDrawer
-        brandIcon={<Activity />} userName={"J. Mbeki"} subtitle="Field Guard"
+        brandIcon={<Activity />}
+        userName={user?.name ?? "Field Guard"}
+        subtitle={user?.email ?? "Field Guard"}
         items={navigationItems}
         activeId={activeTab}
         onSelect={onTabChange}
-      />      <nav
-        className="field-guard-nav"
-        id="field-guard-navigation"
-        aria-label="Field Guard navigation"
-      >
+      />{" "}
+      <nav className="field-guard-nav" id="field-guard-navigation" aria-label="Field Guard navigation">
         <section className="field-guard-nav-list">
           <span
             className="field-guard-nav-indicator"
             aria-hidden="true"
             style={{
-              transform: `translateX(${navigationItems.findIndex(
-                ({ id }) => id === activeTab,
-              ) * 100}%)`,
+              transform: `translateX(${navigationItems.findIndex(({ id }) => id === activeTab) * 100}%)`,
             }}
           />
           {navigationItems.map(({ id, label, icon: Icon }) => (
@@ -143,8 +119,7 @@ export default function FieldGuardHeader({
               className={`field-guard-nav-button${activeTab === id ? " is-active" : ""}`}
               type="button"
               aria-current={activeTab === id ? "page" : undefined}
-              onClick={() => onTabChange(id)}
-            >
+              onClick={() => onTabChange(id)}>
               <Icon size={16} aria-hidden="true" />
               {label}
             </button>

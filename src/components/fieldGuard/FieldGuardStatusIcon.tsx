@@ -6,15 +6,21 @@ export default function FieldGuardStatusIcon({ status }: FieldGuardStatusIconPro
   switch (status.toUpperCase()) {
     case "REJECTED":
       return <CircleX aria-hidden="true" />;
+
+    case "PAID":
     case "ACCEPTED":
     case "RESOLVED":
       return <CircleCheck aria-hidden="true" />;
+
+    case "UNPAID":
     case "PENDING":
     case "IN PROGRESS":
       return <CircleEllipsis aria-hidden="true" />;
+
     case "DISPATCHED":
     case "NEW":
       return <CirclePlus aria-hidden="true" />;
+
     default:
       return null;
   }

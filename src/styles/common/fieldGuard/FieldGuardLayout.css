@@ -518,7 +518,7 @@ html[data-theme="dark"] .field-guard-status--in-progress {
   font-size: 0.73rem;
   line-height: 1.45;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-clamp: 2;
 }
 
 .field-guard-details-heading {
@@ -720,5 +720,104 @@ html[data-theme="dark"] .field-guard-status--in-progress {
   .field-guard-history-summary {
     justify-items: start;
     margin-top: 8px;
+  }
+}
+ 
+@media (max-width: 768px) {
+  .field-guard-layout,
+  .field-guard-layout *,
+  .field-guard-layout *::before,
+  .field-guard-layout *::after {
+    box-sizing: border-box;
+  }
+
+  .field-guard-layout .field-guard-main {
+    width: calc(100% - 24px);
+    padding: 18px 0 32px;
+  }
+
+  .field-guard-layout .field-guard-workspace,
+  .field-guard-layout .field-guard-overview-panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .field-guard-layout .field-guard-panel {
+    padding: 14px;
+  }
+
+  .field-guard-layout .field-guard-stat-card {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .field-guard-layout .field-guard-stat-card dt {
+    flex: initial;
+    flex-wrap: wrap;
+  }
+
+  .field-guard-layout .field-guard-record,
+  .field-guard-layout .field-guard-history-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .field-guard-layout .field-guard-record > .field-guard-status {
+    align-self: flex-start;
+  }
+
+  .field-guard-layout .field-guard-history-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .field-guard-layout .field-guard-report-row-top,
+  .field-guard-layout .field-guard-report-row-heading,
+  .field-guard-layout .field-guard-details-heading {
+    flex-wrap: wrap;
+  }
+
+  .field-guard-layout .field-guard-record-meta {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .field-guard-layout .field-guard-record-meta span,
+  .field-guard-layout .field-guard-record-meta time {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .field-guard-layout .field-guard-record-meta svg {
+    flex-shrink: 0;
+  }
+
+  .field-guard-layout .field-guard-filter-button,
+  .field-guard-layout .field-guard-record-title-button {
+    min-height: 44px;
+  }
+
+  .field-guard-layout .field-guard-primary-action,
+  .field-guard-layout .field-guard-secondary-action {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .field-guard-layout .field-guard-history-search input,
+  .field-guard-layout .field-guard-report-rejection textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .field-guard-layout .field-guard-stat-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

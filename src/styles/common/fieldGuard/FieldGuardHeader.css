@@ -515,3 +515,17 @@ html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
     padding: 0.85rem 0.9rem;
   }
 }
+
+.field-guard-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.field-guard-user-info > span {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}

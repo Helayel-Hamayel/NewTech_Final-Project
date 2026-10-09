@@ -4,14 +4,13 @@ import { formatIsraeliDateTime } from "../formatting/israeliDate";
 type RecentEntry = {
   _id: string;
   description: string;
-  priority?: "LOW" | "MEDIUM" | "HIGH";
-  status: "ACCEPTED" | "REJECTED" | "PENDING" | "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED";
+  status: "UNPAID" | "PAID" | "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED" | "REJECTED";
   createdAt: string;
 };
 
 type RecentPanelProps = {
   title: string;
-  prefix: "Issue" | "Report";
+  prefix: "Fine" | "Report";
   entries: RecentEntry[];
 };
 
@@ -20,22 +19,13 @@ function formatDate(value: string) {
 }
 
 export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
-  const recentEntries =
-    prefix === "Report"
-      ? [...entries]
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 4)
-          .map((entry) => ({
-            ...entry,
-            displayId: `Report-${entry._id.slice(-8)}`,
-          }))
-      : entries
-          .map((entry, index) => ({
-            ...entry,
-            displayId: `${prefix}-${String(index + 1).padStart(3, "0")}`,
-          }))
-          .slice(-5)
-          .reverse();
+  const recentEntries = [...entries]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 4)
+    .map((entry) => ({
+      ...entry,
+      displayId: `${prefix}-${entry._id.slice(-8)}`,
+    }));
   return (
     <section className="field-guard-panel field-guard-recent-panel">
       <header className="field-guard-panel-heading">
@@ -48,14 +38,6 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
       <ul className="field-guard-record-list">
         {recentEntries.map((entry) => (
           <li className="field-guard-record" key={entry._id}>
-            {prefix === "Issue" && entry.priority && (
-              <span
-                className={`field-guard-priority-dot field-guard-priority-dot--${entry.priority.toLowerCase()}`}
-                role="img"
-                aria-label={`${entry.priority.toLowerCase()} priority`}
-                title={`${entry.priority.toLowerCase()} priority`}
-              />
-            )}
             <section className="field-guard-record-content">
               <p className="field-guard-record-title" title={entry.description}>
                 {entry.description}
@@ -73,7 +55,11 @@ export function RecentPanel({ title, prefix, entries }: RecentPanelProps) {
             </section>
             <span
               className={`field-guard-status field-guard-status--${
-                entry.status === "DISPATCHED" ? "new" : entry.status.toLowerCase().replaceAll(" ", "-")
+                entry.status === "PAID"
+                  ? "accepted"
+                  : entry.status === "UNPAID" || entry.status === "DISPATCHED"
+                    ? "new"
+                    : entry.status.toLowerCase().replaceAll(" ", "-")
               }`}>
               <FieldGuardStatusIcon status={entry.status} />
               {entry.status}

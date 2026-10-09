@@ -1,5 +1,6 @@
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { FineFromBackend } from "../../data/fineData";
 import {
   prepareHistoryIssues,
   getHistoryCounts,
@@ -8,22 +9,83 @@ import {
 } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryHelpers";
 import { HistoryFilters, HistoryList, HistoryDetails } from "../../helpers/fieldGuard/fieldGuardHistory/fieldGuardHistoryComponents";
 import "../../styles/pages/FieldGuard/FieldGuardHistoryPage.css";
-import type { FieldGuardIssue } from "../../data/fieldGuardData";
 
-type FieldGuardHistoryPageProps = {
-  issues: FieldGuardIssue[];
-};
-
-export default function FieldGuardHistoryPage({
-  issues: sourceIssues,
-}: FieldGuardHistoryPageProps) {
+export default function FieldGuardHistoryPage() {
+  const [sourceIssues, setSourceIssues] = useState<FineFromBackend[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const issues = prepareHistoryIssues(sourceIssues);
   const counts = getHistoryCounts(issues);
   const visibleIssues = filterHistoryIssues(issues, search, status);
-  const selectedIssue = issues.find((issue) => issue._id === selectedId) ?? null;
+  const selectedIssue = visibleIssues.find((issue) => issue._id === selectedId) ?? null;
+
+  function selectIssue(id: string) {
+    setSelectedId((currentId) => (currentId === id ? null : id));
+  }
+
+  function changeSearch(value: string) {
+    setSearch(value);
+    setSelectedId(null);
+  }
+
+  function changeFilter(value: string) {
+    setStatus(value);
+    setSelectedId(null);
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadFines() {
+      try {
+        const response = await fetch("http://localhost:4000/fines", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load your fines.");
+        }
+
+        const data: FineFromBackend[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setSourceIssues(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setError(error instanceof Error ? error.message : "Could not load your fines.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadFines();
+
+    return () => controller.abort();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="field-guard-screen field-guard-history">
+        <p role="status">Loading fines...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="field-guard-screen field-guard-history">
+        <p role="alert">{error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="field-guard-screen field-guard-history" aria-labelledby="history-title">
@@ -37,13 +99,20 @@ export default function FieldGuardHistoryPage({
           <dt>Total issues</dt>
           <dd>{counts.total}</dd>
         </div>
-        <div className="field-guard-stat-card field-guard-stat-card--accepted">
-          <dt><FieldGuardStatusIcon status="ACCEPTED" />Accepted</dt>
-          <dd>{counts.accepted}</dd>
+        <div className="field-guard-stat-card field-guard-stat-card--new">
+          <dt>
+            <FieldGuardStatusIcon status="UNPAID" />
+            Unpaid
+          </dt>
+          <dd>{counts.unpaid}</dd>
         </div>
-        <div className="field-guard-stat-card field-guard-stat-card--rejected">
-          <dt><FieldGuardStatusIcon status="REJECTED" />Rejected</dt>
-          <dd>{counts.rejected}</dd>
+
+        <div className="field-guard-stat-card field-guard-stat-card--accepted">
+          <dt>
+            <FieldGuardStatusIcon status="PAID" />
+            Paid
+          </dt>
+          <dd>{counts.paid}</dd>
         </div>
         <div className="field-guard-stat-card">
           <dt>Total indicative fines</dt>
@@ -52,8 +121,9 @@ export default function FieldGuardHistoryPage({
       </dl>
       <section className="field-guard-workspace">
         <section className="field-guard-panel field-guard-history-list-panel" aria-label="Issues">
-          <HistoryFilters search={search} status={status} setSearch={setSearch} setStatus={setStatus} />
-          <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={setSelectedId} />
+          <HistoryFilters search={search} status={status} setSearch={changeSearch} setStatus={changeFilter} />
+
+          <HistoryList issues={visibleIssues} selectedId={selectedId} onSelect={selectIssue} />
           <p className="field-guard-result-count" role="status">
             {visibleIssues.length} out of {issues.length} issues
           </p>
