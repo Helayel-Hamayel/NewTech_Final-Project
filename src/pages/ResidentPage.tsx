@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Building2, LogOut } from "lucide-react";
+import {
+  Building2,
+  ClipboardList,
+  FileText,
+  Home,
+  LayoutDashboard,
+  LogOut,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
