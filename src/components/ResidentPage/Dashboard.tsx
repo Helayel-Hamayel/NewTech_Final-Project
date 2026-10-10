@@ -1,24 +1,15 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
-import {
-  resident,
-  residentProperty,
-  seededInvoices,
-} from "../../data/residentPortal";
+import { resident, residentProperty, seededInvoices } from "../../data/residentPortal";
 import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
 
 export default function Dashboard({
+  recentFines,
+  finesLoading,
+  finesError,
   unpaidFines,
   unpaidFineTotal,
   utilityType,
@@ -30,44 +21,31 @@ export default function Dashboard({
   const { isDark } = useTheme();
   const [checkoutPayments, setCheckoutPayments] = useState<number | null>(null);
   const currentInvoice = seededInvoices.find((invoice) => invoice.status === "Due");
-  const currentUtilityBill = currentInvoice
-    ? currentInvoice.water + currentInvoice.electricity
-    : 0;
+  const currentUtilityBill = currentInvoice ? currentInvoice.water + currentInvoice.electricity : 0;
   const usageUnit = utilityType === "Water" ? "m³" : "kWh";
-  const totalBalance =
-    residentProperty.monthlyRent + currentUtilityBill + unpaidFineTotal;
+  const totalBalance = residentProperty.monthlyRent + currentUtilityBill + unpaidFineTotal;
 
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
       <header className="resident-page-intro">
         <section className="resident-page-intro-copy">
           <h1 id="dashboard-heading">Good morning, {resident.name}</h1>
-          <p>{residentProperty.address} · Resident ID: {resident.id}</p>
+          <p>
+            {residentProperty.address} · Resident ID: {resident.id}
+          </p>
         </section>
-        <section
-          className="resident-card resident-status-card"
-          aria-labelledby="status-heading"
-        >
+        <section className="resident-card resident-status-card" aria-labelledby="status-heading">
           <p className="section-label">Account status</p>
           <h3 id="status-heading">Active</h3>
-          <p className="resident-status-line">
-            Lease valid to {residentProperty.leaseEnd}
-          </p>
+          <p className="resident-status-line">Lease valid to {residentProperty.leaseEnd}</p>
         </section>
       </header>
 
       <section className="resident-summary-grid" aria-label="Account summary">
-        <section
-          className="resident-card resident-balance-card"
-          aria-labelledby="balance-heading"
-        >
+        <section className="resident-card resident-balance-card" aria-labelledby="balance-heading">
           <section className="resident-balance-header">
-            <p className="section-label section-label--light">
-              Account balance due
-            </p>
-            <h2 className="resident-balance-total">
-              {currency.format(totalBalance)}
-            </h2>
+            <p className="section-label section-label--light">Account balance due</p>
+            <h2 className="resident-balance-total">{currency.format(totalBalance)}</h2>
           </section>
           <dl className="resident-balance-list">
             <div>
@@ -84,18 +62,10 @@ export default function Dashboard({
             </div>
           </dl>
           <section className="resident-card-actions">
-            <button
-              className="resident-primary-btn"
-              type="button"
-              onClick={() => setCheckoutPayments(1)}
-            >
+            <button className="resident-primary-btn" type="button" onClick={() => setCheckoutPayments(1)}>
               Pay All · {currency.format(totalBalance)}
             </button>
-            <button
-              className="resident-secondary-btn resident-secondary-btn--light"
-              type="button"
-              onClick={() => setCheckoutPayments(2)}
-            >
+            <button className="resident-secondary-btn resident-secondary-btn--light" type="button" onClick={() => setCheckoutPayments(2)}>
               Payment Plan
             </button>
           </section>
@@ -110,7 +80,7 @@ export default function Dashboard({
             </h3>
             <section className="resident-kpi-metric">
               <p className="resident-kpi-value">{unpaidFines.length}</p>
-              <p className="resident-kpi-label">Appealed</p>
+              <p className="resident-kpi-label">Unpaid</p>
             </section>
           </section>
           <section className="resident-kpi-actions">
@@ -140,31 +110,20 @@ export default function Dashboard({
         </article>
       </section>
 
-      <section
-        className="resident-card resident-utility-card"
-        aria-labelledby="utility-heading"
-      >
+      <section className="resident-card resident-utility-card" aria-labelledby="utility-heading">
         <section className="resident-card-header resident-card-header--stacked">
           <section>
             <p className="section-label">Utility usage</p>
             <h3 id="utility-heading">August 2026</h3>
           </section>
-          <section
-            className="resident-utility-toggle"
-            aria-label="Utility type selection"
-          >
-            <button
-              type="button"
-              className={utilityType === "Water" ? "is-active" : ""}
-              onClick={() => onUtilityTypeChange("Water")}
-            >
+          <section className="resident-utility-toggle" aria-label="Utility type selection">
+            <button type="button" className={utilityType === "Water" ? "is-active" : ""} onClick={() => onUtilityTypeChange("Water")}>
               Water
             </button>
             <button
               type="button"
               className={utilityType === "Electricity" ? "is-active" : ""}
-              onClick={() => onUtilityTypeChange("Electricity")}
-            >
+              onClick={() => onUtilityTypeChange("Electricity")}>
               Electricity
             </button>
           </section>
@@ -175,19 +134,13 @@ export default function Dashboard({
           </figcaption>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={utilityUsage}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke={isDark ? "#3b5064" : "#dbe3ef"}
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#3b5064" : "#dbe3ef"} />
               <XAxis
                 dataKey="month"
                 tick={{ fill: isDark ? "#9eb2c4" : "#64748b", fontSize: 11 }}
                 stroke={isDark ? "#526579" : "#cbd5e1"}
               />
-              <YAxis
-                tick={{ fill: isDark ? "#9eb2c4" : "#64748b", fontSize: 11 }}
-                stroke={isDark ? "#526579" : "#cbd5e1"}
-              />
+              <YAxis tick={{ fill: isDark ? "#9eb2c4" : "#64748b", fontSize: 11 }} stroke={isDark ? "#526579" : "#cbd5e1"} />
               <Tooltip
                 formatter={(value) => [`${value} ${usageUnit}`, utilityType]}
                 contentStyle={{
@@ -198,12 +151,7 @@ export default function Dashboard({
                 }}
                 cursor={{ fill: isDark ? "#29445a" : "#dbeafe" }}
               />
-              <Bar
-                dataKey="usage"
-                name={utilityType}
-                radius={[6, 6, 0, 0]}
-                fill={isDark ? "#5ba6ce" : "#2563eb"}
-              />
+              <Bar dataKey="usage" name={utilityType} radius={[6, 6, 0, 0]} fill={isDark ? "#5ba6ce" : "#2563eb"} />
             </BarChart>
           </ResponsiveContainer>
         </figure>
@@ -213,11 +161,7 @@ export default function Dashboard({
             <p>{currency.format(currentUtilityBill)}</p>
             <span>Due 30 Sep 2026</span>
           </section>
-          <button
-            className="resident-secondary-btn"
-            type="button"
-            onClick={() => onNavigate("Billing")}
-          >
+          <button className="resident-secondary-btn" type="button" onClick={() => onNavigate("Billing")}>
             View billing history
           </button>
         </aside>
@@ -227,57 +171,74 @@ export default function Dashboard({
         <section className="resident-card-header">
           <section>
             <p className="section-label">Citations</p>
-            <h3 id="fines-heading">Active fines &amp; citations</h3>
+            <h3 id="fines-heading">Latest fines &amp; citations</h3>
           </section>
-          <button
-            className="resident-secondary-btn"
-            type="button"
-            onClick={() => onNavigate("My Services")}
-          >
+
+          <button className="resident-secondary-btn" type="button" onClick={() => onNavigate("My Services")}>
             View all fines
           </button>
         </section>
-        {unpaidFines.length === 0 ? (
-          <p className="resident-empty-state">No unpaid citations.</p>
+
+        {finesLoading ? (
+          <p role="status">Loading your fines...</p>
+        ) : finesError ? (
+          <p role="alert">{finesError}</p>
+        ) : recentFines.length === 0 ? (
+          <p className="resident-empty-state">You have no fines.</p>
         ) : (
           <ul className="resident-list resident-list--stacked">
-            {unpaidFines.map((fine) => (
+            {recentFines.map((fine) => (
               <li key={fine.id}>
                 <article className="resident-list-item">
                   <section className="resident-list-meta">
-                    <p className="resident-list-photo">{fine.photo}</p>
+                    {fine.photoUrl ? (
+                      <a className="resident-list-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer">
+                        View photo
+                      </a>
+                    ) : (
+                      <p className="resident-list-photo">No photo</p>
+                    )}
+
                     <section>
                       <h4>{fine.id}</h4>
                       <p className="resident-muted">{fine.violation}</p>
-                      <p className="resident-muted resident-list-location">
-                        {fine.location}
-                      </p>
+                      <p className="resident-muted resident-list-location">{fine.licensePlate}</p>
                     </section>
                   </section>
+
                   <section className="resident-list-details">
                     <p>
                       <span>Status</span>{" "}
-                      <strong className="status-badge status-badge--unpaid">
+                      <strong
+                        className={`status-badge ${
+                          fine.status === "Unpaid"
+                            ? "status-badge--unpaid"
+                            : fine.status === "Paid" || fine.status === "Waived"
+                              ? "status-badge--paid"
+                              : "status-badge--info"
+                        }`}>
                         {fine.status}
                       </strong>
                     </p>
+
                     <p>
-                      <span>Location</span> {fine.location}
+                      <span>Vehicle registration</span> {fine.licensePlate ?? "Not recorded"}
                     </p>
+
                     <p>
                       <span>Date</span> {fine.date}
                     </p>
+
                     <p>
                       <span>Amount</span> {currency.format(fine.amount)}
                     </p>
                   </section>
-                  <button
-                    className="resident-secondary-btn"
-                    type="button"
-                    onClick={() => onOpenAppeal(fine)}
-                  >
-                    File Appeal
-                  </button>
+
+                  {fine.status === "Unpaid" && (
+                    <button className="resident-secondary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
+                      File Appeal
+                    </button>
+                  )}
                 </article>
               </li>
             ))}
@@ -286,11 +247,7 @@ export default function Dashboard({
       </section>
 
       {checkoutPayments !== null ? (
-        <PaymentCheckout
-          amount={totalBalance}
-          defaultPayments={checkoutPayments}
-          onClose={() => setCheckoutPayments(null)}
-        />
+        <PaymentCheckout amount={totalBalance} defaultPayments={checkoutPayments} onClose={() => setCheckoutPayments(null)} />
       ) : null}
     </section>
   );

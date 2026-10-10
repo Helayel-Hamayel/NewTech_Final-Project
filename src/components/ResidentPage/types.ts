@@ -1,13 +1,11 @@
-import type {
-  Fine,
-  Invoice,
-  ResidentServiceRequest,
-  UtilityType,
-} from "../../data/residentPortal";
+import type { Fine, Invoice, ResidentServiceRequest, UtilityType } from "../../data/residentPortal";
 
 export type PortalTab = "Dashboard" | "Billing" | "My Services" | "Properties";
 
 export type DashboardProps = {
+  recentFines: Fine[];
+  finesLoading: boolean;
+  finesError: string;
   unpaidFines: Fine[];
   unpaidFineTotal: number;
   utilityType: UtilityType;
@@ -25,11 +23,15 @@ export type BillingProps = {
 export type MyTicketsProps = {
   serviceRequests: ResidentServiceRequest[];
   fines: Fine[];
+  finesLoading: boolean;
+  finesError: string;
   onOpenAppeal: (fine: Fine) => void;
   selectedAppealFine: Fine | null;
   appealStatement: string;
   onAppealStatementChange: (value: string) => void;
-  onSubmitAppeal: () => void;
+  onSubmitAppeal: (formData: FormData) => Promise<void>;
+  appealSubmitting: boolean;
+  appealError: string;
   onCloseAppeal: () => void;
   onAddServiceRequest: (request: ResidentServiceRequest) => void;
 };

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Outlet } from "react-router-dom";
 import StaffHeader from "../components/Staff/StaffHeader";
-import { useCitationState } from "../contexts/useCitationState";
-import { billingAccounts, staffDisputesData, type StaffServiceRequest, type StaffTab, type ReportFromBackend } from "../data/staffData";
+import { billingAccounts, type StaffServiceRequest, type StaffTab, type ReportFromBackend } from "../data/staffData";
+import type { AppealFromBackend } from "../data/appealData";
 import "../styles/common/Staff/StaffLayout.css";
 
 export type StaffLayoutContext = {
@@ -13,6 +13,10 @@ export type StaffLayoutContext = {
   serviceRequests: StaffServiceRequest[];
   setServiceRequests: Dispatch<SetStateAction<StaffServiceRequest[]>>;
   maintenanceTickets: StaffServiceRequest[];
+  appeals: AppealFromBackend[];
+  setAppeals: Dispatch<SetStateAction<AppealFromBackend[]>>;
+  appealsLoading: boolean;
+  appealsError: string;
 };
 
 export default function StaffLayout() {
@@ -24,14 +28,17 @@ export default function StaffLayout() {
   const maintenanceTickets = serviceRequests.filter(
     (request) => request.assignedTo === "Maintenance Team" || (request.status === "Rejected" && !request.assignedTo),
   );
-  const { citationState } = useCitationState();
-  const pendingDisputes = staffDisputesData.filter((dispute) => citationState[dispute.fineId] === "PENDING").length;
+
+  const [appeals, setAppeals] = useState<AppealFromBackend[]>([]);
+  const [appealsLoading, setAppealsLoading] = useState(true);
+  const [appealsError, setAppealsError] = useState("");
+  const pendingDisputes = appeals.filter((appeal) => appeal.status === "PENDING").length;
   const overdueAccounts = billingAccounts.filter((account) => account.status === "Overdue").length;
   const openTickets = maintenanceTickets.filter((ticket) => ticket.status === "Assigned" || ticket.status === "In Progress").length;
   const pendingServiceRequests = serviceRequests.filter((request) => request.status === "Pending").length;
   const currentItemIds: Record<StaffTab, string[]> = {
     requests: serviceRequests.filter((request) => request.status === "Pending").map((request) => request.id),
-    disputes: staffDisputesData.filter((dispute) => citationState[dispute.fineId] === "PENDING").map((dispute) => dispute._id),
+    disputes: appeals.filter((appeal) => appeal.status === "PENDING").map((appeal) => appeal._id),
     billing: billingAccounts.filter((account) => account.status === "Overdue").map((account) => account.account),
     maintenance: maintenanceTickets
       .filter((ticket) => ticket.status === "Assigned" || ticket.status === "In Progress")
@@ -43,6 +50,21 @@ export default function StaffLayout() {
     billing: [],
     maintenance: [],
   }));
+
+  const unreadTabs: Record<StaffTab, boolean> = {
+    requests: currentItemIds.requests.some((id) => !seenItemIds.requests.includes(id)),
+    disputes: currentItemIds.disputes.some((id) => !seenItemIds.disputes.includes(id)),
+    billing: currentItemIds.billing.some((id) => !seenItemIds.billing.includes(id)),
+    maintenance: currentItemIds.maintenance.some((id) => !seenItemIds.maintenance.includes(id)),
+  };
+
+  function handleTabChange(tab: StaffTab) {
+    setActiveTab(tab);
+    setSeenItemIds((previous) => ({
+      ...previous,
+      [tab]: currentItemIds[tab],
+    }));
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -109,20 +131,40 @@ export default function StaffLayout() {
     return () => controller.abort();
   }, []);
 
-  const unreadTabs: Record<StaffTab, boolean> = {
-    requests: currentItemIds.requests.some((id) => !seenItemIds.requests.includes(id)),
-    disputes: currentItemIds.disputes.some((id) => !seenItemIds.disputes.includes(id)),
-    billing: currentItemIds.billing.some((id) => !seenItemIds.billing.includes(id)),
-    maintenance: currentItemIds.maintenance.some((id) => !seenItemIds.maintenance.includes(id)),
-  };
+  useEffect(() => {
+    const controller = new AbortController();
 
-  function handleTabChange(tab: StaffTab) {
-    setActiveTab(tab);
-    setSeenItemIds((previous) => ({
-      ...previous,
-      [tab]: currentItemIds[tab],
-    }));
-  }
+    async function loadAppeals() {
+      try {
+        const response = await fetch("http://localhost:4000/appeals", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load appeals.");
+        }
+
+        const data: AppealFromBackend[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setAppeals(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setAppealsError(error instanceof Error ? error.message : "Could not load appeals.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setAppealsLoading(false);
+        }
+      }
+    }
+
+    loadAppeals();
+
+    return () => controller.abort();
+  }, []);
 
   return (
     <section className="staff-shell">
@@ -148,6 +190,10 @@ export default function StaffLayout() {
               serviceRequests,
               setServiceRequests,
               maintenanceTickets,
+              appeals,
+              setAppeals,
+              appealsLoading,
+              appealsError,
             } satisfies StaffLayoutContext
           }
         />
