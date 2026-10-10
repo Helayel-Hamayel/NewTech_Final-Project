@@ -3,12 +3,15 @@ export type UtilityType = "Water" | "Electricity";
 export type Fine = {
   id: string;
   residentId: string;
-  status: "Unpaid" | "Appealed" | "Waived";
+  status: "Unpaid" | "Paid" | "Appealed" | "Waived";
   violation: string;
   location: string;
   date: string;
   amount: number;
   photo: string;
+  licensePlate?: string;
+  photoUrl?: string;
+  resolvedAt?: string | null;
 };
 
 export type MaintenanceTicketStage = "Reported" | "Dispatched" | "In Progress" | "Resolved";

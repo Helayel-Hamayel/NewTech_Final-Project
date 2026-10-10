@@ -3,6 +3,7 @@ import type { SubmitEvent } from "react";
 import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
 import type { MyTicketsProps } from "./types";
+import { useUser } from "../../contexts/useUser";
 
 const requestTypes = [
   "Parking",
@@ -20,9 +21,13 @@ const requestTypes = [
 export default function MyTickets({
   serviceRequests,
   fines,
+  finesLoading,
+  finesError,
   onOpenAppeal,
   selectedAppealFine,
   appealStatement,
+  appealSubmitting,
+  appealError,
   onAppealStatementChange,
   onSubmitAppeal,
   onCloseAppeal,
@@ -30,8 +35,6 @@ export default function MyTickets({
 }: MyTicketsProps) {
   const [activeSection, setActiveSection] = useState<"requests" | "fines">("requests");
   const [selectedCitationFine, setSelectedCitationFine] = useState<MyTicketsProps["selectedAppealFine"]>(null);
-  const [appealReason, setAppealReason] = useState("Incorrect information");
-  const [appealContact, setAppealContact] = useState("Email");
 
   const [photo, setPhoto] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -46,6 +49,8 @@ export default function MyTickets({
   });
 
   const ticketStages: MaintenanceTicket["stage"][] = ["Reported", "Dispatched", "In Progress", "Resolved"];
+
+  const { user } = useUser();
 
   function updateRequestForm(field: keyof typeof requestForm, value: string) {
     setRequestForm((current) => ({ ...current, [field]: value }));
@@ -272,59 +277,75 @@ export default function MyTickets({
             </section>
             <span className="billing-count">{fines.length} records</span>
           </section>
-          <ul className="citation-grid">
-            {fines.map((fine) => (
-              <li key={fine.id}>
-                <article className="citation-card">
-                  <section className="citation-card-header">
-                    <span className="citation-photo">{fine.photo}</span>
-                    <span className={`status-badge ${fine.status === "Unpaid" ? "status-badge--unpaid" : "status-badge--paid"}`}>
-                      {fine.status}
-                    </span>
-                  </section>
-                  <h3>{fine.id}</h3>
-                  <p className="citation-violation">{fine.violation}</p>
-                  <dl className="citation-details">
-                    <div>
-                      <dt>Location</dt>
-                      <dd>{fine.location}</dd>
-                    </div>
-                    <div>
-                      <dt>Date</dt>
-                      <dd>{fine.date}</dd>
-                    </div>
-                    <div>
-                      <dt>Amount</dt>
-                      <dd>{currency.format(fine.amount)}</dd>
-                    </div>
-                  </dl>
-                  {fine.status === "Unpaid" ? (
-                    <section className="citation-actions">
-                      <button className="resident-secondary-btn" type="button" onClick={() => setSelectedCitationFine(fine)}>
-                        View details
-                      </button>
-                      <button className="resident-primary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
-                        File appeal
-                      </button>
+          {finesLoading ? (
+            <p role="status">Loading your fines...</p>
+          ) : finesError ? (
+            <p role="alert">{finesError}</p>
+          ) : fines.length === 0 ? (
+            <p className="resident-empty-state">You have no fines.</p>
+          ) : (
+            <ul className="citation-grid">
+              {fines.map((fine) => (
+                <li key={fine.id}>
+                  <article className="citation-card">
+                    <section className="citation-card-header">
+                      {fine.photoUrl ? (
+                        <a className="citation-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer">
+                          View photo
+                        </a>
+                      ) : (
+                        <span className="citation-photo">No photo</span>
+                      )}{" "}
+                      <span className={`status-badge ${fine.status === "Unpaid" ? "status-badge--unpaid" : "status-badge--paid"}`}>
+                        {fine.status}
+                      </span>
                     </section>
-                  ) : (
-                    <section className="citation-actions">
-                      <button className="resident-secondary-btn" type="button" onClick={() => setSelectedCitationFine(fine)}>
-                        View details
-                      </button>
-                      <span className="citation-resolved">Appeal submitted</span>
-                    </section>
-                  )}
-                </article>
-              </li>
-            ))}
-          </ul>
+                    <h3>{fine.id}</h3>
+                    <p className="citation-violation">{fine.violation}</p>
+                    <dl className="citation-details">
+                      <div>
+                        <dt>Vehicle registration</dt>
+                        <dd>{fine.licensePlate ?? "Not recorded"}</dd>
+                      </div>
+                      <div>
+                        <dt>Date</dt>
+                        <dd>{fine.date}</dd>
+                      </div>
+                      <div>
+                        <dt>Amount</dt>
+                        <dd>{currency.format(fine.amount)}</dd>
+                      </div>
+                    </dl>
+                    {fine.status === "Unpaid" ? (
+                      <section className="citation-actions">
+                        <button className="resident-secondary-btn" type="button" onClick={() => setSelectedCitationFine(fine)}>
+                          View details
+                        </button>
+                        <button className="resident-primary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
+                          File appeal
+                        </button>
+                      </section>
+                    ) : (
+                      <section className="citation-actions">
+                        <button className="resident-secondary-btn" type="button" onClick={() => setSelectedCitationFine(fine)}>
+                          View details
+                        </button>
+                        <span className="citation-resolved">
+                          {fine.status === "Paid" ? "Paid" : fine.status === "Waived" ? "Waived" : "Appeal submitted"}
+                        </span>{" "}
+                      </section>
+                    )}
+                  </article>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       ) : null}
       {selectedAppealFine ? (
         <section className="resident-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="appeal-heading">
           <section className="resident-dialog">
-            <button className="resident-dialog-close" type="button" onClick={onCloseAppeal}>
+            <button className="resident-dialog-close" type="button" onClick={onCloseAppeal} disabled={appealSubmitting}>
               Close
             </button>
             <section className="appeal-layout">
@@ -335,41 +356,59 @@ export default function MyTickets({
                 <p>{selectedAppealFine.date}</p>
                 <strong>{currency.format(selectedAppealFine.amount)}</strong>
               </section>
-              <section className="appeal-form">
+              <form
+                className="appeal-form"
+                key={selectedAppealFine.id}
+                onSubmit={(event) => {
+                  event.preventDefault();
+
+                  const formData = new FormData(event.currentTarget);
+                  void onSubmitAppeal(formData);
+                }}>
                 <p className="section-label">Your statement</p>
                 <h3 id="appeal-heading">Submit appeal</h3>
+
                 <label className="appeal-field">
                   Appeal reason
-                  <select value={appealReason} onChange={(event) => setAppealReason(event.target.value)}>
+                  <select name="reason" defaultValue="Incorrect information" required disabled={appealSubmitting}>
                     <option>Incorrect information</option>
                     <option>Violation was not mine</option>
                     <option>Special circumstances</option>
                     <option>Already resolved</option>
                   </select>
                 </label>
+
+                <label className="appeal-field" htmlFor="appeal-description">
+                  Description
+                </label>
+
                 <textarea
+                  id="appeal-description"
+                  name="description"
                   required
                   value={appealStatement}
+                  disabled={appealSubmitting}
                   onChange={(event) => onAppealStatementChange(event.target.value)}
-                  placeholder="Write your statement here"
+                  placeholder="Explain why you are appealing this fine"
                 />
+
                 <label className="appeal-field appeal-contact-field">
-                  Preferred response method
-                  <select value={appealContact} onChange={(event) => setAppealContact(event.target.value)}>
-                    <option>Email</option>
-                    <option>Phone</option>
-                    <option>Portal message</option>
-                  </select>
+                  Account email
+                  <input type="email" value={user?.email ?? ""} readOnly />
                 </label>
+
                 <label className="appeal-upload-option">
-                  Upload photo or document
-                  <input type="file" accept="image/*,.pdf" />
-                  <span>Choose an image or PDF</span>
+                  Supporting photo
+                  <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" disabled={appealSubmitting} />
+                  <span>Optional JPEG, PNG, or WebP, up to 5 MB</span>
                 </label>
-                <button className="resident-primary-btn" type="button" onClick={onSubmitAppeal}>
-                  Submit appeal
+
+                {appealError && <p role="alert">{appealError}</p>}
+
+                <button className="resident-primary-btn" type="submit" disabled={appealSubmitting || !appealStatement.trim()}>
+                  {appealSubmitting ? "Submitting..." : "Submit appeal"}
                 </button>
-              </section>
+              </form>
             </section>
           </section>
         </section>
@@ -389,8 +428,8 @@ export default function MyTickets({
                 <dd>{selectedCitationFine.status}</dd>
               </div>
               <div>
-                <dt>Location</dt>
-                <dd>{selectedCitationFine.location}</dd>
+                <dt>Vehicle registration</dt>
+                <dd>{selectedCitationFine.licensePlate ?? "Not recorded"}</dd>
               </div>
               <div>
                 <dt>Date issued</dt>
@@ -402,7 +441,15 @@ export default function MyTickets({
               </div>
               <div>
                 <dt>Evidence</dt>
-                <dd>{selectedCitationFine.photo}</dd>
+                <dd>
+                  {selectedCitationFine.photoUrl ? (
+                    <a href={selectedCitationFine.photoUrl} target="_blank" rel="noopener noreferrer">
+                      View photo
+                    </a>
+                  ) : (
+                    "No photo"
+                  )}
+                </dd>{" "}
               </div>
             </dl>
             {selectedCitationFine.status === "Unpaid" ? (

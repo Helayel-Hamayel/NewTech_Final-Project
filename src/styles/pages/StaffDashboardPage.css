@@ -1360,3 +1360,108 @@ html[data-theme="dark"] .staff-priority--low {
     min-height: 0;
   }
 }
+
+.staff-appeal-dialog {
+  box-sizing: border-box;
+  width: min(1050px, calc(100vw - 32px));
+  max-height: 90vh;
+  margin: auto;
+  padding: 24px;
+  overflow-y: auto;
+  border: 1px solid var(--staff-border);
+  border-radius: 16px;
+  background: var(--staff-panel-bg);
+  color: var(--staff-ink);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+}
+
+.staff-appeal-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.staff-appeal-dialog .staff-dialog-heading {
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.staff-appeal-dialog .staff-dialog-heading > section {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.appeal-evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.appeal-evidence-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--staff-border);
+  border-radius: 12px;
+}
+
+.appeal-evidence-card h3 {
+  margin: 0 0 14px;
+}
+
+.appeal-evidence-photo {
+  display: block;
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+  background: rgba(127, 127, 127, 0.08);
+  border-radius: 8px;
+}
+
+.appeal-photo-empty {
+  display: grid;
+  place-items: center;
+  height: 280px;
+  margin: 0;
+  border: 1px dashed var(--staff-border);
+  border-radius: 8px;
+}
+
+.appeal-evidence-details {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 0;
+}
+
+.appeal-evidence-details dt {
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.appeal-evidence-details dd {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.appeal-review-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.staff-appeal-dialog button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .appeal-evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .staff-appeal-dialog {
+    padding: 16px;
+  }
+}

@@ -1674,7 +1674,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   content: "";
 }
 
-.ticket-progress div {
+.ticket-progress > section {
   position: relative;
   z-index: 1;
   display: grid;
@@ -1687,17 +1687,17 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   text-align: center;
 }
 
-.ticket-progress div.is-complete {
+.ticket-progress > section.is-complete {
   color: #5684ae;
   font-weight: 700;
 }
 
-.ticket-progress div.is-current {
+.ticket-progress > section.is-current {
   color: var(--resident-blue);
   font-weight: 800;
 }
 
-.ticket-progress div.is-upcoming {
+.ticket-progress > section.is-upcoming {
   color: var(--resident-slate-400);
 }
 
@@ -1713,7 +1713,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   line-height: 1;
 }
 
-.ticket-progress div.is-current .ticket-progress-dot {
+.ticket-progress > section.is-current .ticket-progress-dot {
   width: 21px;
   height: 21px;
   border-color: var(--resident-blue);

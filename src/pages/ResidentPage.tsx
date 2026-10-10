@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Building2,
-  ClipboardList,
-  FileText,
-  Home,
-  LayoutDashboard,
-  LogOut,
-} from "lucide-react";
+import { Building2, ClipboardList, FileText, Home, LayoutDashboard, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SharedLayout from "../components/common/SharedLayout";
@@ -26,12 +19,12 @@ import {
   type Invoice,
   type ResidentServiceRequest,
   resident,
-  seededFines,
   seededInvoices,
   utilityUsage,
   type UtilityType,
 } from "../data/residentPortal";
 import type { ReportFromBackend } from "../data/staffData";
+import type { FineFromBackend } from "../data/fineData";
 import "../styles/pages/ResidentPortalPage.css";
 
 const residentDrawerItems: Array<{
@@ -59,15 +52,22 @@ export default function ResidentPage() {
 
   const [selectedAppealFine, setSelectedAppealFine] = useState<Fine | null>(null);
   const [appealStatement, setAppealStatement] = useState("");
+  const [appealSubmitting, setAppealSubmitting] = useState(false);
+  const [appealError, setAppealError] = useState("");
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
-  const fines = seededFines
-    .filter((fine) => fine.residentId === resident.id)
-    .map((fine) => ({
-      ...fine,
-      status:
-        citationState[fine.id] === "WAIVED" ? ("Waived" as const) : appealedFineIds.includes(fine.id) ? ("Appealed" as const) : fine.status,
-    }));
-  const unpaidFines = fines.filter((fine) => fine.status === "Unpaid");
+  const [savedFines, setSavedFines] = useState<Fine[]>([]);
+  const [finesLoading, setFinesLoading] = useState(true);
+  const [finesError, setFinesError] = useState("");
+
+  const serviceFines: Fine[] = savedFines.map((fine) => ({
+    ...fine,
+    status: citationState[fine.id] === "WAIVED" ? "Waived" : appealedFineIds.includes(fine.id) ? "Appealed" : fine.status,
+  }));
+
+  const recentFines = serviceFines.slice(0, 3);
+
+  const unpaidFines = savedFines.filter((fine) => fine.status === "Unpaid");
+
   const unpaidFineTotal = unpaidFines.reduce((total, fine) => total + fine.amount, 0);
 
   function handleAppeal(fineId: string) {
@@ -77,6 +77,7 @@ export default function ResidentPage() {
   function handleOpenAppeal(fine: Fine) {
     setSelectedAppealFine(fine);
     setAppealStatement("");
+    setAppealError("");
     setActiveTab("My Services");
   }
 
@@ -84,11 +85,71 @@ export default function ResidentPage() {
     setServiceRequests((currentRequests) => [request, ...currentRequests]);
   }
 
-  function handleSubmitAppeal() {
-    if (!selectedAppealFine) return;
-    handleAppeal(selectedAppealFine.id);
+  async function handleSubmitAppeal(formData: FormData) {
+    if (!selectedAppealFine || appealSubmitting) return;
+
+    setAppealError("");
+
+    const description = appealStatement.trim();
+
+    if (!description) {
+      setAppealError("Please describe why you are appealing this fine.");
+      return;
+    }
+
+    const photo = formData.get("photo");
+
+    if (photo instanceof File && photo.size > 0) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+
+      if (!allowedTypes.includes(photo.type)) {
+        setAppealError("Choose a JPEG, PNG, or WebP image.");
+        return;
+      }
+
+      if (photo.size > 5 * 1024 * 1024) {
+        setAppealError("The photo must be 5 MB or smaller.");
+        return;
+      }
+    } else {
+      formData.delete("photo");
+    }
+
+    formData.set("fineId", selectedAppealFine.id);
+    formData.set("description", description);
+
+    setAppealSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:4000/appeals", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+
+        throw new Error(errorData?.message ?? "Could not submit the appeal.");
+      }
+
+      handleAppeal(selectedAppealFine.id);
+      setSelectedAppealFine(null);
+      setAppealStatement("");
+      toast.success("Your appeal was submitted successfully.");
+    } catch (error) {
+      setAppealError(error instanceof Error ? error.message : "Could not submit the appeal.");
+    } finally {
+      setAppealSubmitting(false);
+    }
+  }
+
+  function handleCloseAppeal() {
+    if (appealSubmitting) return;
+
     setSelectedAppealFine(null);
     setAppealStatement("");
+    setAppealError("");
   }
 
   function handleSignOut() {
@@ -169,6 +230,59 @@ export default function ResidentPage() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadFines() {
+      try {
+        const response = await fetch("http://localhost:4000/fines", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load your fines.");
+        }
+
+        const data: FineFromBackend[] = await response.json();
+
+        const mappedFines: Fine[] = data.map((fine) => ({
+          id: fine._id,
+          residentId: fine.resident,
+          status: fine.status === "PAID" ? "Paid" : "Unpaid",
+          violation: fine.violationType,
+          licensePlate: fine.licensePlate,
+          location: "Not recorded",
+          date: new Date(fine.createdAt).toLocaleString("en-GB", {
+            timeZone: "Asia/Jerusalem",
+            dateStyle: "short",
+            timeStyle: "short",
+          }),
+          amount: fine.amount,
+          photo: fine.photoUrl ? "Photo available" : "No photo",
+          photoUrl: fine.photoUrl,
+          resolvedAt: fine.resolvedAt,
+        }));
+
+        if (!controller.signal.aborted) {
+          setSavedFines(mappedFines);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setFinesError(error instanceof Error ? error.message : "Could not load your fines.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setFinesLoading(false);
+        }
+      }
+    }
+
+    loadFines();
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <SharedLayout
       header={
@@ -185,7 +299,9 @@ export default function ResidentPage() {
 
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
           <MobileDrawer
-            brandIcon={<Building2 />} userName={resident.name} subtitle="Resident Portal"
+            brandIcon={<Building2 />}
+            userName={resident.name}
+            subtitle="Resident Portal"
             items={residentDrawerItems}
             activeId={activeTab}
             onSelect={setActiveTab}
@@ -229,6 +345,9 @@ export default function ResidentPage() {
             <section className="resident-content">
               {activeTab === "Dashboard" ? (
                 <Dashboard
+                  recentFines={recentFines}
+                  finesLoading={finesLoading}
+                  finesError={finesError}
                   unpaidFines={unpaidFines}
                   unpaidFineTotal={unpaidFineTotal}
                   utilityType={utilityType}
@@ -248,13 +367,17 @@ export default function ResidentPage() {
                   ) : (
                     <MyTickets
                       serviceRequests={serviceRequests}
-                      fines={fines}
+                      fines={serviceFines}
+                      finesLoading={finesLoading}
+                      finesError={finesError}
                       onOpenAppeal={handleOpenAppeal}
                       selectedAppealFine={selectedAppealFine}
                       appealStatement={appealStatement}
+                      appealSubmitting={appealSubmitting}
+                      appealError={appealError}
                       onAppealStatementChange={setAppealStatement}
                       onSubmitAppeal={handleSubmitAppeal}
-                      onCloseAppeal={() => setSelectedAppealFine(null)}
+                      onCloseAppeal={handleCloseAppeal}
                       onAddServiceRequest={handleAddServiceRequest}
                     />
                   )}
