@@ -347,9 +347,9 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </select>
                   </label>
 
-                  <section>
+                  <section className="staff-route-actions">
                     <button
-                      className="staff-route-request"
+                      className="staff-route-request staff-route-request--guard"
                       type="button"
                       disabled={assigning || rejecting || !fieldGuardId || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Field Guard")}>
@@ -357,7 +357,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </button>
 
                     <button
-                      className="staff-route-request"
+                      className="staff-route-request staff-route-request--maintenance"
                       type="button"
                       disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Maintenance Team")}>

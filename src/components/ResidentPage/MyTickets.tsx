@@ -4,6 +4,7 @@ import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/resid
 import { currency } from "../../helpers/formatting/currency";
 import type { MyTicketsProps } from "./types";
 import { useUser } from "../../contexts/useUser";
+import AppealPhotoPicker from "./AppealPhotoPicker";
 
 const requestTypes = [
   "Parking",
@@ -37,6 +38,7 @@ export default function MyTickets({
   const [selectedCitationFine, setSelectedCitationFine] = useState<MyTicketsProps["selectedAppealFine"]>(null);
 
   const [photo, setPhoto] = useState<File | null>(null);
+  const [appealPhoto, setAppealPhoto] = useState<{ fineId: string; file: File } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -360,6 +362,11 @@ export default function MyTickets({
                   event.preventDefault();
 
                   const formData = new FormData(event.currentTarget);
+
+                  if (appealPhoto?.fineId === selectedAppealFine.id) {
+                    formData.append("photo", appealPhoto.file);
+                  }
+
                   void onSubmitAppeal(formData);
                 }}>
                 <p className="section-label">Your statement</p>
@@ -394,15 +401,15 @@ export default function MyTickets({
                   <input type="email" value={user?.email ?? ""} readOnly />
                 </label>
 
-                <label className="appeal-upload-option">
-                  Supporting photo
-                  <input name="photo" type="file" accept="image/jpeg,image/png,image/webp" disabled={appealSubmitting} />
-                  <span>Optional JPEG, PNG, or WebP, up to 5 MB</span>
-                </label>
+                <AppealPhotoPicker
+                  file={appealPhoto?.fineId === selectedAppealFine.id ? appealPhoto.file : null}
+                  disabled={appealSubmitting}
+                  onChange={(file) => setAppealPhoto(file ? { fineId: selectedAppealFine.id, file } : null)}
+                />
 
-                {appealError && <p role="alert">{appealError}</p>}
+                {appealError && <p className="appeal-error" role="alert">{appealError}</p>}
 
-                <button className="resident-primary-btn" type="submit" disabled={appealSubmitting || !appealStatement.trim()}>
+                <button className="resident-primary-btn appeal-submit" type="submit" disabled={appealSubmitting || !appealStatement.trim()}>
                   {appealSubmitting ? "Submitting..." : "Submit appeal"}
                 </button>
               </form>
