@@ -195,9 +195,6 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
           </section>
           <span className="staff-service-request-count">{requests.filter((request) => request.status === "Pending").length} pending</span>
         </header>
-        <p className="staff-service-request-demo-note" role="note">
-          Assignments are saved. Rejection is still a demo action.
-        </p>
         {matchingRequests.length === 0 ? (
           <p className="staff-service-requests-empty">
             {requests.length === 0 ? "No resident requests yet." : "No requests match your search."}
@@ -206,33 +203,52 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
           <section className="staff-service-request-list">
             {matchingRequests.map((request) => (
               <article className="staff-service-request-card" key={request.id}>
-                <section className="staff-service-request-card-top">
-                  <span className="staff-ticket-id">{request.id}</span>
+                <header className="staff-service-request-card-top">
+                  <section>
+                    <h3>{request.type}</h3>
+                    <span className="staff-ticket-id">{request.id}</span>
+                  </section>
                   <span
                     className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase()}`}>
                     {request.status}
                   </span>
-                </section>
-                <h3>{request.type}</h3>
-                <p className="staff-service-request-resident">
-                  {request.residentName} · {request.location}
-                </p>
+                </header>
+                <dl className="staff-service-request-meta">
+                  <div>
+                    <dt>Resident</dt>
+                    <dd>{request.residentName}</dd>
+                  </div>
+                  <div>
+                    <dt>Reported</dt>
+                    <dd>{request.reported}</dd>
+                  </div>
+                  <div className="staff-service-request-meta-wide">
+                    <dt>Location</dt>
+                    <dd>{request.location}</dd>
+                  </div>
+                </dl>
                 <p className="staff-service-request-summary">{request.description}</p>
-                {(request.status === "Resolved" || request.status === "Rejected") && request.resolvedAt && (
+                <footer className="staff-service-request-footer">
                   <p className="staff-service-request-outcome">
-                    {request.status === "Rejected" ? "Rejected at" : "Completed at"}:{" "}
-                    {new Date(request.resolvedAt).toLocaleString("en-GB", {
-                      timeZone: "Asia/Jerusalem",
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
+                    {request.status === "Rejected" && request.rejectionReason
+                      ? `Rejected: ${request.rejectionReason}`
+                      : request.assignedTo
+                        ? `Assigned to ${request.assignedTo}`
+                        : ""}
+                    {request.resolvedAt
+                      ? `${request.assignedTo || request.rejectionReason ? " · " : ""}${request.status === "Rejected" ? "Closed" : "Completed"} ${new Date(
+                          request.resolvedAt,
+                        ).toLocaleString("en-GB", {
+                          timeZone: "Asia/Jerusalem",
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}`
+                      : ""}
                   </p>
-                )}
-                {request.assignedTo ? <p className="staff-service-request-outcome">Assigned to {request.assignedTo}</p> : null}
-                {request.rejectionReason ? <p className="staff-service-request-outcome">Rejected: {request.rejectionReason}</p> : null}
-                <button className="staff-review-request" type="button" onClick={() => openRequest(request.id)}>
-                  {request.status === "Rejected" ? "View details" : "Review request"}
-                </button>
+                  <button className="staff-review-request" type="button" onClick={() => openRequest(request.id)}>
+                    {request.status === "Rejected" ? "View details" : "Review"}
+                  </button>
+                </footer>
               </article>
             ))}
           </section>
@@ -331,9 +347,9 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </select>
                   </label>
 
-                  <section>
+                  <section className="staff-route-actions">
                     <button
-                      className="staff-route-request"
+                      className="staff-route-request staff-route-request--guard"
                       type="button"
                       disabled={assigning || rejecting || !fieldGuardId || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Field Guard")}>
@@ -341,7 +357,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </button>
 
                     <button
-                      className="staff-route-request"
+                      className="staff-route-request staff-route-request--maintenance"
                       type="button"
                       disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Maintenance Team")}>

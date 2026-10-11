@@ -42,7 +42,12 @@ export default function StaffPage() {
       />
 
       <section className="staff-dashboard-content" aria-label="Staff workspace">
-        <StaffOverview pendingDisputes={pendingDisputes} openTickets={openTickets} />
+        <StaffOverview
+          pendingDisputes={pendingDisputes}
+          openTickets={openTickets}
+          serviceRequests={serviceRequests}
+          loading={reportsLoading}
+        />
 
         {activeTab === "requests" ? (
           <StaffServiceRequestInbox requests={serviceRequests} search="" setRequests={setServiceRequests} />

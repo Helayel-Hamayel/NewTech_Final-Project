@@ -95,8 +95,7 @@
 	font-weight: 800;
 }
 
-.login-brand-mark svg,
-.demo-account-icon svg {
+.login-brand-mark svg {
 	display: block;
 }
 
@@ -162,8 +161,6 @@
 }
 
 .login-eyebrow,
-.demo-access-kicker,
-.demo-access-note,
 .login-field label {
 	font-family: "Segoe UI", sans-serif;
 	text-transform: uppercase;
@@ -240,6 +237,22 @@
 	box-shadow: 0 0 0 4px #2563eb1f;
 }
 
+.login-remember {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	color: #cbd5e1;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.login-remember input {
+	width: 16px;
+	height: 16px;
+	accent-color: var(--login-blue);
+	cursor: pointer;
+}
+
 .login-submit {
 	display: flex;
 	align-items: center;
@@ -258,8 +271,7 @@
 	transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-.login-submit svg,
-.demo-account-arrow svg {
+.login-submit svg {
 	display: block;
 }
 
@@ -269,104 +281,9 @@
 	transform: translateY(-1px);
 }
 
-.login-submit:focus-visible,
-.demo-account:focus-visible {
+.login-submit:focus-visible {
 	outline: 3px solid #93c5fd;
 	outline-offset: 3px;
-}
-
-.demo-access {
-	display: grid;
-	gap: 9px;
-	margin-top: 32px;
-	padding-top: 25px;
-	border-top: 1px solid #ffffff26;
-}
-
-.demo-access-heading {
-	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 14px;
-	margin-bottom: 3px;
-}
-
-.demo-access-kicker {
-	color: var(--login-white);
-	font-size: 11px;
-	font-weight: 750;
-	letter-spacing: 0.1em;
-}
-
-.demo-access-note {
-	color: #94a3b8;
-	font-size: 9px;
-	letter-spacing: 0.06em;
-}
-
-.demo-access-disclaimer {
-	margin: 0;
-	color: #cbd5e1;
-	font-size: 11px;
-	line-height: 1.45;
-}
-
-.demo-account {
-	display: flex;
-	align-items: center;
-	gap: 11px;
-	min-width: 0;
-	padding: 11px 12px;
-	border: 1px solid #ffffff26;
-	border-radius: 12px;
-	background: #02061766;
-	color: #cbd5e1;
-	text-decoration: none;
-	transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
-}
-
-.demo-account:hover {
-	border-color: #93c5fd99;
-	background: #2563eb40;
-	transform: translateX(2px);
-}
-
-.demo-account-icon {
-	display: grid;
-	flex: 0 0 30px;
-	width: 30px;
-	height: 30px;
-	place-items: center;
-	border-radius: 50%;
-	background: var(--login-slate-900);
-	color: var(--login-white);
-}
-
-.demo-account--staff .demo-account-icon {
-	background: var(--login-blue);
-}
-
-.demo-account--field-guard .demo-account-icon {
-	background: #059669;
-}
-
-.demo-account-copy {
-	min-width: 0;
-	overflow: hidden;
-	font-size: 11px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-.demo-account-copy strong {
-	color: var(--login-white);
-	font-size: 12px;
-}
-
-.demo-account-arrow {
-	margin-left: auto;
-	color: var(--login-blue);
-	font-size: 16px;
 }
 
 .registration-notice {

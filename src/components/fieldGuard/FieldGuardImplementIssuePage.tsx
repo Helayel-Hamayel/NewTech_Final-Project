@@ -104,7 +104,7 @@ export default function FieldGuardImplementIssuePage() {
         <section>
           <p className="field-citation-eyebrow">FIELD OPERATIONS</p>
           <h1 id="citation-title">Issue Parking Citation</h1>
-          <p>Create a demo citation for Tel Aviv-Yafo.</p>
+          <p>Create a parking citation for Tel Aviv-Yafo.</p>
         </section>
         <span className="field-citation-ticket-mark" aria-hidden="true">
           <Ticket size={21} />

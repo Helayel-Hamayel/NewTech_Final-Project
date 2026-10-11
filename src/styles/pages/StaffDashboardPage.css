@@ -162,7 +162,7 @@
 
 .staff-kpis {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -781,6 +781,74 @@
 
 .staff-service-requests {
   overflow: visible;
+  padding: 8px 10px 10px;
+}
+
+.staff-service-requests > .staff-maintenance-heading {
+  padding: 22px 22px 18px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--staff-border);
+}
+
+.staff-service-request-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 10px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--staff-border);
+}
+
+.staff-service-request-meta div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.staff-service-request-meta-wide {
+  grid-column: 1 / -1;
+}
+
+.staff-service-request-meta dt {
+  color: var(--staff-muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.staff-service-request-meta dd {
+  margin: 0;
+  overflow: hidden;
+  color: var(--staff-ink);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff-service-request-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.staff-service-request-footer .staff-service-request-outcome {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff-service-request-footer .staff-review-request {
+  flex: 0 0 auto;
+  margin-top: 0;
 }
 
 .staff-service-requests-description {
@@ -801,22 +869,18 @@
   font-weight: 700;
 }
 
-.staff-service-request-demo-note {
-  margin: 0 22px 18px;
-  color: var(--staff-muted);
-  font-size: 0.72rem;
-}
-
 .staff-service-request-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 13px;
-  padding: 0 22px 22px;
+  gap: 12px;
+  padding: 14px 12px 12px;
 }
 
 .staff-service-request-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  padding: 17px;
+  padding: 14px 16px;
   border: 1px solid var(--staff-border);
   border-radius: 12px;
   background: var(--staff-card-bg);
@@ -824,18 +888,24 @@
 
 .staff-service-request-card-top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+}
+
+.staff-service-request-card-top section {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 
 .staff-service-request-card h3,
 .staff-service-request-description h3,
 .staff-service-request-routing h3,
 .staff-service-request-rejection h3 {
-  margin: 11px 0 6px;
+  margin: 0;
   color: var(--staff-ink);
-  font-size: 0.96rem;
+  font-size: 0.92rem;
 }
 
 .staff-service-request-resident,
@@ -844,11 +914,16 @@
   margin: 7px 0 0;
   color: var(--staff-muted);
   font-size: 0.74rem;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .staff-service-request-summary {
+  display: -webkit-box;
+  margin-top: 10px;
   color: var(--staff-ink);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .staff-service-request-outcome {
@@ -858,20 +933,28 @@
 .staff-review-request {
   min-height: 34px;
   margin-top: 14px;
-  padding: 0 11px;
-  border: 1px solid var(--staff-border);
+  padding: 0 16px;
+  border: 1px solid var(--staff-accent);
   border-radius: 8px;
-  background: var(--staff-card-alt);
-  color: var(--staff-ink);
+  background: var(--staff-accent);
+  color: #fff;
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
 }
 
 .staff-review-request:hover {
-  border-color: #60a5fa;
-  color: var(--staff-accent);
+  border-color: var(--staff-accent);
+  color: #fff;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.staff-service-request-card-top .staff-status-badge {
+  padding: 6px 13px;
+  font-size: 0.78rem;
 }
 
 .staff-service-requests-empty {
@@ -933,32 +1016,68 @@
   line-height: 1.5;
 }
 
-.staff-service-request-routing > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 11px;
+.staff-service-request-routing {
+  padding: 16px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-bg);
+}
+
+.staff-service-request-routing h3 {
+  margin: 0 0 12px;
+}
+
+.staff-service-request-routing label {
+  display: grid;
+  gap: 6px;
+  color: var(--staff-ink);
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.staff-route-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
 }
 
 .staff-route-request,
 .staff-reject-request {
-  min-height: 36px;
-  padding: 0 11px;
+  min-height: 40px;
+  padding: 0 14px;
   border: 1px solid transparent;
   border-radius: 8px;
   color: #fff;
   font: inherit;
-  font-size: 0.7rem;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
 }
 
-.staff-route-request {
+.staff-route-request:not(:disabled):hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.staff-route-request:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.staff-route-request--guard {
   background: #2563eb;
 }
 
-.staff-route-request:hover {
-  background: #1d4ed8;
+.staff-route-request--maintenance {
+  background: #16a34a;
+}
+
+@media (max-width: 520px) {
+  .staff-route-actions {
+    grid-template-columns: 1fr;
+  }
 }
 
 .staff-reject-request-form {
@@ -1222,6 +1341,10 @@ html[data-theme="dark"] .staff-priority--low {
   .staff-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .staff-kpi:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1345,6 +1468,10 @@ html[data-theme="dark"] .staff-priority--low {
   .staff-kpis {
     grid-template-columns: 1fr 1fr;
     gap: 9px;
+  }
+
+  .staff-kpi:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 
   .staff-kpi {
