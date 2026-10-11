@@ -17,6 +17,7 @@ export type StaffLayoutContext = {
   setAppeals: Dispatch<SetStateAction<AppealFromBackend[]>>;
   appealsLoading: boolean;
   appealsError: string;
+  reportsLoading: boolean;
 };
 
 export default function StaffLayout() {
@@ -194,6 +195,7 @@ export default function StaffLayout() {
               setAppeals,
               appealsLoading,
               appealsError,
+              reportsLoading,
             } satisfies StaffLayoutContext
           }
         />

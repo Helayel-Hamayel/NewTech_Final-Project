@@ -227,10 +227,24 @@
   padding-top: 20px;
 }
 
-.sidebar-footer > .theme-toggle {
+.sidebar-footer > .theme-toggle,
+.sidebar-footer .sign-out {
   justify-content: center;
   width: 100%;
+  min-height: 42px;
   box-sizing: border-box;
+  gap: 8px;
+  padding: 0 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sidebar-footer > .theme-toggle svg,
+.sidebar-footer .sign-out svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
 }
 
 .staff-signout-wrap {
@@ -238,7 +252,6 @@
 }
 
 .sidebar-footer .sign-out {
-  justify-content: flex-start;
   border: 1px solid #ef4444;
   background: #b91c1c;
   color: #fff;
@@ -441,18 +454,12 @@ html[data-theme="dark"] .sidebar {
     padding-top: 20px;
   }
 
-  .sidebar-footer > .theme-toggle {
-    width: 100%;
-    min-height: initial;
-    padding: 8px 11px;
-    font-size: 0.75rem;
-  }
-
+  .sidebar-footer > .theme-toggle,
   .sidebar-footer .sign-out {
     width: 100%;
     min-height: 42px;
-    padding: 0 10px;
-    font-size: 11px;
+    padding: 0 14px;
+    font-size: 0.78rem;
   }
 
   .staff-signout-popover {
