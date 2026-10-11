@@ -195,9 +195,6 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
           </section>
           <span className="staff-service-request-count">{requests.filter((request) => request.status === "Pending").length} pending</span>
         </header>
-        <p className="staff-service-request-demo-note" role="note">
-          Assignments are saved. Rejection is still a demo action.
-        </p>
         {matchingRequests.length === 0 ? (
           <p className="staff-service-requests-empty">
             {requests.length === 0 ? "No resident requests yet." : "No requests match your search."}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Footer from "../components/common/Footer";
-import DemoAccess from "../components/LoginPage/DemoAccess";
 import LoginForm from "../components/LoginPage/LoginForm";
 import LoginHeader from "../components/LoginPage/LoginHeader";
 import loginBackgroundOne from "../assets/background/Login_Background (1).webp";
@@ -53,7 +52,6 @@ export default function LoginPage() {
             </header>
 
             <LoginForm />
-            <DemoAccess />
             <aside
               className="registration-notice"
               aria-labelledby="registration-heading"

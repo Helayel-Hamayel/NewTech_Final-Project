@@ -792,12 +792,6 @@
   font-weight: 700;
 }
 
-.staff-service-request-demo-note {
-  margin: 0 22px 18px;
-  color: var(--staff-muted);
-  font-size: 0.72rem;
-}
-
 .staff-service-request-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

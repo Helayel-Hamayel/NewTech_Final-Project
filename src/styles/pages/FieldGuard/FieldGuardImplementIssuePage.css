@@ -54,17 +54,6 @@
   gap: 18px;
 }
 
-.field-citation-demo-note {
-  margin: 0 0 18px;
-  padding: 10px 12px;
-  color: #cbd5e1;
-  background: #172b46;
-  border: 1px solid #23446c;
-  border-radius: 9px;
-  font-size: 0.75rem;
-  line-height: 1.45;
-}
-
 .field-citation-form label {
   display: block;
   margin-bottom: 8px;
@@ -300,12 +289,6 @@ html[data-theme="light"] .field-citation-heading h1 {
 html[data-theme="light"] .field-citation-heading p:last-child,
 html[data-theme="light"] .field-citation-location {
   color: #64748b;
-}
-
-html[data-theme="light"] .field-citation-demo-note {
-  color: #334155;
-  background: #eff6ff;
-  border-color: #bfdbfe;
 }
 
 html[data-theme="light"] .field-citation-form label {
