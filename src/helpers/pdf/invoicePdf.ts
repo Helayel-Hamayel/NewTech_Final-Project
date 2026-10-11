@@ -1,7 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Invoice } from "../../data/residentPortal";
-import { resident } from "../../data/residentPortal";
 
 const pdfCurrency = new Intl.NumberFormat("en-IL", {
   style: "currency",
@@ -10,7 +9,7 @@ const pdfCurrency = new Intl.NumberFormat("en-IL", {
   maximumFractionDigits: 0,
 });
 
-export function downloadInvoicePdf(invoice: Invoice) {
+export function downloadInvoicePdf(invoice: Invoice, resident: { id: string; name: string }) {
   const document = new jsPDF({ unit: "mm", format: "a4" });
   const pageWidth = document.internal.pageSize.getWidth();
   const pageHeight = document.internal.pageSize.getHeight();
@@ -58,9 +57,14 @@ export function downloadInvoicePdf(invoice: Invoice) {
   document.text(`Billing period: ${invoice.period}`, pageWidth - margin, 61, {
     align: "right",
   });
-  document.text(`Issued: ${invoice.period}`, pageWidth - margin, 68, {
-    align: "right",
-  });
+  document.text(
+    `Downloaded: ${new Date().toLocaleDateString("en-GB", {
+      timeZone: "Asia/Jerusalem",
+    })}`,
+    pageWidth - margin,
+    68,
+    { align: "right" },
+  );
 
   const statusColor = invoice.status === "Paid" ? [22, 101, 52] : [154, 52, 18];
   document.setTextColor(statusColor[0], statusColor[1], statusColor[2]);
@@ -97,27 +101,16 @@ export function downloadInvoicePdf(invoice: Invoice) {
     margin: { left: margin, right: margin },
   });
 
-  const finalY =
-    (document as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable
-      ?.finalY ?? 120;
+  const finalY = (document as jsPDF & { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? 120;
   document.setTextColor(muted[0], muted[1], muted[2]);
   document.setFont("helvetica", "bold");
   document.setFontSize(9);
-  document.text(
-    invoice.status === "Paid" ? "TOTAL PAID" : "TOTAL DUE",
-    pageWidth - 72,
-    finalY + 14,
-  );
+  document.text(invoice.status === "Paid" ? "TOTAL PAID" : "TOTAL DUE", pageWidth - 72, finalY + 14);
   document.setTextColor(ink[0], ink[1], ink[2]);
   document.setFontSize(14);
-  document.text(
-    pdfCurrency.format(invoice.total).replace(/\u00a0/g, " "),
-    pageWidth - margin,
-    finalY + 14,
-    {
-      align: "right",
-    },
-  );
+  document.text(pdfCurrency.format(invoice.total).replace(/\u00a0/g, " "), pageWidth - margin, finalY + 14, {
+    align: "right",
+  });
 
   document.setDrawColor(226, 232, 240);
   document.setLineWidth(0.3);
@@ -125,19 +118,10 @@ export function downloadInvoicePdf(invoice: Invoice) {
   document.setFont("helvetica", "normal");
   document.setFontSize(8);
   document.setTextColor(muted[0], muted[1], muted[2]);
-  document.text(
-    "Resident Services  ·  03-555-2041  ·  billing@telaviv-yafo.example",
-    margin,
-    pageHeight - 24,
-  );
-  document.text(
-    "Tel Aviv-Yafo Municipality · Resident payment record",
-    pageWidth - margin,
-    pageHeight - 24,
-    {
-      align: "right",
-    },
-  );
+  document.text("Resident Services  ·  03-555-2041  ·  billing@telaviv-yafo.example", margin, pageHeight - 24);
+  document.text("Tel Aviv-Yafo Municipality · Resident payment record", pageWidth - margin, pageHeight - 24, {
+    align: "right",
+  });
 
   document.save(`${invoice.id}.pdf`);
 }

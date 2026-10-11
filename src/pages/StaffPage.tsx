@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { StaffLayoutContext } from "../layouts/StaffLayout";
-import { billingAccounts } from "../data/staffData";
 import BillingLedger from "../components/Staff/BillingLedger";
 import CitationDisputes from "../components/Staff/CitationDisputes";
 import MaintenanceDispatch from "../components/Staff/MaintenanceDispatch";
@@ -22,16 +21,15 @@ export default function StaffPage() {
     setAppeals,
     appealsLoading,
     appealsError,
+    utilityAccounts,
+    utilitiesLoading,
+    utilitiesError,
   } = useOutletContext<StaffLayoutContext>();
   const [search, setSearch] = useState("");
 
   const pendingDisputes = appeals.filter((appeal) => appeal.status === "PENDING").length;
   const openTickets = maintenanceTickets.filter((ticket) => ticket.status !== "Resolved").length;
-  const normalizedSearch = search.trim().toLocaleLowerCase();
 
-  const matchingAccounts = billingAccounts.filter((account) =>
-    [account.resident, account.property, account.account].some((value) => value.toLocaleLowerCase().includes(normalizedSearch)),
-  );
   return (
     <section className="staff-page" aria-label="Municipal staff dashboard">
       <StaffTopBar
@@ -47,7 +45,7 @@ export default function StaffPage() {
         <StaffOverview pendingDisputes={pendingDisputes} openTickets={openTickets} />
 
         {activeTab === "requests" ? (
-          <StaffServiceRequestInbox requests={serviceRequests} search={search} setRequests={setServiceRequests} />
+          <StaffServiceRequestInbox requests={serviceRequests} search="" setRequests={setServiceRequests} />
         ) : null}
 
         {activeTab === "disputes" ? (
@@ -56,14 +54,21 @@ export default function StaffPage() {
           ) : appealsError ? (
             <p role="alert">{appealsError}</p>
           ) : (
-            <CitationDisputes appeals={appeals} setAppeals={setAppeals} search={search} />
+            <CitationDisputes appeals={appeals} setAppeals={setAppeals} search="" />
           )
         ) : null}
 
-        {activeTab === "billing" ? <BillingLedger accounts={matchingAccounts} search={search} /> : null}
-
+        {activeTab === "billing" ? (
+          utilitiesLoading ? (
+            <p role="status">Loading billing ledger...</p>
+          ) : utilitiesError ? (
+            <p role="alert">{utilitiesError}</p>
+          ) : (
+            <BillingLedger accounts={utilityAccounts} search={search} />
+          )
+        ) : null}
         {activeTab === "maintenance" ? (
-          <MaintenanceDispatch tickets={maintenanceTickets} search={search} setRequests={setServiceRequests} />
+          <MaintenanceDispatch tickets={maintenanceTickets} search="" setRequests={setServiceRequests} />
         ) : null}
       </section>
     </section>

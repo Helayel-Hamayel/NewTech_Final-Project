@@ -1,80 +1,133 @@
-import type { BillingAccount } from "../../data/staffData";
+import { useState } from "react";
+import type { StaffUtilityAccount, UtilityMonth } from "../../data/utilityData";
 import { currency } from "../../helpers/formatting/currency";
+import StaffFineLedger from "./StaffFineLedger";
 
 type BillingLedgerProps = {
-  accounts: BillingAccount[];
+  accounts: StaffUtilityAccount[];
   search: string;
 };
 
-export default function BillingLedger({
-  accounts,
-  search,
-}: BillingLedgerProps) {
+function formatMonth(month: string) {
+  return new Date(`${month}-01T00:00:00Z`).toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export default function BillingLedger({ accounts, search }: BillingLedgerProps) {
+  const [activeSection, setActiveSection] = useState<"monthly" | "fines">("monthly");
+  const [statusFilter, setStatusFilter] = useState<UtilityMonth["status"]>("UNPAID");
+
+  const query = search.trim().toLowerCase();
+  const monthlyRent = 5800;
+
+  const rows = accounts
+    .flatMap((account) =>
+      account.months.map((month) => ({
+        id: `${account._id}-${month.month}`,
+        residentName: account.resident?.name ?? "Resident unavailable",
+        residentEmail: account.resident?.email ?? "Email unavailable",
+        month: month.month,
+        water: month.waterAmount,
+        electricity: month.electricityAmount,
+        rent: monthlyRent,
+        total: monthlyRent + month.waterAmount + month.electricityAmount,
+        status: month.status,
+      })),
+    )
+    .filter(
+      (row) => row.status === statusFilter && [row.residentName, row.residentEmail].some((value) => value.toLowerCase().includes(query)),
+    )
+    .sort((a, b) => b.month.localeCompare(a.month) || a.residentName.localeCompare(b.residentName));
+
   return (
     <section className="staff-panel" aria-labelledby="billing-heading">
       <header className="staff-panel-heading">
         <section>
-          <p className="staff-section-label">Resident accounts</p>
+          <p className="staff-section-label">Resident bills and fines</p>
           <h2 id="billing-heading">Billing ledger</h2>
         </section>
-        <span className="staff-result-count">{accounts.length} accounts</span>
+        {activeSection === "monthly" && <span className="staff-result-count">{rows.length} monthly records</span>}
       </header>
-      <section
-        className="staff-table-scroll"
-        role="region"
-        aria-label="Billing ledger table"
-        tabIndex={0}
-      >
-        <table className="staff-table staff-billing-table">
-          <thead>
-            <tr>
-              <th scope="col">Property</th>
-              <th scope="col">Account</th>
-              <th scope="col">Resident</th>
-              <th scope="col">Water</th>
-              <th scope="col">Electricity</th>
-              <th scope="col">Rent</th>
-              <th scope="col">Fines</th>
-              <th scope="col">Balance</th>
-              <th scope="col">Last Paid</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {accounts.map((account) => (
-              <tr key={account.account}>
-                <td>{account.property}</td>
-                <td className="staff-ticket-id">{account.account}</td>
-                <td className="staff-resident-cell">
-                  <strong>{account.resident}</strong>
-                </td>
-                <td>{currency.format(account.water)}</td>
-                <td>{currency.format(account.electricity)}</td>
-                <td>{currency.format(account.rent)}</td>
-                <td>{currency.format(account.fines)}</td>
-                <td className="staff-amount">
-                  {currency.format(account.balance)}
-                </td>
-                <td>{account.lastPaid}</td>
-                <td>
-                  <span
-                    className={`staff-status-badge staff-status-badge--${account.status.toLowerCase()}`}
-                  >
-                    {account.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-            {accounts.length === 0 ? (
-              <tr>
-                <td className="staff-empty" colSpan={10}>
-                  No accounts match “{search}”.
-                </td>
-              </tr>
-            ) : null}
-          </tbody>
-        </table>
-      </section>
+
+      <div className="staff-ledger-filters" role="group" aria-label="Choose ledger section">
+        <button type="button" aria-pressed={activeSection === "monthly"} onClick={() => setActiveSection("monthly")}>
+          Monthly bills
+        </button>
+
+        <button type="button" aria-pressed={activeSection === "fines"} onClick={() => setActiveSection("fines")}>
+          Fines
+        </button>
+      </div>
+
+      {activeSection === "fines" ? (
+        <StaffFineLedger search={search} />
+      ) : (
+        <>
+          <div className="staff-ledger-filters" role="group" aria-label="Filter billing status">
+            <button type="button" aria-pressed={statusFilter === "UNPAID"} onClick={() => setStatusFilter("UNPAID")}>
+              Unpaid
+            </button>
+
+            <button type="button" aria-pressed={statusFilter === "PAID"} onClick={() => setStatusFilter("PAID")}>
+              Paid
+            </button>
+          </div>
+
+          <section className="staff-table-scroll" role="region" aria-label="Billing ledger table" tabIndex={0}>
+            <table className="staff-table staff-billing-table">
+              <thead>
+                <tr>
+                  <th scope="col">Resident</th>
+                  <th scope="col">Month</th>
+                  <th scope="col">Water</th>
+                  <th scope="col">Electricity</th>
+                  <th scope="col">Rent</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="staff-resident-cell">
+                      <div className="staff-ledger-resident">
+                        <strong>{row.residentName}</strong>
+                        <span>{row.residentEmail}</span>
+                      </div>
+                    </td>
+
+                    <td>{formatMonth(row.month)}</td>
+                    <td>{currency.format(row.water)}</td>
+                    <td>{currency.format(row.electricity)}</td>
+                    <td>{currency.format(row.rent)}</td>
+                    <td className="staff-amount">{currency.format(row.total)}</td>
+
+                    <td>
+                      <span className={`staff-status-badge staff-ledger-status--${row.status.toLowerCase()}`}>
+                        {row.status === "PAID" ? "Paid" : "Unpaid"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+
+                {rows.length === 0 && (
+                  <tr>
+                    <td className="staff-empty" colSpan={7}>
+                      {query
+                        ? "No bills match this resident name or email."
+                        : `No ${statusFilter === "PAID" ? "paid" : "unpaid"} monthly bills.`}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </section>
+        </>
+      )}
     </section>
   );
 }
