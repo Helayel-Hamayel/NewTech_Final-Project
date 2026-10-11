@@ -22,11 +22,12 @@ export default function StaffPage() {
     setAppeals,
     appealsLoading,
     appealsError,
+    reportsLoading,
   } = useOutletContext<StaffLayoutContext>();
   const [search, setSearch] = useState("");
 
   const pendingDisputes = appeals.filter((appeal) => appeal.status === "PENDING").length;
-  const openTickets = maintenanceTickets.filter((ticket) => ticket.status !== "Resolved").length;
+  const openTickets = maintenanceTickets.filter((ticket) => ticket.status === "Assigned" || ticket.status === "In Progress").length;
   const normalizedSearch = search.trim().toLocaleLowerCase();
 
   const matchingAccounts = billingAccounts.filter((account) =>
@@ -44,7 +45,12 @@ export default function StaffPage() {
       />
 
       <section className="staff-dashboard-content" aria-label="Staff workspace">
-        <StaffOverview pendingDisputes={pendingDisputes} openTickets={openTickets} />
+        <StaffOverview
+          pendingDisputes={pendingDisputes}
+          openTickets={openTickets}
+          serviceRequests={serviceRequests}
+          loading={reportsLoading}
+        />
 
         {activeTab === "requests" ? (
           <StaffServiceRequestInbox requests={serviceRequests} search={search} setRequests={setServiceRequests} />
