@@ -45,6 +45,7 @@ export default function CitationDisputes({
 }: CitationDisputesProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"ALL" | AppealFromBackend["status"]>("ALL");
+  const [confirmationStatus, setConfirmationStatus] = useState<"ACCEPTED" | "REJECTED" | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -55,22 +56,40 @@ export default function CitationDisputes({
   const pendingCount = appeals.filter(
     (appeal) => appeal.status === "PENDING",
   ).length;
+  const statusCounts: Record<"ALL" | AppealFromBackend["status"], number> = {
+    ALL: appeals.length,
+    PENDING: pendingCount,
+    ACCEPTED: appeals.filter((appeal) => appeal.status === "ACCEPTED").length,
+    REJECTED: appeals.filter((appeal) => appeal.status === "REJECTED").length,
+  };
 
   const query = search.trim().toLowerCase();
 
-  const matchingAppeals = appeals.filter((appeal) =>
-    (statusFilter === "ALL" || appeal.status === statusFilter) &&
-    [
-      appeal._id,
-      appeal.resident?.name ?? "",
-      appeal.email,
-      appeal.reason,
-      appeal.description,
-      appeal.status,
-      appeal.fine?.licensePlate ?? "",
-      appeal.fine?.violationType ?? "",
-    ].some((value) => value.toLowerCase().includes(query)),
-  );
+  const matchingAppeals = appeals
+    .filter((appeal) =>
+      (statusFilter === "ALL" || appeal.status === statusFilter) &&
+      [
+        appeal._id,
+        appeal.resident?.name ?? "",
+        appeal.email,
+        appeal.reason,
+        appeal.description,
+        appeal.status,
+        appeal.fine?.licensePlate ?? "",
+        appeal.fine?.violationType ?? "",
+      ].some((value) => value.toLowerCase().includes(query)),
+    )
+    .sort((left, right) => {
+      const pendingOrder =
+        Number(right.status === "PENDING") - Number(left.status === "PENDING");
+
+      if (pendingOrder !== 0) return pendingOrder;
+
+      const dateDifference =
+        new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
+
+      return left.status === "PENDING" ? dateDifference : -dateDifference;
+    });
 
   useEffect(() => {
     if (selectedId && !dialogRef.current?.open) {
@@ -80,6 +99,7 @@ export default function CitationDisputes({
 
   function openAppeal(id: string) {
     setError("");
+    setConfirmationStatus(null);
     setSelectedId(id);
   }
 
@@ -88,7 +108,18 @@ export default function CitationDisputes({
 
     dialogRef.current?.close();
     setSelectedId(null);
+    setConfirmationStatus(null);
     setError("");
+  }
+
+  function handleDecisionClick(status: "ACCEPTED" | "REJECTED") {
+    if (confirmationStatus === status) {
+      void decideAppeal(status);
+      return;
+    }
+
+    setError("");
+    setConfirmationStatus(status);
   }
 
   async function decideAppeal(status: "ACCEPTED" | "REJECTED") {
@@ -145,6 +176,7 @@ export default function CitationDisputes({
             : appeal,
         ),
       );
+      setConfirmationStatus(null);
     } catch (error) {
       setError(
         error instanceof Error
@@ -167,7 +199,7 @@ export default function CitationDisputes({
       </header>
 
       <div className="staff-ledger-toolbar">
-        <div className="staff-ledger-filters" role="group" aria-label="Filter appeals by status">
+        <div className="staff-ledger-filters staff-appeal-filters" role="group" aria-label="Filter appeals by status">
           {(["ALL", "PENDING", "ACCEPTED", "REJECTED"] as const).map((option) => (
             <button
               key={option}
@@ -176,6 +208,7 @@ export default function CitationDisputes({
               onClick={() => setStatusFilter(option)}
             >
               {option === "ALL" ? "All" : option.charAt(0) + option.slice(1).toLowerCase()}
+              <span>{statusCounts[option]}</span>
             </button>
           ))}
         </div>
@@ -379,34 +412,41 @@ export default function CitationDisputes({
             )}
 
             {selectedAppeal.status === "PENDING" && (
-              <footer className="appeal-review-actions">
-                <p>This decision is final and cannot be changed.</p>
-                <button
-                  className="staff-cancel"
-                  type="button"
-                  disabled={saving}
-                  onClick={closeAppeal}
-                >
-                  Close
-                </button>
-                <button
-                  className="staff-approve"
-                  type="button"
-                  disabled={saving || !selectedAppeal.fine}
-                  onClick={() => decideAppeal("ACCEPTED")}
-                >
-                  Accept appeal
-                </button>
+              <>
+                {!selectedAppeal.fine && (
+                  <p className="appeal-decision-note appeal-decision-note--unavailable" role="note">
+                    This appeal is missing its linked fine. A decision cannot be recorded until the fine is available.
+                  </p>
+                )}
+                <footer className="appeal-review-actions">
+                  <p aria-live="polite">
+                    {confirmationStatus
+                      ? `Click ${
+                          confirmationStatus === "ACCEPTED" ? "Accept" : "Reject"
+                        } again to confirm. This decision is final.`
+                      : "Choose Accept or Reject. You will be asked to confirm before saving."}
+                  </p>
+                  <button
+                    className="staff-approve"
+                    type="button"
+                    disabled={saving || !selectedAppeal.fine}
+                    aria-pressed={confirmationStatus === "ACCEPTED"}
+                    onClick={() => handleDecisionClick("ACCEPTED")}
+                  >
+                    {confirmationStatus === "ACCEPTED" ? "Confirm acceptance" : "Accept appeal"}
+                  </button>
 
-                <button
-                  className="staff-reject"
-                  type="button"
-                  disabled={saving || !selectedAppeal.fine}
-                  onClick={() => decideAppeal("REJECTED")}
-                >
-                  Reject appeal
-                </button>
-              </footer>
+                  <button
+                    className="staff-reject"
+                    type="button"
+                    disabled={saving || !selectedAppeal.fine}
+                    aria-pressed={confirmationStatus === "REJECTED"}
+                    onClick={() => handleDecisionClick("REJECTED")}
+                  >
+                    {confirmationStatus === "REJECTED" ? "Confirm rejection" : "Reject appeal"}
+                  </button>
+                </footer>
+              </>
             )}
           </>
         )}
