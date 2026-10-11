@@ -6,6 +6,7 @@ import { useUser } from "../../contexts/useUser";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +25,7 @@ export default function LoginForm() {
         body: JSON.stringify({
           email: email.trim(),
           password,
+          rememberMe,
         }),
       });
       if (!res.ok) {
@@ -76,6 +78,17 @@ export default function LoginForm() {
           required
         />
       </section>
+
+      <label className="login-remember" htmlFor="remember-me">
+        <input
+          id="remember-me"
+          name="rememberMe"
+          type="checkbox"
+          checked={rememberMe}
+          onChange={(e) => setRememberMe(e.target.checked)}
+        />
+        Keep me logged in
+      </label>
 
       <button className="login-submit" type="submit" disabled={loading}>
         {loading ? "Logging in..." : "Log in securely"}
