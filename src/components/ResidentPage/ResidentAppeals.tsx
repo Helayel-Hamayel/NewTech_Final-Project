@@ -1,0 +1,250 @@
+import { useEffect, useRef, useState } from "react";
+import type { AppealFromBackend } from "../../data/appealData";
+import { ImageOff } from "lucide-react";
+import { currency } from "../../helpers/formatting/currency";
+import { formatIsraeliDateTime } from "../../helpers/formatting/israeliDate";
+import "../../styles/pages/ResidentAppeals.css";
+
+type ResidentAppealsProps = {
+  appealSubmitting: boolean;
+};
+
+const statuses = ["PENDING", "ACCEPTED", "REJECTED"] as const;
+
+const statusLabels = {
+  PENDING: "Pending",
+  ACCEPTED: "Accepted",
+  REJECTED: "Rejected",
+};
+
+function EvidencePhoto({ src, alt }: { src?: string; alt: string }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!src || failed) {
+    return (
+      <div className="resident-appeal-photo-placeholder">
+        <ImageOff size={48} aria-hidden="true" />
+        <span>{failed ? "Could not load the photo" : "No photo provided"}</span>
+      </div>
+    );
+  }
+
+  return <img className="resident-appeal-photo" src={src} alt={alt} onError={() => setFailed(true)} />;
+}
+
+export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsProps) {
+  const [appeals, setAppeals] = useState<AppealFromBackend[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const selectedAppeal = appeals.find((appeal) => appeal._id === selectedId) ?? null;
+
+  useEffect(() => {
+    // Wait until an appeal submission finishes before fetching.
+    if (appealSubmitting) return;
+
+    const controller = new AbortController();
+
+    async function loadAppeals() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch("http://localhost:4000/appeals", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load your appeals.");
+        }
+
+        const data: AppealFromBackend[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setAppeals(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setError(error instanceof Error ? error.message : "Could not load your appeals.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadAppeals();
+
+    return () => controller.abort();
+  }, [appealSubmitting, refreshKey]);
+
+  useEffect(() => {
+    if (selectedId && !dialogRef.current?.open) {
+      dialogRef.current?.showModal();
+    }
+  }, [selectedId]);
+
+  function closeAppeal() {
+    dialogRef.current?.close();
+    setSelectedId(null);
+  }
+
+  return (
+    <section className="resident-card tickets-section resident-appeals" aria-labelledby="resident-appeals-heading">
+      <header className="resident-card-header">
+        <div>
+          <p className="section-label">Track staff decisions</p>
+          <h2 id="resident-appeals-heading">My appeals</h2>
+        </div>
+
+        <button
+          className="resident-secondary-btn"
+          type="button"
+          disabled={loading || appealSubmitting}
+          onClick={() => setRefreshKey((current) => current + 1)}>
+          Refresh
+        </button>
+      </header>
+
+      {loading ? (
+        <p role="status">Loading your appeals...</p>
+      ) : error ? (
+        <p role="alert">{error}</p>
+      ) : (
+        <div className="resident-appeal-columns">
+          {statuses.map((status) => {
+            const matchingAppeals = appeals.filter((appeal) => appeal.status === status);
+
+            return (
+              <section key={status} className="resident-appeal-column">
+                <h3>
+                  {statusLabels[status]} ({matchingAppeals.length})
+                </h3>
+
+                {matchingAppeals.length === 0 ? (
+                  <p className="resident-muted">No appeals here.</p>
+                ) : (
+                  <ul className="resident-appeal-list">
+                    {matchingAppeals.map((appeal) => (
+                      <li key={appeal._id}>
+                        <article className="citation-card">
+                          <span className={`resident-appeal-status resident-appeal-status--${status.toLowerCase()}`}>
+                            {statusLabels[status]}
+                          </span>
+
+                          <h4>{appeal.fine?.violationType ?? "Fine unavailable"}</h4>
+
+                          <p>Vehicle: {appeal.fine?.licensePlate ?? "Unavailable"}</p>
+                          <p>{appeal.reason}</p>
+                          <p className="resident-muted">Submitted: {formatIsraeliDateTime(appeal.createdAt)}</p>
+
+                          {appeal.resolvedAt && <p className="resident-muted">Decided: {formatIsraeliDateTime(appeal.resolvedAt)}</p>}
+
+                          <button className="resident-secondary-btn" type="button" onClick={() => setSelectedId(appeal._id)}>
+                            View appeal
+                          </button>
+                        </article>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      )}
+
+      <dialog
+        ref={dialogRef}
+        className="resident-appeal-dialog"
+        aria-labelledby="resident-appeal-details-heading"
+        onCancel={(event) => {
+          event.preventDefault();
+          closeAppeal();
+        }}
+        onClose={() => setSelectedId(null)}>
+        {selectedAppeal && (
+          <>
+            <header className="resident-card-header">
+              <div>
+                <h2 id="resident-appeal-details-heading">Appeal details</h2>
+                <p>
+                  Staff decision:{" "}
+                  <strong>{selectedAppeal.status === "PENDING" ? "Awaiting review" : statusLabels[selectedAppeal.status]}</strong>
+                </p>
+                {selectedAppeal.resolvedAt && <p>Decided at: {formatIsraeliDateTime(selectedAppeal.resolvedAt)}</p>}
+              </div>
+
+              <button className="resident-secondary-btn" type="button" onClick={closeAppeal} autoFocus>
+                Close
+              </button>
+            </header>
+
+            <div className="resident-appeal-evidence">
+              <article className="resident-appeal-evidence-card">
+                <h3>Field guard evidence</h3>
+
+                <EvidencePhoto
+                  key={`guard-${selectedAppeal._id}`}
+                  src={selectedAppeal.fine?.photoUrl}
+                  alt="Photo attached by the field guard"
+                />
+
+                {selectedAppeal.fine ? (
+                  <>
+                    <p>
+                      <strong>Violation:</strong> {selectedAppeal.fine.violationType}
+                    </p>
+                    <p>
+                      <strong>Vehicle:</strong> {selectedAppeal.fine.licensePlate}
+                    </p>
+                    <p>
+                      <strong>Amount:</strong> {currency.format(selectedAppeal.fine.amount)}
+                    </p>
+                    <p>
+                      <strong>Payment status:</strong> {selectedAppeal.fine.status}
+                    </p>
+                    <p>
+                      <strong>Issued:</strong> {formatIsraeliDateTime(selectedAppeal.fine.createdAt)}
+                    </p>
+                  </>
+                ) : (
+                  <p>The linked fine is unavailable.</p>
+                )}
+              </article>
+
+              <article className="resident-appeal-evidence-card">
+                <h3>Your appeal</h3>
+
+                <EvidencePhoto
+                  key={`resident-${selectedAppeal._id}`}
+                  src={selectedAppeal.photoUrl}
+                  alt="Supporting photo you attached to the appeal"
+                />
+
+                <p>
+                  <strong>Reason:</strong> {selectedAppeal.reason}
+                </p>
+                <p className="resident-appeal-description">
+                  <strong>Description:</strong> {selectedAppeal.description}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedAppeal.email}
+                </p>
+                <p>
+                  <strong>Submitted:</strong> {formatIsraeliDateTime(selectedAppeal.createdAt)}
+                </p>
+              </article>
+            </div>
+          </>
+        )}
+      </dialog>
+    </section>
+  );
+}

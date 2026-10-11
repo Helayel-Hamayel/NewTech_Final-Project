@@ -11,3 +11,17 @@ export type FineFromBackend = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type StaffFineFromBackend = {
+  _id: string;
+  resident: {
+    _id: string;
+    name: string;
+    email: string;
+  } | null;
+  licensePlate: string;
+  violationType: string;
+  amount: number;
+  status: "UNPAID" | "PAID";
+  createdAt: string;
+};

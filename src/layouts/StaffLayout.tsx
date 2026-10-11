@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Outlet } from "react-router-dom";
 import StaffHeader from "../components/Staff/StaffHeader";
-import { billingAccounts, type StaffServiceRequest, type StaffTab, type ReportFromBackend } from "../data/staffData";
+import { type StaffServiceRequest, type StaffTab, type ReportFromBackend } from "../data/staffData";
 import type { AppealFromBackend } from "../data/appealData";
+import type { StaffUtilityAccount } from "../data/utilityData";
 import "../styles/common/Staff/StaffLayout.css";
 
 export type StaffLayoutContext = {
@@ -17,7 +18,9 @@ export type StaffLayoutContext = {
   setAppeals: Dispatch<SetStateAction<AppealFromBackend[]>>;
   appealsLoading: boolean;
   appealsError: string;
-  reportsLoading: boolean;
+  utilityAccounts: StaffUtilityAccount[];
+  utilitiesLoading: boolean;
+  utilitiesError: string;
 };
 
 export default function StaffLayout() {
@@ -34,13 +37,18 @@ export default function StaffLayout() {
   const [appealsLoading, setAppealsLoading] = useState(true);
   const [appealsError, setAppealsError] = useState("");
   const pendingDisputes = appeals.filter((appeal) => appeal.status === "PENDING").length;
-  const overdueAccounts = billingAccounts.filter((account) => account.status === "Overdue").length;
+
+  const [utilityAccounts, setUtilityAccounts] = useState<StaffUtilityAccount[]>([]);
+  const [utilitiesLoading, setUtilitiesLoading] = useState(true);
+  const [utilitiesError, setUtilitiesError] = useState("");
+
+  const overdueAccounts = utilityAccounts.filter((account) => account.months.some((month) => month.status === "UNPAID")).length;
   const openTickets = maintenanceTickets.filter((ticket) => ticket.status === "Assigned" || ticket.status === "In Progress").length;
   const pendingServiceRequests = serviceRequests.filter((request) => request.status === "Pending").length;
   const currentItemIds: Record<StaffTab, string[]> = {
     requests: serviceRequests.filter((request) => request.status === "Pending").map((request) => request.id),
     disputes: appeals.filter((appeal) => appeal.status === "PENDING").map((appeal) => appeal._id),
-    billing: billingAccounts.filter((account) => account.status === "Overdue").map((account) => account.account),
+    billing: utilityAccounts.filter((account) => account.months.some((month) => month.status === "UNPAID")).map((account) => account._id),
     maintenance: maintenanceTickets
       .filter((ticket) => ticket.status === "Assigned" || ticket.status === "In Progress")
       .map((ticket) => ticket.id),
@@ -167,6 +175,44 @@ export default function StaffLayout() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadUtilities() {
+      setUtilitiesLoading(true);
+      setUtilitiesError("");
+
+      try {
+        const response = await fetch("http://localhost:4000/utilities", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load the billing ledger.");
+        }
+
+        const data: StaffUtilityAccount[] = await response.json();
+
+        if (!controller.signal.aborted) {
+          setUtilityAccounts(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setUtilitiesError(error instanceof Error ? error.message : "Could not load the billing ledger.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setUtilitiesLoading(false);
+        }
+      }
+    }
+
+    void loadUtilities();
+
+    return () => controller.abort();
+  }, [activeTab]);
+
   return (
     <section className="staff-shell">
       <StaffHeader
@@ -195,7 +241,9 @@ export default function StaffLayout() {
               setAppeals,
               appealsLoading,
               appealsError,
-              reportsLoading,
+              utilityAccounts,
+              utilitiesLoading,
+              utilitiesError,
             } satisfies StaffLayoutContext
           }
         />

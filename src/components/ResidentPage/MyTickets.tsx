@@ -3,6 +3,7 @@ import type { SubmitEvent } from "react";
 import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
 import type { MyTicketsProps } from "./types";
+import ResidentAppeals from "./ResidentAppeals";
 import { useUser } from "../../contexts/useUser";
 import AppealPhotoPicker from "./AppealPhotoPicker";
 
@@ -341,6 +342,9 @@ export default function MyTickets({
           )}
         </section>
       ) : null}
+
+      {activeSection === "fines" && <ResidentAppeals appealSubmitting={appealSubmitting} />}
+      
       {selectedAppealFine ? (
         <section className="resident-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="appeal-heading">
           <section className="resident-dialog">

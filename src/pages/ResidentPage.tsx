@@ -13,18 +13,11 @@ import ResidentPortalNav from "../components/ResidentPage/ResidentPortalNav";
 import { downloadInvoicePdf } from "../helpers/pdf/invoicePdf";
 import { useCitationState } from "../contexts/useCitationState";
 import { useUser } from "../contexts/useUser";
-import type { PortalTab } from "../components/ResidentPage/types";
-import {
-  type Fine,
-  type Invoice,
-  type ResidentServiceRequest,
-  resident,
-  seededInvoices,
-  utilityUsage,
-  type UtilityType,
-} from "../data/residentPortal";
+import type { PortalTab, PaymentSelection } from "../components/ResidentPage/types";
+import { type Fine, type Invoice, type ResidentServiceRequest, resident, type UtilityType } from "../data/residentPortal";
 import type { ReportFromBackend } from "../data/staffData";
 import type { FineFromBackend } from "../data/fineData";
+import type { UtilityMonth, UtilityAccountFromBackend } from "../data/utilityData";
 import "../styles/pages/ResidentPortalPage.css";
 
 const residentDrawerItems: Array<{
@@ -40,7 +33,7 @@ const residentDrawerItems: Array<{
 
 export default function ResidentPage() {
   const navigate = useNavigate();
-  const { signOut } = useUser();
+  const { user, signOut } = useUser();
   const { citationState } = useCitationState();
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
@@ -59,6 +52,10 @@ export default function ResidentPage() {
   const [finesLoading, setFinesLoading] = useState(true);
   const [finesError, setFinesError] = useState("");
 
+  const [utilityMonths, setUtilityMonths] = useState<UtilityMonth[]>([]);
+  const [utilitiesLoading, setUtilitiesLoading] = useState(true);
+  const [utilitiesError, setUtilitiesError] = useState("");
+
   const serviceFines: Fine[] = savedFines.map((fine) => ({
     ...fine,
     status: citationState[fine.id] === "WAIVED" ? "Waived" : appealedFineIds.includes(fine.id) ? "Appealed" : fine.status,
@@ -69,6 +66,23 @@ export default function ResidentPage() {
   const unpaidFines = savedFines.filter((fine) => fine.status === "Unpaid");
 
   const unpaidFineTotal = unpaidFines.reduce((total, fine) => total + fine.amount, 0);
+
+  const monthlyRent = 5800;
+
+  const monthlyInvoices: Invoice[] = utilityMonths.map((entry) => ({
+    id: `BILL-${entry.month}`,
+    period: new Date(`${entry.month}-01T00:00:00Z`).toLocaleDateString("en-GB", {
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC",
+    }),
+    rent: monthlyRent,
+    water: entry.waterAmount,
+    electricity: entry.electricityAmount,
+    fines: 0,
+    total: monthlyRent + entry.waterAmount + entry.electricityAmount,
+    status: entry.status === "PAID" ? "Paid" : "Due",
+  }));
 
   function handleAppeal(fineId: string) {
     setAppealedFineIds((current) => (current.includes(fineId) ? current : [...current, fineId]));
@@ -165,8 +179,34 @@ export default function ResidentPage() {
     }
   }
 
+  async function handlePayBills(selection: PaymentSelection) {
+    const response = await fetch("http://localhost:4000/utilities/pay", {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(selection),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+
+      throw new Error(errorData?.message ?? "Could not record payment.");
+    }
+
+    const paid: PaymentSelection = await response.json();
+
+    setUtilityMonths((current) => current.map((entry) => (paid.months.includes(entry.month) ? { ...entry, status: "PAID" } : entry)));
+
+    setSavedFines((current) => current.map((fine) => (paid.fineIds.includes(fine.id) ? { ...fine, status: "Paid" } : fine)));
+  }
+
   function handleDownloadInvoice(invoice: Invoice) {
-    downloadInvoicePdf(invoice);
+    if (!user) return;
+
+    downloadInvoicePdf(invoice, {
+      id: user.id,
+      name: user.name,
+    });
   }
 
   useEffect(() => {
@@ -283,6 +323,41 @@ export default function ResidentPage() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadUtilities() {
+      try {
+        const response = await fetch("http://localhost:4000/utilities/me", {
+          credentials: "include",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Could not load water and electricity data.");
+        }
+
+        const data: UtilityAccountFromBackend = await response.json();
+
+        if (!controller.signal.aborted) {
+          setUtilityMonths([...data.months].sort((a, b) => a.month.localeCompare(b.month)));
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setUtilitiesError(error instanceof Error ? error.message : "Could not load utility data.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setUtilitiesLoading(false);
+        }
+      }
+    }
+
+    loadUtilities();
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <SharedLayout
       header={
@@ -350,14 +425,33 @@ export default function ResidentPage() {
                   finesError={finesError}
                   unpaidFines={unpaidFines}
                   unpaidFineTotal={unpaidFineTotal}
+                  serviceRequests={serviceRequests}
+                  reportsLoading={reportsLoading}
+                  reportsError={reportsError}
+                  utilityMonths={utilityMonths}
+                  utilitiesLoading={utilitiesLoading}
+                  utilitiesError={utilitiesError}
                   utilityType={utilityType}
-                  utilityUsage={utilityUsage[utilityType]}
                   onUtilityTypeChange={setUtilityType}
                   onOpenAppeal={handleOpenAppeal}
                   onNavigate={setActiveTab}
                 />
               ) : activeTab === "Billing" ? (
-                <Billing invoices={seededInvoices} onDownloadInvoice={handleDownloadInvoice} />
+                <>
+                  {utilitiesLoading || finesLoading ? (
+                    <p role="status">Loading your billing information...</p>
+                  ) : utilitiesError || finesError ? (
+                    <p role="alert">{utilitiesError || finesError}</p>
+                  ) : (
+                    <Billing
+                      invoices={monthlyInvoices}
+                      unpaidFineTotal={unpaidFineTotal}
+                      onDownloadInvoice={handleDownloadInvoice}
+                      unpaidFineIds={unpaidFines.map((fine) => fine.id)}
+                      onPay={handlePayBills}
+                    />
+                  )}
+                </>
               ) : activeTab === "My Services" ? (
                 <>
                   {reportsLoading ? (

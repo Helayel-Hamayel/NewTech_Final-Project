@@ -1,150 +1,96 @@
 import { useState } from "react";
-import type { FormEvent } from "react";
+import type { SubmitEvent } from "react";
 import { currency } from "../../helpers/formatting/currency";
 
 type PaymentCheckoutProps = {
   amount: number;
   defaultPayments: number;
+  onConfirm?: () => Promise<void>;
   onClose: () => void;
 };
 
-export default function PaymentCheckout({
-  amount,
-  defaultPayments,
-  onClose,
-}: PaymentCheckoutProps) {
-  const [checkoutPayments, setCheckoutPayments] = useState(defaultPayments);
-  const [checkoutStep, setCheckoutStep] = useState<"schedule" | "payment">(
-    "schedule",
-  );
-  const [demoPaymentComplete, setDemoPaymentComplete] = useState(false);
+export default function PaymentCheckout({ amount, onConfirm, onClose }: PaymentCheckoutProps) {
+  const [submitting, setSubmitting] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleDemoPaymentSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    setDemoPaymentComplete(true);
+
+    if (submitting || !onConfirm) return;
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      await onConfirm();
+      setComplete(true);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Could not record payment.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <section className="resident-dialog-backdrop" role="presentation">
-      <section
-        className="resident-dialog payment-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="payment-dialog-heading"
-      >
-        <button
-          className="resident-dialog-close"
-          type="button"
-          onClick={onClose}
-          aria-label="Close secure checkout"
-        >
+      <section className="resident-dialog payment-dialog" role="dialog" aria-modal="true" aria-labelledby="payment-dialog-heading">
+        <button className="resident-dialog-close" type="button" onClick={onClose} disabled={submitting}>
           Close
         </button>
-        {checkoutStep === "schedule" ? (
-          <>
-            <p className="section-label">Payment setup</p>
-            <h2 id="payment-dialog-heading">Choose your payment schedule</h2>
-            <p className="payment-dialog-copy">
-              Review your balance and choose whether to pay it once or split it
-              into installments.
-            </p>
-            <section className="payment-dialog-total">
-              <span>Total balance</span>
-              <strong>{currency.format(amount)}</strong>
-            </section>
-            <label className="payment-count-field">
-              Number of payments
-              <input
-                type="number"
-                min="1"
-                max="12"
-                value={checkoutPayments}
-                onChange={(event) =>
-                  setCheckoutPayments(
-                    Math.min(12, Math.max(1, Number(event.target.value) || 1)),
-                  )
-                }
-              />
-            </label>
-            <p className="payment-installment-preview">
-              {checkoutPayments === 1
-                ? "Pay the full balance today."
-                : `${currency.format(amount / checkoutPayments)} per payment, before any provider fees.`}
-            </p>
-            <section className="payment-dialog-actions">
-              <button
-                className="resident-secondary-btn"
-                type="button"
-                onClick={onClose}
-              >
-                Cancel
-              </button>
-              <button
-                className="resident-primary-btn"
-                type="button"
-                onClick={() => setCheckoutStep("payment")}
-              >
-                Continue to checkout
-              </button>
-            </section>
-          </>
-        ) : demoPaymentComplete ? (
+
+        {complete ? (
           <section className="payment-complete" role="status">
-            <strong>Demo payment complete</strong>
-            <p>
-              No real payment was processed. Secure checkout integration is a
-              work in progress.
-            </p>
+            <h2 id="payment-dialog-heading">Payment recorded</h2>
+            <p>The selected charges are now marked as paid.</p>
+
             <button className="resident-primary-btn" type="button" onClick={onClose}>
               Done
             </button>
           </section>
         ) : (
-          <form className="demo-payment-form" onSubmit={handleDemoPaymentSubmit}>
-            <p className="section-label">Demo secure checkout</p>
-            <h2 id="payment-dialog-heading">Enter payment details</h2>
-            <p className="payment-dialog-copy">
-              This is a functional demo. Real secure payment processing is a
-              work in progress.
-            </p>
+          <form className="demo-payment-form" onSubmit={handleSubmit}>
+            <p className="section-label">Payment details</p>
+            <h2 id="payment-dialog-heading">Pay selected charges</h2>
+
             <section className="payment-dialog-total">
-              <span>
-                {checkoutPayments} payment{checkoutPayments === 1 ? "" : "s"}
-              </span>
-              <strong>{currency.format(amount / checkoutPayments)}</strong>
+              <span>Total</span>
+              <strong>{currency.format(amount)}</strong>
             </section>
+
             <label className="payment-count-field">
               Cardholder name
-              <input required type="text" placeholder="Maria Reyes" />
+              <input required type="text" disabled={submitting} />
             </label>
+
             <label className="payment-count-field">
               Card number
-              <input
-                required
-                inputMode="numeric"
-                placeholder="4242 4242 4242 4242"
-              />
+              <input required inputMode="numeric" placeholder="4242 4242 4242 4242" disabled={submitting} />
             </label>
+
             <section className="demo-payment-row">
               <label className="payment-count-field">
                 Expiry
-                <input required placeholder="MM / YY" />
+                <input required placeholder="MM / YY" disabled={submitting} />
               </label>
+
               <label className="payment-count-field">
                 CVV
-                <input required inputMode="numeric" placeholder="123" />
+                <input required inputMode="numeric" placeholder="123" disabled={submitting} />
               </label>
             </section>
+
+            {!onConfirm && <p role="status">Open Billing to pay your selected charges.</p>}
+
+            {error && <p role="alert">{error}</p>}
+
             <section className="payment-dialog-actions">
-              <button
-                className="resident-secondary-btn"
-                type="button"
-                onClick={() => setCheckoutStep("schedule")}
-              >
-                Back
+              <button className="resident-secondary-btn" type="button" onClick={onClose} disabled={submitting}>
+                Cancel
               </button>
-              <button className="resident-primary-btn" type="submit">
-                Complete demo payment
+
+              <button className="resident-primary-btn" type="submit" disabled={submitting || !onConfirm}>
+                {submitting ? "Saving..." : "Pay"}
               </button>
             </section>
           </form>

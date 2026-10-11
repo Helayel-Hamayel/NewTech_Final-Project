@@ -2,9 +2,17 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
-import { resident, residentProperty, seededInvoices } from "../../data/residentPortal";
 import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
+import { useUser } from "../../contexts/useUser";
+
+function formatMonth(month: string) {
+  return new Date(`${month}-01T00:00:00Z`).toLocaleDateString("en-GB", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 export default function Dashboard({
   recentFines,
@@ -12,63 +20,101 @@ export default function Dashboard({
   finesError,
   unpaidFines,
   unpaidFineTotal,
+  serviceRequests,
+  reportsLoading,
+  reportsError,
+  utilityMonths,
+  utilitiesLoading,
+  utilitiesError,
   utilityType,
-  utilityUsage,
   onUtilityTypeChange,
   onOpenAppeal,
   onNavigate,
 }: DashboardProps) {
   const { isDark } = useTheme();
+  const { user } = useUser();
+
   const [checkoutPayments, setCheckoutPayments] = useState<number | null>(null);
-  const currentInvoice = seededInvoices.find((invoice) => invoice.status === "Due");
-  const currentUtilityBill = currentInvoice ? currentInvoice.water + currentInvoice.electricity : 0;
+
+  const openReports = serviceRequests.filter(
+    (report) => report.stage === "Reported" || report.stage === "Dispatched" || report.stage === "In Progress",
+  );
+
+  const latestMonth = utilityMonths[utilityMonths.length - 1];
+
+  const chartMonths = utilityMonths.slice(-6);
+
+  const utilityUsage = chartMonths.map((entry) => ({
+    month: formatMonth(entry.month),
+    usage: utilityType === "Water" ? entry.waterUsage : entry.electricityUsage,
+  }));
+
   const usageUnit = utilityType === "Water" ? "m³" : "kWh";
-  const totalBalance = residentProperty.monthlyRent + currentUtilityBill + unpaidFineTotal;
+
+  const latestBillTotal = latestMonth ? latestMonth.waterAmount + latestMonth.electricityAmount : 0;
+
+  const unpaidUtilityTotal = utilityMonths
+    .filter((entry) => entry.status === "UNPAID")
+    .reduce((total, entry) => total + entry.waterAmount + entry.electricityAmount, 0);
+
+  const totalBalance = unpaidUtilityTotal + unpaidFineTotal;
+
+  const balanceUnavailable = utilitiesLoading || finesLoading || Boolean(utilitiesError) || Boolean(finesError);
 
   return (
     <section className="resident-view" aria-labelledby="dashboard-heading">
       <header className="resident-page-intro">
         <section className="resident-page-intro-copy">
-          <h1 id="dashboard-heading">Good morning, {resident.name}</h1>
-          <p>
-            {residentProperty.address} · Resident ID: {resident.id}
-          </p>
+          <h1 id="dashboard-heading">Welcome, {user?.name ?? "Resident"}</h1>
+          <p>{user?.email ?? ""}</p>
         </section>
+
         <section className="resident-card resident-status-card" aria-labelledby="status-heading">
-          <p className="section-label">Account status</p>
-          <h3 id="status-heading">Active</h3>
-          <p className="resident-status-line">Lease valid to {residentProperty.leaseEnd}</p>
+          <p className="section-label">Your account</p>
+          <h3 id="status-heading">Resident</h3>
+          <p className="resident-status-line">ID: {user?.id ?? "—"}</p>
         </section>
       </header>
 
       <section className="resident-summary-grid" aria-label="Account summary">
         <section className="resident-card resident-balance-card" aria-labelledby="balance-heading">
           <section className="resident-balance-header">
-            <p className="section-label section-label--light">Account balance due</p>
-            <h2 className="resident-balance-total">{currency.format(totalBalance)}</h2>
+            <p className="section-label section-label--light">Utilities and fines due</p>
+            <h2 id="balance-heading" className="resident-balance-total">
+              {balanceUnavailable ? "—" : currency.format(totalBalance)}
+            </h2>
           </section>
+
           <dl className="resident-balance-list">
             <div>
-              <dt>Rent</dt>
-              <dd>{currency.format(residentProperty.monthlyRent)}</dd>
-            </div>
-            <div>
-              <dt>Utilities</dt>
-              <dd>{currency.format(currentUtilityBill)}</dd>
+              <dt>Unpaid utilities</dt>
+              <dd>{utilitiesLoading || utilitiesError ? "—" : currency.format(unpaidUtilityTotal)}</dd>
             </div>
             <div>
               <dt>Unpaid fines</dt>
-              <dd>{currency.format(unpaidFineTotal)}</dd>
+              <dd>{finesLoading || finesError ? "—" : currency.format(unpaidFineTotal)}</dd>
             </div>
           </dl>
+
           <section className="resident-card-actions">
-            <button className="resident-primary-btn" type="button" onClick={() => setCheckoutPayments(1)}>
-              Pay All · {currency.format(totalBalance)}
+            <button
+              className="resident-primary-btn"
+              type="button"
+              disabled={balanceUnavailable || totalBalance === 0}
+              onClick={() => setCheckoutPayments(1)}>
+              Pay All
             </button>
-            <button className="resident-secondary-btn resident-secondary-btn--light" type="button" onClick={() => setCheckoutPayments(2)}>
+
+            <button
+              className="resident-secondary-btn resident-secondary-btn--light"
+              type="button"
+              disabled={balanceUnavailable || totalBalance === 0}
+              onClick={() => setCheckoutPayments(2)}>
               Payment Plan
             </button>
           </section>
+
+          <p>Payment checkout is still a demo.</p>
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
@@ -79,7 +125,7 @@ export default function Dashboard({
               Fines
             </h3>
             <section className="resident-kpi-metric">
-              <p className="resident-kpi-value">{unpaidFines.length}</p>
+              <p className="resident-kpi-value">{finesLoading || finesError ? "—" : unpaidFines.length}</p>{" "}
               <p className="resident-kpi-label">Unpaid</p>
             </section>
           </section>
@@ -98,8 +144,8 @@ export default function Dashboard({
               Requests
             </h3>
             <section className="resident-kpi-metric">
-              <p className="resident-kpi-value">2</p>
-              <p className="resident-kpi-label">Maintenance tickets</p>
+              <p className="resident-kpi-value">{reportsLoading || reportsError ? "—" : openReports.length}</p>
+              <p className="resident-kpi-label">Open reports</p>
             </section>
           </section>
           <section className="resident-kpi-actions">
@@ -110,16 +156,20 @@ export default function Dashboard({
         </article>
       </section>
 
+      {reportsError && <p role="alert">{reportsError}</p>}
+
       <section className="resident-card resident-utility-card" aria-labelledby="utility-heading">
         <section className="resident-card-header resident-card-header--stacked">
           <section>
             <p className="section-label">Utility usage</p>
-            <h3 id="utility-heading">August 2026</h3>
+            <h3 id="utility-heading">Water and electricity</h3>
           </section>
+
           <section className="resident-utility-toggle" aria-label="Utility type selection">
             <button type="button" className={utilityType === "Water" ? "is-active" : ""} onClick={() => onUtilityTypeChange("Water")}>
               Water
             </button>
+
             <button
               type="button"
               className={utilityType === "Electricity" ? "is-active" : ""}
@@ -128,45 +178,85 @@ export default function Dashboard({
             </button>
           </section>
         </section>
-        <figure className="resident-chart">
-          <figcaption>
-            {utilityType} usage ({usageUnit}), March–August 2026
-          </figcaption>
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={utilityUsage}>
-              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#3b5064" : "#dbe3ef"} />
-              <XAxis
-                dataKey="month"
-                tick={{ fill: isDark ? "#9eb2c4" : "#64748b", fontSize: 11 }}
-                stroke={isDark ? "#526579" : "#cbd5e1"}
-              />
-              <YAxis tick={{ fill: isDark ? "#9eb2c4" : "#64748b", fontSize: 11 }} stroke={isDark ? "#526579" : "#cbd5e1"} />
-              <Tooltip
-                formatter={(value) => [`${value} ${usageUnit}`, utilityType]}
-                contentStyle={{
-                  backgroundColor: isDark ? "#1c2a3b" : "#ffffff",
-                  border: `1px solid ${isDark ? "#526579" : "#e2e8f0"}`,
-                  borderRadius: "12px",
-                  color: isDark ? "#e5edf5" : "#0f172a",
-                }}
-                cursor={{ fill: isDark ? "#29445a" : "#dbeafe" }}
-              />
-              <Bar dataKey="usage" name={utilityType} radius={[6, 6, 0, 0]} fill={isDark ? "#5ba6ce" : "#2563eb"} />
-            </BarChart>
-          </ResponsiveContainer>
-        </figure>
-        <aside className="resident-current-bill">
-          <section>
-            <h4>Current bill</h4>
-            <p>{currency.format(currentUtilityBill)}</p>
-            <span>Due 30 Sep 2026</span>
-          </section>
-          <button className="resident-secondary-btn" type="button" onClick={() => onNavigate("Billing")}>
-            View billing history
-          </button>
-        </aside>
-      </section>
 
+        {utilitiesLoading ? (
+          <p role="status">Loading utility data...</p>
+        ) : utilitiesError ? (
+          <p role="alert">{utilitiesError}</p>
+        ) : !latestMonth ? (
+          <p className="resident-empty-state">No water or electricity records have been added yet.</p>
+        ) : (
+          <>
+            <figure className="resident-chart">
+              <figcaption>
+                {utilityType} usage ({usageUnit}) · Latest recorded months
+              </figcaption>
+
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={utilityUsage}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDark ? "#3b5064" : "#dbe3ef"} />
+
+                  <XAxis
+                    dataKey="month"
+                    tick={{
+                      fill: isDark ? "#9eb2c4" : "#64748b",
+                      fontSize: 11,
+                    }}
+                    stroke={isDark ? "#526579" : "#cbd5e1"}
+                  />
+
+                  <YAxis
+                    tick={{
+                      fill: isDark ? "#9eb2c4" : "#64748b",
+                      fontSize: 11,
+                    }}
+                    stroke={isDark ? "#526579" : "#cbd5e1"}
+                  />
+
+                  <Tooltip
+                    formatter={(value) => [`${value} ${usageUnit}`, utilityType]}
+                    contentStyle={{
+                      backgroundColor: isDark ? "#1c2a3b" : "#ffffff",
+                      border: `1px solid ${isDark ? "#526579" : "#e2e8f0"}`,
+                      borderRadius: "12px",
+                      color: isDark ? "#e5edf5" : "#0f172a",
+                    }}
+                    cursor={{ fill: isDark ? "#29445a" : "#dbeafe" }}
+                  />
+
+                  <Bar dataKey="usage" name={utilityType} radius={[6, 6, 0, 0]} fill={isDark ? "#5ba6ce" : "#2563eb"} />
+                </BarChart>
+              </ResponsiveContainer>
+            </figure>
+
+            <aside className="resident-current-bill">
+              <section>
+                <h4>Latest bill · {formatMonth(latestMonth.month)}</h4>
+                <p>{currency.format(latestBillTotal)}</p>
+
+                <span>{latestMonth.status === "PAID" ? "Paid" : "Unpaid"}</span>
+
+                <p>
+                  Water: {currency.format(latestMonth.waterAmount)}
+                  {" · "}
+                  Electricity: {currency.format(latestMonth.electricityAmount)}
+                </p>
+
+                <p>
+                  Consumption: {latestMonth.waterUsage} m³ water
+                  {" · "}
+                  {latestMonth.electricityUsage} kWh electricity
+                </p>
+              </section>
+
+              <button className="resident-secondary-btn" type="button" onClick={() => onNavigate("Billing")}>
+                View billing history
+              </button>
+            </aside>
+          </>
+        )}
+      </section>
+      
       <section className="resident-card" aria-labelledby="fines-heading">
         <section className="resident-card-header">
           <section>

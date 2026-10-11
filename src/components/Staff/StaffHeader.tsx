@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  ClipboardList,
-  FileCheck2,
-  LogOut,
-  Map,
-  ReceiptText,
-  Wrench,
-} from "lucide-react";
-import { staffData } from "../../data/staffData";
+import { ClipboardList, FileCheck2, LogOut, Map, ReceiptText, Wrench } from "lucide-react";
 import type { StaffTab } from "../../data/staffData";
 import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
@@ -43,12 +35,16 @@ export default function StaffHeader({
   pendingServiceRequests,
 }: StaffHeaderProps) {
   const navigate = useNavigate();
-  const { signOut } = useUser();
+  const { user, signOut } = useUser();
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
-  const initials = staffData.name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
+  const staffName = user?.name?.trim() || "Staff";
+
+  const nameParts = staffName.split(/\s+/);
+
+  const firstInitial = nameParts[0].charAt(0);
+  const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1].charAt(0) : "";
+
+  const initials = (firstInitial + lastInitial).toUpperCase();
 
   async function confirmSignOut() {
     try {
@@ -62,7 +58,9 @@ export default function StaffHeader({
   return (
     <>
       <MobileDrawer
-        brandIcon={<Map />} userName={staffData.name} subtitle="Municipal Staff"
+        brandIcon={<Map />}
+        userName={staffName}
+        subtitle="Municipal Staff"
         items={navigationItems.map((item) => ({
           ...item,
           badge: {
@@ -75,118 +73,96 @@ export default function StaffHeader({
         activeId={activeTab}
         onSelect={onTabChange}
       />
-    <aside
-      className="sidebar"
-      id="staff-navigation"
-      aria-label="Staff sidebar"
-    >
-      <section className="brand">
-        <span className="brand-mark" aria-hidden="true">
-          <Map size={28} />
-        </span>
-        <section>
-          <p className="brand-title">Municipal Operations</p>
-          <p className="city">Tel Aviv-Yafo Municipality</p>
+      <aside className="sidebar" id="staff-navigation" aria-label="Staff sidebar">
+        <section className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            <Map size={28} />
+          </span>
+          <section>
+            <p className="brand-title">Municipal Operations</p>
+            <p className="city">Tel Aviv-Yafo Municipality</p>
+          </section>
         </section>
-      </section>
 
-      <section className="profile">
-        <span className="avatar" aria-hidden="true">
-          {initials}
-        </span>
-        <span className="name">{staffData.name}</span>
-      </section>
-      <p className="dispatch">
-        <span className="status-dot" aria-hidden="true" />
-        Dispatch #{staffData.workName}
-      </p>
+        <section className="profile">
+          <span className="avatar" aria-hidden="true">
+            {initials}
+          </span>
+          <span className="name">{staffName}</span>
+        </section>
+        <p className="dispatch">
+          <span className="status-dot" aria-hidden="true" />
+          Active
+        </p>
 
-      <section className="nav-container">
-        <nav className="nav" aria-label="Staff navigation">
-          <span
-            className="nav-indicator"
-            aria-hidden="true"
-            style={{
-              transform: `translateY(${navigationItems.findIndex(
-                ({ id }) => id === activeTab,
-              ) * 48}px)`,
-            }}
-          />
-          {navigationItems.map(({ id, label, icon: Icon }) => {
-            const badgeCount = {
-              requests: pendingServiceRequests,
-              disputes: pendingDisputes,
-              billing: overdueAccounts,
-              maintenance: openTickets,
-            }[id];
-            return (
-              <button
-                key={id}
-                className={activeTab === id ? "active" : ""}
-                type="button"
-                aria-current={activeTab === id ? "page" : undefined}
-                onClick={() => onTabChange(id)}
-              >
-                <span className="nav-item-content">
-                  <Icon size={20} aria-hidden="true" />
-                  <span className="nav-label">{label}</span>
-                </span>
-                {badgeCount > 0 ? (
-                  <span
-                    className={`nav-badge${unreadTabs[id] ? " nav-badge--unread" : ""}${activeTab === id ? " nav-badge--active" : ""}`}
-                  >
-                    {badgeCount}
+        <section className="nav-container">
+          <nav className="nav" aria-label="Staff navigation">
+            <span
+              className="nav-indicator"
+              aria-hidden="true"
+              style={{
+                transform: `translateY(${navigationItems.findIndex(({ id }) => id === activeTab) * 48}px)`,
+              }}
+            />
+            {navigationItems.map(({ id, label, icon: Icon }) => {
+              const badgeCount = {
+                requests: pendingServiceRequests,
+                disputes: pendingDisputes,
+                billing: overdueAccounts,
+                maintenance: openTickets,
+              }[id];
+              return (
+                <button
+                  key={id}
+                  className={activeTab === id ? "active" : ""}
+                  type="button"
+                  aria-current={activeTab === id ? "page" : undefined}
+                  onClick={() => onTabChange(id)}>
+                  <span className="nav-item-content">
+                    <Icon size={20} aria-hidden="true" />
+                    <span className="nav-label">{label}</span>
                   </span>
-                ) : null}
-              </button>
-            );
-          })}
-        </nav>
-      </section>
-      <section className="sidebar-footer">
-        <ThemeToggle />
-        <section className="staff-signout-wrap">
-          <button
-            className="sign-out"
-            type="button"
-            onClick={() => setIsSignoutOpen((isOpen) => !isOpen)}
-            aria-expanded={isSignoutOpen}
-            aria-controls="staff-signout-popover"
-          >
-            <LogOut size={20} aria-hidden="true" />
-            Sign out
-          </button>
-          {isSignoutOpen ? (
-            <section
-              className="staff-signout-popover"
-              id="staff-signout-popover"
-              role="dialog"
-              aria-labelledby="staff-signout-title"
-            >
-              <strong id="staff-signout-title">
-                Sign out of CivicHub?
-              </strong>
-              <span>Your current portal session will end.</span>
-              <section className="staff-signout-actions">
-                <button
-                  type="button"
-                  onClick={confirmSignOut}
-                >
-                  Sign out
+                  {badgeCount > 0 ? (
+                    <span
+                      className={`nav-badge${unreadTabs[id] ? " nav-badge--unread" : ""}${activeTab === id ? " nav-badge--active" : ""}`}>
+                      {badgeCount}
+                    </span>
+                  ) : null}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setIsSignoutOpen(false)}
-                >
-                  Stay signed in
-                </button>
-              </section>
-            </section>
-          ) : null}
+              );
+            })}
+          </nav>
         </section>
-      </section>
-      <p className="version">Municipal Operations v2.4.1</p>
-    </aside>
+        <section className="sidebar-footer">
+          <ThemeToggle />
+          <section className="staff-signout-wrap">
+            <button
+              className="sign-out"
+              type="button"
+              onClick={() => setIsSignoutOpen((isOpen) => !isOpen)}
+              aria-expanded={isSignoutOpen}
+              aria-controls="staff-signout-popover">
+              <LogOut size={20} aria-hidden="true" />
+              Sign out
+            </button>
+            {isSignoutOpen ? (
+              <section className="staff-signout-popover" id="staff-signout-popover" role="dialog" aria-labelledby="staff-signout-title">
+                <strong id="staff-signout-title">Sign out of CivicHub?</strong>
+                <span>Your current portal session will end.</span>
+                <section className="staff-signout-actions">
+                  <button type="button" onClick={confirmSignOut}>
+                    Sign out
+                  </button>
+                  <button type="button" onClick={() => setIsSignoutOpen(false)}>
+                    Stay signed in
+                  </button>
+                </section>
+              </section>
+            ) : null}
+          </section>
+        </section>
+        <p className="version">Municipal Operations v2.4.1</p>
+      </aside>
     </>
   );
 }
