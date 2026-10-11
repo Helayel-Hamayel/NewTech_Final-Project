@@ -1,3 +1,4 @@
+import { RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { StaffFineFromBackend } from "../../data/fineData";
 import { currency } from "../../helpers/formatting/currency";
@@ -13,7 +14,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
   const [error, setError] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const [statusFilter, setStatusFilter] = useState<StaffFineFromBackend["status"]>("UNPAID");
+  const [statusFilter, setStatusFilter] = useState<StaffFineFromBackend["status"] | "ALL">("UNPAID");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -57,34 +58,50 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
 
   const matchingFines = fines.filter(
     (fine) =>
-      fine.status === statusFilter &&
+      (statusFilter === "ALL" || fine.status === statusFilter) &&
       [fine.resident?.name ?? "", fine.resident?.email ?? "", fine.licensePlate].some((value) => value.toLowerCase().includes(query)),
   );
 
   return (
     <section aria-label="Resident fines ledger">
-      <div className="staff-ledger-filters" role="group" aria-label="Filter fine payment status">
-        <button type="button" aria-pressed={statusFilter === "UNPAID"} onClick={() => setStatusFilter("UNPAID")}>
-          Unpaid
-        </button>
+      <div className="staff-ledger-toolbar">
+        <div className="staff-ledger-filters" role="group" aria-label="Filter fine payment status">
+          <button type="button" aria-pressed={statusFilter === "ALL"} onClick={() => setStatusFilter("ALL")}>
+            All
+          </button>
 
-        <button type="button" aria-pressed={statusFilter === "PAID"} onClick={() => setStatusFilter("PAID")}>
-          Paid
-        </button>
+          <button type="button" aria-pressed={statusFilter === "UNPAID"} onClick={() => setStatusFilter("UNPAID")}>
+            Unpaid
+          </button>
 
-        <button type="button" disabled={loading} onClick={() => setRefreshKey((current) => current + 1)}>
-          Refresh
-        </button>
+          <button type="button" aria-pressed={statusFilter === "PAID"} onClick={() => setStatusFilter("PAID")}>
+            Paid
+          </button>
+        </div>
+
+        <div className="staff-ledger-toolbar-end">
+          {!loading && !error && <span className="staff-result-count">{matchingFines.length} fines</span>}
+          <button
+            className="staff-ledger-refresh"
+            type="button"
+            disabled={loading}
+            onClick={() => setRefreshKey((current) => current + 1)}>
+            <RefreshCw size={13} aria-hidden="true" className={loading ? "is-spinning" : undefined} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {loading ? (
-        <p role="status">Loading fines...</p>
+        <p className="staff-ledger-message" role="status">
+          Loading fines...
+        </p>
       ) : error ? (
-        <p role="alert">{error}</p>
+        <p className="staff-ledger-message staff-ledger-message--error" role="alert">
+          {error}
+        </p>
       ) : (
         <>
-          <p className="staff-result-count">{matchingFines.length} fines</p>
-
           <section className="staff-table-scroll" role="region" aria-label="Fines table" tabIndex={0}>
             <table className="staff-table staff-billing-table">
               <thead>

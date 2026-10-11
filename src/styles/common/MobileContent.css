@@ -617,8 +617,8 @@
     padding: 12px;
   }
 
-  .staff-kanban-column .staff-assign-team {
-    margin-top: auto;
+  .staff-kanban-column .staff-assign-team,
+  .staff-kanban-column .staff-photo-button {
     min-height: 38px;
   }
 

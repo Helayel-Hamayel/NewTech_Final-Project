@@ -14,6 +14,7 @@ export default function StaffPage() {
     activeTab,
     setActiveTab,
     unreadTabs,
+    reportsLoading,
     serviceRequests,
     setServiceRequests,
     maintenanceTickets,
@@ -59,7 +60,7 @@ export default function StaffPage() {
           ) : appealsError ? (
             <p role="alert">{appealsError}</p>
           ) : (
-            <CitationDisputes appeals={appeals} setAppeals={setAppeals} search="" />
+            <CitationDisputes appeals={appeals} setAppeals={setAppeals} search={search} />
           )
         ) : null}
 

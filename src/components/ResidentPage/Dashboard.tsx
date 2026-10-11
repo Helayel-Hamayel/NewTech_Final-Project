@@ -1,4 +1,5 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Camera, FileWarning, ImageOff, Wallet, Zap } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
@@ -79,19 +80,33 @@ export default function Dashboard({
       <section className="resident-summary-grid" aria-label="Account summary">
         <section className="resident-card resident-balance-card" aria-labelledby="balance-heading">
           <section className="resident-balance-header">
-            <p className="section-label section-label--light">Utilities and fines due</p>
-            <h2 id="balance-heading" className="resident-balance-total">
-              {balanceUnavailable ? "—" : currency.format(totalBalance)}
-            </h2>
+            <span className="resident-balance-icon" aria-hidden="true">
+              <Wallet size={20} />
+            </span>
+            <section className="resident-balance-heading">
+              <p className="section-label section-label--light">Utilities and fines due</p>
+              <h2 id="balance-heading" className="resident-balance-total">
+                {balanceUnavailable ? "—" : currency.format(totalBalance)}
+              </h2>
+            </section>
+            {!balanceUnavailable && (
+              <span className={`resident-balance-pill ${totalBalance === 0 ? "is-clear" : ""}`}>
+                {totalBalance === 0 ? "All settled" : "Payment due"}
+              </span>
+            )}
           </section>
 
           <dl className="resident-balance-list">
-            <div>
-              <dt>Unpaid utilities</dt>
+            <div className="resident-balance-tile resident-balance-tile--utilities">
+              <dt>
+                <Zap size={14} aria-hidden="true" /> Unpaid utilities
+              </dt>
               <dd>{utilitiesLoading || utilitiesError ? "—" : currency.format(unpaidUtilityTotal)}</dd>
             </div>
-            <div>
-              <dt>Unpaid fines</dt>
+            <div className="resident-balance-tile resident-balance-tile--fines">
+              <dt>
+                <FileWarning size={14} aria-hidden="true" /> Unpaid fines
+              </dt>
               <dd>{finesLoading || finesError ? "—" : currency.format(unpaidFineTotal)}</dd>
             </div>
           </dl>
@@ -114,18 +129,14 @@ export default function Dashboard({
             </button>
           </section>
 
-          <p>Payment checkout is still a demo.</p>
+          <p className="resident-balance-note">Payment checkout is still a demo.</p>
         </section>
 
         <article className="resident-card resident-kpi-card resident-kpi-card--rose">
           <section className="resident-kpi-content">
-            <h3>
-              Active
-              <br />
-              Fines
-            </h3>
+            <h3>Active Fines</h3>
             <section className="resident-kpi-metric">
-              <p className="resident-kpi-value">{finesLoading || finesError ? "—" : unpaidFines.length}</p>{" "}
+              <p className="resident-kpi-value">{finesLoading || finesError ? "—" : unpaidFines.length}</p>
               <p className="resident-kpi-label">Unpaid</p>
             </section>
           </section>
@@ -138,11 +149,7 @@ export default function Dashboard({
 
         <article className="resident-card resident-kpi-card resident-kpi-card--sand">
           <section className="resident-kpi-content">
-            <h3>
-              Open
-              <br />
-              Requests
-            </h3>
+            <h3>Open Requests</h3>
             <section className="resident-kpi-metric">
               <p className="resident-kpi-value">{reportsLoading || reportsError ? "—" : openReports.length}</p>
               <p className="resident-kpi-label">Open reports</p>
@@ -230,23 +237,27 @@ export default function Dashboard({
             </figure>
 
             <aside className="resident-current-bill">
-              <section>
+              <dl className="resident-bill-breakdown">
+                <div>
+                  <dt>Water</dt>
+                  <dd>
+                    {currency.format(latestMonth.waterAmount)} <small>{latestMonth.waterUsage} m³</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Electricity</dt>
+                  <dd>
+                    {currency.format(latestMonth.electricityAmount)} <small>{latestMonth.electricityUsage} kWh</small>
+                  </dd>
+                </div>
+              </dl>
+
+              <section className="resident-bill-total">
                 <h4>Latest bill · {formatMonth(latestMonth.month)}</h4>
                 <p>{currency.format(latestBillTotal)}</p>
-
-                <span>{latestMonth.status === "PAID" ? "Paid" : "Unpaid"}</span>
-
-                <p>
-                  Water: {currency.format(latestMonth.waterAmount)}
-                  {" · "}
-                  Electricity: {currency.format(latestMonth.electricityAmount)}
-                </p>
-
-                <p>
-                  Consumption: {latestMonth.waterUsage} m³ water
-                  {" · "}
-                  {latestMonth.electricityUsage} kWh electricity
-                </p>
+                <span className={`status-badge ${latestMonth.status === "PAID" ? "status-badge--paid" : "status-badge--unpaid"}`}>
+                  {latestMonth.status === "PAID" ? "Paid" : "Unpaid"}
+                </span>
               </section>
 
               <button className="resident-secondary-btn" type="button" onClick={() => onNavigate("Billing")}>
@@ -282,11 +293,13 @@ export default function Dashboard({
                 <article className="resident-list-item">
                   <section className="resident-list-meta">
                     {fine.photoUrl ? (
-                      <a className="resident-list-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer">
-                        View photo
+                      <a className="resident-list-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer" title="View photo">
+                        <Camera size={20} aria-hidden="true" />
                       </a>
                     ) : (
-                      <p className="resident-list-photo">No photo</p>
+                      <span className="resident-list-photo resident-list-photo--empty" title="No photo attached">
+                        <ImageOff size={20} aria-hidden="true" />
+                      </span>
                     )}
 
                     <section>

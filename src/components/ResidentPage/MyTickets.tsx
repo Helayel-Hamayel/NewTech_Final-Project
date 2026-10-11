@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Camera, ImageOff, MapPin } from "lucide-react";
 import type { SubmitEvent } from "react";
 import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
@@ -228,9 +229,12 @@ export default function MyTickets({
                         </section>
                         <span className="status-badge status-badge--info">{request.stage}</span>
                       </section>
-                      <p className="ticket-location">{request.location}</p>
-                      <p className="resident-muted">Reported {request.reportedDate}</p>
-                      <p>{request.description}</p>
+                      <p className="ticket-location">
+                        <MapPin size={14} aria-hidden="true" />
+                        {request.location}
+                      </p>
+                      <p className="resident-muted ticket-date">Reported {request.reportedDate}</p>
+                      <p className="ticket-description">{request.description}</p>
                       {(request.stage === "Resolved" || request.stage === "Rejected") && request.resolvedAt && (
                         <p className="resident-muted">
                           {request.stage === "Rejected" ? "Rejected at" : "Resolved at"}:{" "}
@@ -291,11 +295,15 @@ export default function MyTickets({
                     <section className="citation-card-header">
                       {fine.photoUrl ? (
                         <a className="citation-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer">
+                          <Camera size={14} aria-hidden="true" />
                           View photo
                         </a>
                       ) : (
-                        <span className="citation-photo">No photo</span>
-                      )}{" "}
+                        <span className="citation-photo citation-photo--empty">
+                          <ImageOff size={14} aria-hidden="true" />
+                          No photo
+                        </span>
+                      )}
                       <span className={`status-badge ${fine.status === "Unpaid" ? "status-badge--unpaid" : "status-badge--paid"}`}>
                         {fine.status}
                       </span>
@@ -332,7 +340,7 @@ export default function MyTickets({
                         </button>
                         <span className="citation-resolved">
                           {fine.status === "Paid" ? "Paid" : fine.status === "Waived" ? "Waived" : "Appeal submitted"}
-                        </span>{" "}
+                        </span>
                       </section>
                     )}
                   </article>
