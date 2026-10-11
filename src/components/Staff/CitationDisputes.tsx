@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { AppealFromBackend } from "../../data/appealData";
@@ -43,6 +44,7 @@ export default function CitationDisputes({
   search,
 }: CitationDisputesProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<"ALL" | AppealFromBackend["status"]>("ALL");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -57,6 +59,7 @@ export default function CitationDisputes({
   const query = search.trim().toLowerCase();
 
   const matchingAppeals = appeals.filter((appeal) =>
+    (statusFilter === "ALL" || appeal.status === statusFilter) &&
     [
       appeal._id,
       appeal.resident?.name ?? "",
@@ -163,32 +166,72 @@ export default function CitationDisputes({
         <span className="staff-result-count">{pendingCount} pending</span>
       </header>
 
-      <section className="staff-table-scroll">
-        <table className="staff-table">
+      <div className="staff-ledger-toolbar">
+        <div className="staff-ledger-filters" role="group" aria-label="Filter appeals by status">
+          {(["ALL", "PENDING", "ACCEPTED", "REJECTED"] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={statusFilter === option}
+              onClick={() => setStatusFilter(option)}
+            >
+              {option === "ALL" ? "All" : option.charAt(0) + option.slice(1).toLowerCase()}
+            </button>
+          ))}
+        </div>
+        <span className="staff-result-count">{matchingAppeals.length} appeals</span>
+      </div>
+
+      <section className="staff-table-scroll" role="region" aria-label="Citation disputes table" tabIndex={0}>
+        <table className="staff-table staff-disputes-table">
           <thead>
             <tr>
               <th scope="col">Resident</th>
               <th scope="col">Vehicle</th>
               <th scope="col">Reason</th>
+              <th scope="col">Fine</th>
+              <th scope="col">Submitted</th>
               <th scope="col">Status</th>
-              <th scope="col">Review</th>
+              <th scope="col" className="staff-table-action-col">
+                Review
+              </th>
             </tr>
           </thead>
 
           <tbody>
             {matchingAppeals.map((appeal) => (
               <tr key={appeal._id}>
-                <td>{appeal.resident?.name ?? "Unknown resident"}</td>
-                <td>{appeal.fine?.licensePlate ?? "Fine unavailable"}</td>
-                <td>{appeal.reason}</td>
-                <td>{appeal.status}</td>
+                <td className="staff-resident-cell">
+                  <div className="staff-ledger-resident">
+                    <strong>{appeal.resident?.name ?? "Unknown resident"}</strong>
+                    <span>{appeal.email}</span>
+                  </div>
+                </td>
                 <td>
+                  {appeal.fine ? (
+                    <div className="staff-ledger-resident">
+                      <span className="staff-plate">{appeal.fine.licensePlate}</span>
+                      <span>{appeal.fine.violationType}</span>
+                    </div>
+                  ) : (
+                    "Fine unavailable"
+                  )}
+                </td>
+                <td className="staff-dispute-reason">{appeal.reason}</td>
+                <td className="staff-amount">{appeal.fine ? currency.format(appeal.fine.amount) : "—"}</td>
+                <td className="staff-dispute-date">{formatIsraeliDateTime(appeal.createdAt)}</td>
+                <td>
+                  <span className={`staff-status-badge staff-appeal-status--${appeal.status.toLowerCase()}`}>
+                    {appeal.status.charAt(0) + appeal.status.slice(1).toLowerCase()}
+                  </span>
+                </td>
+                <td className="staff-table-action-col">
                   <button
-                    className="staff-review-request"
+                    className={appeal.status === "PENDING" ? "staff-assign-team" : "staff-photo-button"}
                     type="button"
                     onClick={() => openAppeal(appeal._id)}
                   >
-                    Review dispute
+                    {appeal.status === "PENDING" ? "Review" : "View"}
                   </button>
                 </td>
               </tr>
@@ -196,10 +239,10 @@ export default function CitationDisputes({
 
             {matchingAppeals.length === 0 && (
               <tr>
-                <td colSpan={5} className="staff-empty">
+                <td colSpan={7} className="staff-empty">
                   {appeals.length === 0
                     ? "No appeals yet."
-                    : "No appeals match your search."}
+                    : "No appeals match your filters."}
                 </td>
               </tr>
             )}
@@ -233,11 +276,12 @@ export default function CitationDisputes({
               <button
                 className="staff-dialog-close"
                 type="button"
+                aria-label="Close appeal review"
                 disabled={saving}
                 onClick={closeAppeal}
                 autoFocus
               >
-                Close
+                <X size={19} aria-hidden="true" />
               </button>
             </header>
 

@@ -18,7 +18,7 @@ function formatMonth(month: string) {
 
 export default function BillingLedger({ accounts, search }: BillingLedgerProps) {
   const [activeSection, setActiveSection] = useState<"monthly" | "fines">("monthly");
-  const [statusFilter, setStatusFilter] = useState<UtilityMonth["status"]>("UNPAID");
+  const [statusFilter, setStatusFilter] = useState<UtilityMonth["status"] | "ALL">("UNPAID");
 
   const query = search.trim().toLowerCase();
   const monthlyRent = 5800;
@@ -38,7 +38,7 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
       })),
     )
     .filter(
-      (row) => row.status === statusFilter && [row.residentName, row.residentEmail].some((value) => value.toLowerCase().includes(query)),
+      (row) => (statusFilter === "ALL" || row.status === statusFilter) && [row.residentName, row.residentEmail].some((value) => value.toLowerCase().includes(query)),
     )
     .sort((a, b) => b.month.localeCompare(a.month) || a.residentName.localeCompare(b.residentName));
 
@@ -49,10 +49,9 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
           <p className="staff-section-label">Resident bills and fines</p>
           <h2 id="billing-heading">Billing ledger</h2>
         </section>
-        {activeSection === "monthly" && <span className="staff-result-count">{rows.length} monthly records</span>}
       </header>
 
-      <div className="staff-ledger-filters" role="group" aria-label="Choose ledger section">
+      <nav className="staff-ledger-tabs" aria-label="Choose ledger section">
         <button type="button" aria-pressed={activeSection === "monthly"} onClick={() => setActiveSection("monthly")}>
           Monthly bills
         </button>
@@ -60,20 +59,28 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
         <button type="button" aria-pressed={activeSection === "fines"} onClick={() => setActiveSection("fines")}>
           Fines
         </button>
-      </div>
+      </nav>
 
       {activeSection === "fines" ? (
         <StaffFineLedger search={search} />
       ) : (
         <>
-          <div className="staff-ledger-filters" role="group" aria-label="Filter billing status">
-            <button type="button" aria-pressed={statusFilter === "UNPAID"} onClick={() => setStatusFilter("UNPAID")}>
-              Unpaid
-            </button>
+          <div className="staff-ledger-toolbar">
+            <div className="staff-ledger-filters" role="group" aria-label="Filter billing status">
+              <button type="button" aria-pressed={statusFilter === "ALL"} onClick={() => setStatusFilter("ALL")}>
+                All
+              </button>
 
-            <button type="button" aria-pressed={statusFilter === "PAID"} onClick={() => setStatusFilter("PAID")}>
-              Paid
-            </button>
+              <button type="button" aria-pressed={statusFilter === "UNPAID"} onClick={() => setStatusFilter("UNPAID")}>
+                Unpaid
+              </button>
+
+              <button type="button" aria-pressed={statusFilter === "PAID"} onClick={() => setStatusFilter("PAID")}>
+                Paid
+              </button>
+            </div>
+
+            <span className="staff-result-count">{rows.length} monthly records</span>
           </div>
 
           <section className="staff-table-scroll" role="region" aria-label="Billing ledger table" tabIndex={0}>
@@ -119,7 +126,7 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
                     <td className="staff-empty" colSpan={7}>
                       {query
                         ? "No bills match this resident name or email."
-                        : `No ${statusFilter === "PAID" ? "paid" : "unpaid"} monthly bills.`}
+                        : `No ${statusFilter === "PAID" ? "paid " : statusFilter === "UNPAID" ? "unpaid " : ""}monthly bills.`}
                     </td>
                   </tr>
                 )}
