@@ -1973,3 +1973,184 @@ html[data-theme="dark"] .staff-ledger-tabs button[aria-pressed="true"]::after {
     padding: 16px;
   }
 }
+
+/* Appeal review dialog polish */
+.staff-appeal-dialog {
+  width: min(980px, calc(100vw - 32px));
+  padding: 0;
+  border-radius: 14px;
+}
+
+.staff-appeal-dialog > * {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.staff-appeal-dialog .staff-dialog-heading {
+  margin: 0 0 18px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--staff-border);
+  background: var(--staff-card-alt);
+}
+
+.staff-appeal-dialog .staff-dialog-heading h2 {
+  margin: 2px 0 8px;
+  font-size: 1.35rem;
+}
+
+.appeal-review-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--staff-muted, #64748b);
+}
+
+.appeal-review-id,
+.appeal-mono {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.appeal-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.appeal-facts > div {
+  padding: 11px 14px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-alt);
+}
+
+.appeal-facts dt {
+  margin-bottom: 4px;
+  color: var(--staff-muted, #64748b);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.appeal-facts dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.appeal-evidence-grid {
+  gap: 16px;
+}
+
+.appeal-evidence-card {
+  padding: 16px;
+  border-radius: 12px;
+  border-top: 3px solid #2563eb;
+}
+
+.appeal-evidence-card--resident {
+  border-top-color: #d97706;
+}
+
+.appeal-evidence-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.appeal-evidence-photo {
+  height: 240px;
+  border: 1px solid var(--staff-border);
+}
+
+.appeal-photo-empty {
+  height: 240px;
+  padding: 12px;
+  background: var(--staff-card-alt);
+  color: var(--staff-muted, #64748b);
+  text-align: center;
+}
+
+.appeal-evidence-details {
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.appeal-evidence-details dt {
+  color: var(--staff-muted, #64748b);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.appeal-statement {
+  padding: 10px 12px;
+  border-left: 3px solid #d97706;
+  border-radius: 0 8px 8px 0;
+  background: var(--staff-card-alt);
+  font-style: italic;
+}
+
+.appeal-decision-note {
+  margin-top: 16px;
+  margin-bottom: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--staff-border);
+  border-radius: 8px;
+  background: var(--staff-card-alt);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.appeal-decision-note--accepted {
+  border-color: rgba(22, 163, 74, 0.3);
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+}
+
+.appeal-decision-note--rejected {
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+}
+
+.appeal-review-actions {
+  position: sticky;
+  bottom: 0;
+  align-items: center;
+  margin: 18px 0 0;
+  padding: 14px 24px;
+  border-top: 1px solid var(--staff-border);
+  background: var(--staff-panel-bg);
+}
+
+.appeal-review-actions p {
+  margin: 0 auto 0 0;
+  color: var(--staff-muted, #64748b);
+  font-size: 0.82rem;
+}
+
+.staff-appeal-dialog > :last-child:not(.appeal-review-actions) {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 700px) {
+  .staff-appeal-dialog {
+    padding: 0;
+  }
+
+  .appeal-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .appeal-review-actions p {
+    flex-basis: 100%;
+  }
+}

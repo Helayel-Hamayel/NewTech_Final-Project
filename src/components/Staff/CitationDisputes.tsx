@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { ShieldCheck, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { AppealFromBackend } from "../../data/appealData";
@@ -268,8 +268,12 @@ export default function CitationDisputes({
                 <h2 id="appeal-review-heading">
                   {selectedAppeal.resident?.name ?? "Resident"}
                 </h2>
-                <p>
-                  Appeal {selectedAppeal._id} · {selectedAppeal.status}
+                <p className="appeal-review-meta">
+                  <span className={`staff-status-badge staff-appeal-status--${selectedAppeal.status.toLowerCase()}`}>
+                    {selectedAppeal.status.charAt(0) + selectedAppeal.status.slice(1).toLowerCase()}
+                  </span>
+                  <span className="appeal-review-id">#{selectedAppeal._id.slice(-8).toUpperCase()}</span>
+                  <span>{selectedAppeal.email}</span>
                 </p>
               </section>
 
@@ -285,9 +289,30 @@ export default function CitationDisputes({
               </button>
             </header>
 
+            <dl className="appeal-facts">
+              <div>
+                <dt>Fine amount</dt>
+                <dd>{selectedAppeal.fine ? currency.format(selectedAppeal.fine.amount) : "—"}</dd>
+              </div>
+              <div>
+                <dt>Vehicle</dt>
+                <dd>{selectedAppeal.fine?.licensePlate ?? "—"}</dd>
+              </div>
+              <div>
+                <dt>Fine issued</dt>
+                <dd>{selectedAppeal.fine ? formatIsraeliDateTime(selectedAppeal.fine.createdAt) : "—"}</dd>
+              </div>
+              <div>
+                <dt>Appeal submitted</dt>
+                <dd>{formatIsraeliDateTime(selectedAppeal.createdAt)}</dd>
+              </div>
+            </dl>
+
             <div className="appeal-evidence-grid">
-              <article className="appeal-evidence-card">
-                <h3>Field guard evidence</h3>
+              <article className="appeal-evidence-card appeal-evidence-card--guard">
+                <h3>
+                  <ShieldCheck size={16} aria-hidden="true" /> Field guard evidence
+                </h3>
 
                 <EvidencePhoto
                   key={`guard-${selectedAppeal._id}`}
@@ -302,31 +327,19 @@ export default function CitationDisputes({
                       <dd>{selectedAppeal.fine.violationType}</dd>
                     </div>
                     <div>
-                      <dt>Vehicle registration</dt>
-                      <dd>{selectedAppeal.fine.licensePlate}</dd>
-                    </div>
-                    <div>
-                      <dt>Fine amount</dt>
-                      <dd>{currency.format(selectedAppeal.fine.amount)}</dd>
-                    </div>
-                    <div>
                       <dt>Fine ID</dt>
-                      <dd>{selectedAppeal.fine._id}</dd>
-                    </div>
-                    <div>
-                      <dt>Issued at</dt>
-                      <dd>
-                        {formatIsraeliDateTime(selectedAppeal.fine.createdAt)}
-                      </dd>
+                      <dd className="appeal-mono">{selectedAppeal.fine._id}</dd>
                     </div>
                   </dl>
                 ) : (
-                  <p>The linked fine is no longer available.</p>
+                  <p className="appeal-photo-empty">The linked fine is no longer available.</p>
                 )}
               </article>
 
-              <article className="appeal-evidence-card">
-                <h3>Resident appeal</h3>
+              <article className="appeal-evidence-card appeal-evidence-card--resident">
+                <h3>
+                  <UserRound size={16} aria-hidden="true" /> Resident appeal
+                </h3>
 
                 <EvidencePhoto
                   key={`resident-${selectedAppeal._id}`}
@@ -340,35 +353,42 @@ export default function CitationDisputes({
                     <dd>{selectedAppeal.reason}</dd>
                   </div>
                   <div>
-                    <dt>Description</dt>
-                    <dd>{selectedAppeal.description}</dd>
-                  </div>
-                  <div>
-                    <dt>Email</dt>
-                    <dd>{selectedAppeal.email}</dd>
-                  </div>
-                  <div>
-                    <dt>Submitted at</dt>
-                    <dd>
-                      {formatIsraeliDateTime(selectedAppeal.createdAt)}
-                    </dd>
+                    <dt>Statement</dt>
+                    <dd className="appeal-statement">{selectedAppeal.description}</dd>
                   </div>
                 </dl>
               </article>
             </div>
 
             {selectedAppeal.resolvedAt && (
-              <p>
-                Decided at:{" "}
+              <p className={`appeal-decision-note appeal-decision-note--${selectedAppeal.status.toLowerCase()}`}>
+                {selectedAppeal.status === "ACCEPTED" ? "Accepted" : "Rejected"} on{" "}
                 {formatIsraeliDateTime(selectedAppeal.resolvedAt)}
               </p>
             )}
 
-            {error && <p role="alert">{error}</p>}
-            {saving && <p role="status">Saving decision...</p>}
+            {error && (
+              <p className="appeal-decision-note appeal-decision-note--rejected" role="alert">
+                {error}
+              </p>
+            )}
+            {saving && (
+              <p className="appeal-decision-note" role="status">
+                Saving decision...
+              </p>
+            )}
 
             {selectedAppeal.status === "PENDING" && (
               <footer className="appeal-review-actions">
+                <p>This decision is final and cannot be changed.</p>
+                <button
+                  className="staff-cancel"
+                  type="button"
+                  disabled={saving}
+                  onClick={closeAppeal}
+                >
+                  Close
+                </button>
                 <button
                   className="staff-approve"
                   type="button"
