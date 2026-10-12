@@ -2,76 +2,127 @@
 
 **One platform for residents, municipal staff and field guards.**
 
-CivicHub is a municipal services web app themed around Tel Aviv-Yafo. Residents pay bills, report problems and appeal fines; staff review disputes and dispatch maintenance; field guards issue citations from the street. It is fully responsive, from desktop down to a phone.
+CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Residents register, pay bills, report problems and appeal fines. Staff review disputes, manage billing and dispatch maintenance. Field guards issue parking citations from the street. The React front end talks to the Express and MongoDB API in [`Backend/`](Backend/README.md).
 
 ![Login](src/assets/screenshots/login-desktop.png)
 
 ## Portals and features
 
+### Authentication
+- Resident self-registration with a password strength meter and live confirm-password check
+- Secure login with a "keep me logged in" option (JWT in an HTTP-only cookie)
+- Role-based routing and protected pages for `RESIDENT`, `STAFF` and `FIELD_GUARD`
+
 ### Resident portal
-- Dashboard with account status, balance, active fines, open requests, utility usage chart and citations
-- Property overview
-- My services: report a problem, view fines and citations, file appeals
-- Billing: invoices, PDF receipts and a payment checkout
+- Dashboard with account status, balance due, active fines, open requests and a water and electricity usage chart
+- Billing: monthly records, PDF receipts and a payment checkout (the checkout is a demo and does not charge anything)
+- My services: report a problem with a photo and track its status, view fines and citations, and file appeals with photo evidence
+- Properties overview
 
 ### Staff portal
-- Citation disputes: review, approve or reject appeals
-- Billing ledger across all accounts
-- Resident requests inbox: review, assign or reject
-- Maintenance dispatch: kanban board (Unassigned / Dispatched / In Progress / Completed), assign teams, create tickets
+- Citation disputes: search, status filters with counts, pending-first sorting, and two-click Accept or Reject
+- Billing ledger across all resident accounts and fines
+- Resident requests inbox: review, assign to a field guard or reject with a reason
+- Maintenance dispatch board: Dispatched, In Progress, Completed and Rejected columns
+- Live overview stats and notification bell
 
 ### Field Guard portal
-- Overview of the shift and assigned reports
-- Issue parking citations with automatic fine calculation
+- Overview of issued and unpaid fines and assigned reports
+- Issue parking citations: license plate lookup finds the vehicle owner, and the fine amount comes from the violation type
 - Reports filtered by status and priority
 - Issue history
 
 ### Everywhere
 - Light and dark theme
-- Notification bell (Novu)
-- Mobile-first layout: hamburger drawer, sticky headers, stacked card tables, two-up stat tiles, and a tabbed maintenance board on small screens
+- Notifications (Novu)
+- Toast feedback for actions
+- Shekel (₪) amounts and Israeli date formats
+- Responsive layout with a slide-in navigation drawer on mobile
 
 ## Screenshots
 
-### Desktop
+### Sign in and register
 
-| Resident dashboard | Resident billing |
+| Login | Register |
+| :---: | :---: |
+| ![Login](src/assets/screenshots/login-desktop.png) | ![Register](src/assets/screenshots/register-desktop.png) |
+
+### Resident
+
+| Dashboard | Billing |
 | :---: | :---: |
 | ![Resident dashboard](src/assets/screenshots/resident-dashboard-desktop.png) | ![Resident billing](src/assets/screenshots/resident-billing-desktop.png) |
 
-| Staff: citation disputes | Staff: maintenance dispatch |
-| :---: | :---: |
-| ![Citation disputes](src/assets/screenshots/staff-citation-disputes-desktop.png) | ![Maintenance dispatch](src/assets/screenshots/staff-maintenance-desktop.png) |
+![My services](src/assets/screenshots/resident-services-desktop.png)
 
-![Field Guard overview](src/assets/screenshots/field-guard-overview-desktop.png)
+### Staff
+
+| Citation disputes | Billing ledger |
+| :---: | :---: |
+| ![Citation disputes](src/assets/screenshots/staff-citation-disputes-desktop.png) | ![Billing ledger](src/assets/screenshots/staff-billing-ledger-desktop.png) |
+
+| Resident requests | Maintenance dispatch |
+| :---: | :---: |
+| ![Resident requests](src/assets/screenshots/staff-requests-desktop.png) | ![Maintenance dispatch](src/assets/screenshots/staff-maintenance-desktop.png) |
+
+### Field Guard
+
+| Overview | Issue citation |
+| :---: | :---: |
+| ![Field Guard overview](src/assets/screenshots/field-guard-overview-desktop.png) | ![Issue citation](src/assets/screenshots/field-guard-citation-desktop.png) |
+
+![Field Guard reports](src/assets/screenshots/field-guard-reports-desktop.png)
 
 ### Mobile
 
-| Resident dashboard | Navigation drawer | Billing | Maintenance dispatch | Field Guard |
-| :---: | :---: | :---: | :---: | :---: |
-| <img src="src/assets/screenshots/resident-dashboard-mobile.png" width="160" /> | <img src="src/assets/screenshots/mobile-drawer.png" width="160" /> | <img src="src/assets/screenshots/resident-billing-mobile.png" width="160" /> | <img src="src/assets/screenshots/staff-maintenance-mobile.png" width="160" /> | <img src="src/assets/screenshots/field-guard-overview-mobile.png" width="160" /> |
+| Resident dashboard | Billing | Staff navigation drawer | Field Guard |
+| :---: | :---: | :---: | :---: |
+| <img src="src/assets/screenshots/resident-dashboard-mobile.png" width="180" /> | <img src="src/assets/screenshots/resident-billing-mobile.png" width="180" /> | <img src="src/assets/screenshots/mobile-drawer.png" width="180" /> | <img src="src/assets/screenshots/field-guard-overview-mobile.png" width="180" /> |
 
 ## Tech stack
 
+**Front end**
 - [React 19](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
 - [Vite](https://vite.dev) and [React Router 7](https://reactrouter.com)
 - [Recharts](https://recharts.org) for charts
 - [lucide-react](https://lucide.dev) for icons
+- [Sonner](https://sonner.emilkowal.ski) for toasts
 - [jsPDF](https://github.com/parallax/jsPDF) + autotable for PDF receipts
-- [React-Toastify](https://fkhadra.github.io/react-toastify/) for toasts
 - [Novu](https://novu.co) for in-app notifications
 - ESLint for linting
 
+**Back end** (see [Backend/README.md](Backend/README.md))
+- Node.js, Express 5, MongoDB and Mongoose
+- JWT authentication with bcrypt-hashed passwords
+- Multer and Cloudinary for photo uploads
+
 ## Getting started
 
-Requires Node.js 20+.
+Requires Node.js 20+ and a MongoDB database that supports transactions (for example MongoDB Atlas).
+
+### 1. Start the API
+
+```bash
+cd Backend
+npm install
+```
+
+Create `Backend/.env` (all variables are listed in [Backend/README.md](Backend/README.md)) and set `PORT=4000`, because the front end calls `http://localhost:4000`. Then:
+
+```bash
+npm run dev
+```
+
+### 2. Start the front end
+
+From the repository root:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the URL Vite prints (usually http://localhost:5173).
+Open http://localhost:5173. The API only allows the origins `localhost:5173`, `5174` and `5175`, so keep Vite on one of those ports.
 
 | Script | Purpose |
 | --- | --- |
@@ -80,11 +131,14 @@ Open the URL Vite prints (usually http://localhost:5173).
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Run ESLint |
 
-### Demo access
+### Accounts
 
-The login page offers one-click demo accounts for each portal (Resident, Municipality Staff and Field Guard). Portal data is static demo data, so no backend is needed to explore the UI. Real sign-in calls an auth API at `http://localhost:4000`, which is not part of this repository.
+- **Resident:** register from the login page ("Create an account").
+- **Staff and Field Guard:** new accounts are always created as `RESIDENT`. Change the `role` field of the user in MongoDB to `STAFF` or `FIELD_GUARD`.
 
-To enable notifications, set `VITE_NOVU_APPLICATION_IDENTIFIER` in a `.env` file.
+### Optional configuration
+
+To enable the notification bell, set `VITE_NOVU_APPLICATION_IDENTIFIER` in a `.env` file at the repository root.
 
 ## Project structure
 
@@ -93,11 +147,18 @@ src/
 ├── assets/         Backgrounds and README screenshots
 ├── components/     Resident, Staff, Field Guard, Login and shared components
 ├── contexts/       Theme, user and citation state
-├── data/           Demo accounts and static portal data
+├── data/           Types and shared data
 ├── helpers/        Formatting, PDF and field guard helpers
 ├── layouts/        Staff and Field Guard layouts
-├── pages/          Route-level pages
+├── pages/          Route-level pages (login, register, resident, staff, field guard)
 └── styles/         CSS, including the shared mobile system
+Backend/
+├── config/         Database, Cloudinary, Novu and fine configuration
+├── controllers/    Request handlers
+├── middleware/     Authentication, roles and uploads
+├── models/         Mongoose models
+├── routes/         Express routes
+└── services/       Notifications
 ```
 
 ## Team
