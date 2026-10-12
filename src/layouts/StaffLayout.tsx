@@ -22,7 +22,6 @@ export type StaffLayoutContext = {
   utilityAccounts: StaffUtilityAccount[];
   utilitiesLoading: boolean;
   utilitiesError: string;
-  reportsLoading: boolean;
 };
 
 export default function StaffLayout() {
@@ -239,7 +238,6 @@ export default function StaffLayout() {
               serviceRequests,
               reportsLoading,
               setServiceRequests,
-              reportsLoading,
               maintenanceTickets,
               appeals,
               setAppeals,
