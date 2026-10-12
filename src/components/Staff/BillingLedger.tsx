@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { Search } from "lucide-react";
 import type { StaffUtilityAccount, UtilityMonth } from "../../data/utilityData";
 import { currency } from "../../helpers/formatting/currency";
 import StaffFineLedger from "./StaffFineLedger";
 
 type BillingLedgerProps = {
   accounts: StaffUtilityAccount[];
-  search: string;
 };
 
 function formatMonth(month: string) {
@@ -16,9 +16,10 @@ function formatMonth(month: string) {
   });
 }
 
-export default function BillingLedger({ accounts, search }: BillingLedgerProps) {
+export default function BillingLedger({ accounts }: BillingLedgerProps) {
   const [activeSection, setActiveSection] = useState<"monthly" | "fines">("monthly");
   const [statusFilter, setStatusFilter] = useState<UtilityMonth["status"] | "ALL">("UNPAID");
+  const [search, setSearch] = useState("");
 
   const query = search.trim().toLowerCase();
   const monthlyRent = 5800;
@@ -37,18 +38,29 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
         status: month.status,
       })),
     )
-    .filter(
-      (row) => (statusFilter === "ALL" || row.status === statusFilter) && [row.residentName, row.residentEmail].some((value) => value.toLowerCase().includes(query)),
-    )
+    .filter((row) => (statusFilter === "ALL" || row.status === statusFilter) && row.residentName.toLowerCase().includes(query))
     .sort((a, b) => b.month.localeCompare(a.month) || a.residentName.localeCompare(b.residentName));
 
   return (
     <section className="staff-panel" aria-labelledby="billing-heading">
-      <header className="staff-panel-heading">
+      <header className="staff-panel-heading staff-panel-heading--search">
         <section>
           <p className="staff-section-label">Resident bills and fines</p>
           <h2 id="billing-heading">Billing ledger</h2>
         </section>
+
+        <div className="staff-card-header-tools">
+          <label className="staff-search staff-card-search">
+            <Search size={17} aria-hidden="true" />
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search resident name..."
+              aria-label="Search billing ledger by resident name"
+            />
+          </label>
+        </div>
       </header>
 
       <nav className="staff-ledger-tabs" aria-label="Choose ledger section">
@@ -125,7 +137,7 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
                   <tr>
                     <td className="staff-empty" colSpan={7}>
                       {query
-                        ? "No bills match this resident name or email."
+                        ? "No bills match this resident name."
                         : `No ${statusFilter === "PAID" ? "paid " : statusFilter === "UNPAID" ? "unpaid " : ""}monthly bills.`}
                     </td>
                   </tr>
