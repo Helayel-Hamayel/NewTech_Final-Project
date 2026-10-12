@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import type { StaffLayoutContext } from "../layouts/StaffLayout";
 import BillingLedger from "../components/Staff/BillingLedger";
@@ -26,7 +25,6 @@ export default function StaffPage() {
     utilitiesLoading,
     utilitiesError,
   } = useOutletContext<StaffLayoutContext>();
-  const [search, setSearch] = useState("");
 
   const pendingDisputes = appeals.filter((appeal) => appeal.status === "PENDING").length;
   const openTickets = maintenanceTickets.filter((ticket) => ticket.status !== "Resolved").length;
@@ -37,8 +35,6 @@ export default function StaffPage() {
         activeTab={activeTab}
         pendingDisputes={pendingDisputes}
         hasUnseenNotifications={unreadTabs.disputes}
-        search={search}
-        onSearchChange={setSearch}
         onOpenDisputes={() => setActiveTab("disputes")}
       />
 
@@ -60,7 +56,7 @@ export default function StaffPage() {
           ) : appealsError ? (
             <p role="alert">{appealsError}</p>
           ) : (
-            <CitationDisputes appeals={appeals} setAppeals={setAppeals} search={search} />
+            <CitationDisputes appeals={appeals} setAppeals={setAppeals} />
           )
         ) : null}
 
@@ -70,7 +66,7 @@ export default function StaffPage() {
           ) : utilitiesError ? (
             <p role="alert">{utilitiesError}</p>
           ) : (
-            <BillingLedger accounts={utilityAccounts} search={search} />
+            <BillingLedger accounts={utilityAccounts} />
           )
         ) : null}
         {activeTab === "maintenance" ? (

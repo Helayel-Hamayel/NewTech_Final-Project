@@ -2215,3 +2215,47 @@ html[data-theme="dark"] .appeal-decision-note--unavailable {
   background: #443b2b;
   color: #e5b36e;
 }
+
+.staff-panel-heading--search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.staff-card-header-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.staff-search.staff-card-search {
+  width: 280px;
+  max-width: 100%;
+  min-width: 0;
+  flex: 0 1 280px;
+}
+
+.staff-search.staff-card-search input {
+  color: var(--staff-text, inherit);
+}
+
+.staff-search.staff-card-search input::placeholder {
+  color: var(--staff-muted, #64748b);
+}
+
+@media (max-width: 640px) {
+  .staff-card-header-tools {
+    width: 100%;
+  }
+
+  .staff-search.staff-card-search {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+}

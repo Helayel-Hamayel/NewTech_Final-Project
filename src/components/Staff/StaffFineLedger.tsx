@@ -57,9 +57,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
   const query = search.trim().toLowerCase();
 
   const matchingFines = fines.filter(
-    (fine) =>
-      (statusFilter === "ALL" || fine.status === statusFilter) &&
-      [fine.resident?.name ?? "", fine.resident?.email ?? "", fine.licensePlate].some((value) => value.toLowerCase().includes(query)),
+    (fine) => (statusFilter === "ALL" || fine.status === statusFilter) && (fine.resident?.name ?? "").toLowerCase().includes(query),
   );
 
   return (
@@ -81,11 +79,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
 
         <div className="staff-ledger-toolbar-end">
           {!loading && !error && <span className="staff-result-count">{matchingFines.length} fines</span>}
-          <button
-            className="staff-ledger-refresh"
-            type="button"
-            disabled={loading}
-            onClick={() => setRefreshKey((current) => current + 1)}>
+          <button className="staff-ledger-refresh" type="button" disabled={loading} onClick={() => setRefreshKey((current) => current + 1)}>
             <RefreshCw size={13} aria-hidden="true" className={loading ? "is-spinning" : undefined} />
             Refresh
           </button>
