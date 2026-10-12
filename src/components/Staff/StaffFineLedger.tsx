@@ -2,6 +2,7 @@ import { RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { StaffFineFromBackend } from "../../data/fineData";
 import { currency } from "../../helpers/formatting/currency";
+import LoadingState from "../common/LoadingState";
 import { formatIsraeliDateTime } from "../../helpers/formatting/israeliDate";
 
 type StaffFineLedgerProps = {
@@ -87,9 +88,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
       </div>
 
       {loading ? (
-        <p className="staff-ledger-message" role="status">
-          Loading fines...
-        </p>
+        <LoadingState variant="inline" title="Loading fines" description="Fetching the fine ledger." />
       ) : error ? (
         <p className="staff-ledger-message staff-ledger-message--error" role="alert">
           {error}

@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import type { StaffLayoutContext } from "../layouts/StaffLayout";
 import BillingLedger from "../components/Staff/BillingLedger";
+import LoadingState from "../components/common/LoadingState";
 import CitationDisputes from "../components/Staff/CitationDisputes";
 import MaintenanceDispatch from "../components/Staff/MaintenanceDispatch";
 import StaffServiceRequestInbox from "../components/Staff/StaffServiceRequestInbox";
@@ -52,7 +53,7 @@ export default function StaffPage() {
 
         {activeTab === "disputes" ? (
           appealsLoading ? (
-            <p role="status">Loading appeals...</p>
+            <LoadingState variant="inline" title="Loading appeals" description="Fetching citation appeals." />
           ) : appealsError ? (
             <p role="alert">{appealsError}</p>
           ) : (
@@ -62,7 +63,7 @@ export default function StaffPage() {
 
         {activeTab === "billing" ? (
           utilitiesLoading ? (
-            <p role="status">Loading billing ledger...</p>
+            <LoadingState variant="inline" title="Loading billing ledger" description="Fetching billing records." />
           ) : utilitiesError ? (
             <p role="alert">{utilitiesError}</p>
           ) : (

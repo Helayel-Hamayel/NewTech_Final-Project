@@ -1,6 +1,7 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Camera, FileWarning, Home, ImageOff, Wallet, Zap } from "lucide-react";
 import { useState } from "react";
+import LoadingState from "../common/LoadingState";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
 import PaymentCheckout from "./PaymentCheckout";
@@ -196,7 +197,7 @@ export default function Dashboard({
         </section>
 
         {utilitiesLoading ? (
-          <p role="status">Loading utility data...</p>
+          <LoadingState variant="inline" title="Loading utilities" description="Fetching your utility data." />
         ) : utilitiesError ? (
           <p role="alert">{utilitiesError}</p>
         ) : !latestMonth ? (
@@ -290,7 +291,7 @@ export default function Dashboard({
         </section>
 
         {finesLoading ? (
-          <p role="status">Loading your fines...</p>
+          <LoadingState variant="inline" title="Loading fines" description="Fetching your fines." />
         ) : finesError ? (
           <p role="alert">{finesError}</p>
         ) : recentFines.length === 0 ? (

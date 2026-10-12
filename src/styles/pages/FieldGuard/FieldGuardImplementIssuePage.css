@@ -168,18 +168,20 @@
 }
 
 .field-citation-form .appeal-photo-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .field-citation-form .appeal-photo-btn {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 40px;
+  gap: 6px;
+  min-height: 78px;
   padding: 0 16px;
+  text-align: center;
   color: #cbd5e1;
   background: #0d1727;
   border: 1px solid #52647c;
@@ -281,23 +283,6 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-}
-
-html[data-theme="light"] .field-citation-form .appeal-photo-heading,
-html[data-theme="light"] .field-citation-form .appeal-photo-btn,
-html[data-theme="light"] .field-citation-form .appeal-photo-remove {
-  color: #334155;
-}
-
-html[data-theme="light"] .field-citation-form .appeal-photo-btn {
-  background: #f8fafc;
-  border-color: #94a3b8;
-}
-
-html[data-theme="light"] .field-citation-form .appeal-photo-btn:hover:not(:disabled) {
-  color: #1d4ed8;
-  background: #eff6ff;
-  border-color: #2563eb;
 }
 
 html[data-theme="light"] .field-citation-form .appeal-photo-remove:hover:not(:disabled) {
@@ -441,12 +426,6 @@ html[data-theme="light"] .field-citation-form .appeal-photo-preview strong {
   outline-offset: 3px;
 }
 
-html[data-theme="light"] .field-citation {
-  background: #fff;
-  border-color: #dbe3ed;
-  box-shadow: 0 16px 44px rgb(15 23 42 / 8%);
-}
-
 html[data-theme="light"] .field-citation-heading h1 {
   color: #0f172a;
 }
@@ -517,16 +496,6 @@ html[data-theme="light"] .field-citation-photo.is-captured strong {
   color: #166534;
 }
 
-html[data-theme="light"] .field-citation-reset {
-  color: #334155;
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-html[data-theme="light"] .field-citation-reset:hover:not(:disabled) {
-  background: #e2e8f0;
-}
-
 html[data-theme="light"] .field-citation-submit:disabled {
   color: #94a3b8;
   background: #e2e8f0;
@@ -571,5 +540,167 @@ html[data-theme="light"] .field-citation-submit:disabled {
 
   .field-citation-actions {
     grid-template-columns: 1fr;
+  }
+}
+
+.field-citation {
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.field-citation-heading {
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.field-citation-heading h1 {
+  color: var(--field-guard-ink);
+}
+
+.field-citation-heading p:last-child {
+  color: var(--field-guard-muted);
+}
+
+.field-citation-eyebrow {
+  color: var(--field-guard-accent);
+}
+
+.field-citation-ticket-mark {
+  color: var(--field-guard-accent);
+  background: var(--field-guard-surface);
+  border-color: var(--field-guard-border);
+}
+
+.field-citation-form {
+  gap: 20px;
+  padding: 22px;
+  background: var(--field-guard-surface);
+  border: 1px solid var(--field-guard-border);
+  border-radius: 14px;
+  box-shadow: var(--field-guard-shadow);
+}
+
+.field-citation-form label,
+.field-citation-form .appeal-photo-heading {
+  color: var(--field-guard-ink);
+}
+
+.field-citation-plate input,
+.field-citation-infraction select {
+  color: var(--field-guard-ink);
+  background: var(--field-guard-surface-muted);
+  border-color: var(--field-guard-border);
+}
+
+.field-citation-plate input::placeholder,
+.field-citation-help,
+.field-citation-form .appeal-photo-heading small,
+.field-citation-fine > small {
+  color: var(--field-guard-muted);
+}
+
+.field-citation-plate input:focus,
+.field-citation-infraction select:focus {
+  border-color: var(--field-guard-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-guard-accent) 18%, transparent);
+}
+
+.field-citation-form select option {
+  color: var(--field-guard-ink);
+  background: var(--field-guard-surface);
+}
+
+.field-citation-fine {
+  background: color-mix(in srgb, var(--field-guard-accent) 8%, var(--field-guard-surface));
+  border-color: color-mix(in srgb, var(--field-guard-accent) 28%, var(--field-guard-border));
+}
+
+.field-citation-fine p,
+.field-citation-fine > span {
+  color: var(--field-guard-accent);
+}
+
+.field-citation-fine strong {
+  color: var(--field-guard-ink);
+}
+
+.field-citation-form .appeal-photo-remove,
+.field-citation-reset,
+.field-citation-submit {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.field-citation-form .appeal-photo-btn {
+  border: 1px dashed var(--field-guard-border);
+  border-radius: 10px;
+}
+
+.field-citation-form .appeal-photo-btn,
+.field-citation-form .appeal-photo-remove,
+.field-citation-reset {
+  color: var(--field-guard-ink);
+  background: var(--field-guard-surface-muted);
+  border-color: var(--field-guard-border);
+}
+
+.field-citation-form .appeal-photo-btn:hover:not(:disabled),
+.field-citation-reset:hover:not(:disabled) {
+  color: var(--field-guard-accent);
+  background: color-mix(in srgb, var(--field-guard-accent) 7%, var(--field-guard-surface));
+  border-color: var(--field-guard-accent);
+}
+
+.field-citation-form .appeal-photo-btn:focus-visible,
+.field-citation-form .appeal-photo-remove:focus-visible,
+.field-citation-form button:focus-visible {
+  outline-color: var(--field-guard-accent);
+}
+
+.field-citation-submit {
+  background: var(--field-guard-accent);
+  border-color: var(--field-guard-accent);
+}
+
+.field-citation-submit:not(:disabled):hover {
+  background: color-mix(in srgb, var(--field-guard-accent) 82%, #000);
+}
+
+.field-citation-submit:disabled {
+  color: var(--field-guard-muted);
+  background: var(--field-guard-surface-muted);
+  border-color: var(--field-guard-border);
+}
+
+.field-citation-location {
+  color: var(--field-guard-muted);
+}
+
+.field-citation-form [role="alert"] {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.78rem;
+}
+
+.field-citation-form [role="status"] {
+  margin: 0;
+  color: #15803d;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 480px) {
+  .field-citation-form {
+    padding: 18px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .field-citation-form {
+    padding: 16px 12px;
   }
 }

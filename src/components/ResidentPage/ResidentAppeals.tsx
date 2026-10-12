@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import LoadingState from "../common/LoadingState";
 import type { AppealFromBackend } from "../../data/appealData";
 import { ImageOff } from "lucide-react";
 import { currency } from "../../helpers/formatting/currency";
@@ -126,7 +127,7 @@ export default function ResidentAppeals({ appealSubmitting, onPay, fines }: Resi
       </header>
 
       {loading ? (
-        <p role="status">Loading your appeals...</p>
+        <LoadingState variant="inline" title="Loading appeals" description="Fetching your appeals." />
       ) : error ? (
         <p role="alert">{error}</p>
       ) : (
