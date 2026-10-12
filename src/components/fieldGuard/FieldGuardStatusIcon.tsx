@@ -4,6 +4,7 @@ type FieldGuardStatusIconProps = { status: string };
 
 export default function FieldGuardStatusIcon({ status }: FieldGuardStatusIconProps) {
   switch (status.toUpperCase()) {
+    case "CANCELLED":
     case "REJECTED":
       return <CircleX aria-hidden="true" />;
 

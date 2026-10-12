@@ -4,7 +4,7 @@ import { formatIsraeliDateTime } from "../formatting/israeliDate";
 type RecentEntry = {
   _id: string;
   description: string;
-  status: "UNPAID" | "PAID" | "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED" | "REJECTED";
+  status: "UNPAID" | "PAID" | "CANCELLED" | "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED" | "REJECTED";
   createdAt: string;
 };
 

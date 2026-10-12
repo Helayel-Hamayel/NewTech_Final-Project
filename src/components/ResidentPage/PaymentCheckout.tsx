@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 import { currency } from "../../helpers/formatting/currency";
+import { toast } from "sonner";
 
 type PaymentCheckoutProps = {
   amount: number;
@@ -25,8 +26,15 @@ export default function PaymentCheckout({ amount, onConfirm, onClose }: PaymentC
     try {
       await onConfirm();
       setComplete(true);
+
+      toast.success("Payment recorded", {
+        description: "The selected bills and fines are now marked as paid.",
+      });
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Could not record payment.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setError(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }

@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/useUser";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -29,12 +30,17 @@ export default function LoginForm() {
         }),
       });
       if (!res.ok) {
-        setError(res.status === 401 ? "The password or email is incorrect" : "Unable to log in. Please try again.");
+        const message = res.status === 401 ? "The email or password is incorrect." : "Unable to log in. Please try again.";
+
+        setError(message);
+        toast.error(message);
         return;
       }
 
       const data = await res.json();
       saveUser(data.user);
+      toast.success(`Welcome back, ${data.user.name}!`);
+
       if (data.user.role === "FIELD_GUARD") {
         navigate("/field-guard", { replace: true });
       } else if (data.user.role === "STAFF") {
@@ -47,6 +53,7 @@ export default function LoginForm() {
     } catch (error) {
       console.error("Login failed:", error);
       setError("Unable to reach the server. Please try again.");
+      toast.error("Unable to reach the server. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -80,13 +87,7 @@ export default function LoginForm() {
       </section>
 
       <label className="login-remember" htmlFor="remember-me">
-        <input
-          id="remember-me"
-          name="rememberMe"
-          type="checkbox"
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
+        <input id="remember-me" name="rememberMe" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         Keep me logged in
       </label>
 

@@ -4,6 +4,7 @@ export type Fine = {
   id: string;
   residentId: string;
   status: "Unpaid" | "Paid" | "Appealed" | "Waived";
+  appealStatus?: "PENDING" | "ACCEPTED" | "REJECTED" | null;
   violation: string;
   location: string;
   date: string;

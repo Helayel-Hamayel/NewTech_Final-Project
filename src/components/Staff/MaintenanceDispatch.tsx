@@ -2,6 +2,7 @@ import type { StaffServiceRequest } from "../../data/staffData";
 import { CheckCircle2, Clock, Image as ImageIcon, MapPin } from "lucide-react";
 import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 
 type MaintenanceDispatchProps = {
   tickets: StaffServiceRequest[];
@@ -67,8 +68,14 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
             : request,
         ),
       );
+      toast.success(nextStatus === "RESOLVED" ? "Maintenance completed" : "Maintenance started", {
+        description: nextStatus === "RESOLVED" ? "The report has been marked as resolved." : "The report is now in progress.",
+      });
     } catch (error) {
-      setUpdateError(error instanceof Error ? error.message : "Could not update the report.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setUpdateError(message);
+      toast.error(message);
     } finally {
       setUpdatingId(null);
     }

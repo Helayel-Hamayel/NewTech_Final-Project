@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Building2, ClipboardList, FileText, Home, LayoutDashboard, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import SharedLayout from "../components/common/SharedLayout";
 import MobileDrawer from "../components/common/MobileDrawer";
 import ThemeToggle from "../components/common/ThemeToggle";
@@ -11,7 +11,6 @@ import MyTickets from "../components/ResidentPage/MyTickets";
 import Properties from "../components/ResidentPage/Properties";
 import ResidentPortalNav from "../components/ResidentPage/ResidentPortalNav";
 import { downloadInvoicePdf } from "../helpers/pdf/invoicePdf";
-import { useCitationState } from "../contexts/useCitationState";
 import { useUser } from "../contexts/useUser";
 import type { PortalTab, PaymentSelection } from "../components/ResidentPage/types";
 import { type Fine, type Invoice, type ResidentServiceRequest, resident, type UtilityType } from "../data/residentPortal";
@@ -34,10 +33,8 @@ const residentDrawerItems: Array<{
 export default function ResidentPage() {
   const navigate = useNavigate();
   const { user, signOut } = useUser();
-  const { citationState } = useCitationState();
   const [activeTab, setActiveTab] = useState<PortalTab>("Dashboard");
   const [utilityType, setUtilityType] = useState<UtilityType>("Water");
-  const [appealedFineIds, setAppealedFineIds] = useState<string[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ResidentServiceRequest[]>([]);
 
   const [reportsLoading, setReportsLoading] = useState(true);
@@ -56,10 +53,7 @@ export default function ResidentPage() {
   const [utilitiesLoading, setUtilitiesLoading] = useState(true);
   const [utilitiesError, setUtilitiesError] = useState("");
 
-  const serviceFines: Fine[] = savedFines.map((fine) => ({
-    ...fine,
-    status: citationState[fine.id] === "WAIVED" ? "Waived" : appealedFineIds.includes(fine.id) ? "Appealed" : fine.status,
-  }));
+  const serviceFines = savedFines;
 
   const recentFines = serviceFines.slice(0, 3);
 
@@ -85,7 +79,17 @@ export default function ResidentPage() {
   }));
 
   function handleAppeal(fineId: string) {
-    setAppealedFineIds((current) => (current.includes(fineId) ? current : [...current, fineId]));
+    setSavedFines((current) =>
+      current.map((fine) =>
+        fine.id === fineId
+          ? {
+              ...fine,
+              status: "Appealed",
+              appealStatus: "PENDING",
+            }
+          : fine,
+      ),
+    );
   }
 
   function handleOpenAppeal(fine: Fine) {
@@ -150,9 +154,14 @@ export default function ResidentPage() {
       handleAppeal(selectedAppealFine.id);
       setSelectedAppealFine(null);
       setAppealStatement("");
-      toast.success("Your appeal was submitted successfully.");
+      toast.success("Appeal submitted", {
+        description: "You can follow the staff decision in My appeals.",
+      });
     } catch (error) {
-      setAppealError(error instanceof Error ? error.message : "Could not submit the appeal.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setAppealError(message);
+      toast.error(message);
     } finally {
       setAppealSubmitting(false);
     }
@@ -289,7 +298,15 @@ export default function ResidentPage() {
         const mappedFines: Fine[] = data.map((fine) => ({
           id: fine._id,
           residentId: fine.resident,
-          status: fine.status === "PAID" ? "Paid" : "Unpaid",
+          status:
+            fine.status === "CANCELLED" || fine.appealStatus === "ACCEPTED"
+              ? "Waived"
+              : fine.status === "PAID"
+                ? "Paid"
+                : fine.appealStatus === "PENDING"
+                  ? "Appealed"
+                  : "Unpaid",
+          appealStatus: fine.appealStatus,
           violation: fine.violationType,
           licensePlate: fine.licensePlate,
           location: "Not recorded",
@@ -473,6 +490,7 @@ export default function ResidentPage() {
                       onSubmitAppeal={handleSubmitAppeal}
                       onCloseAppeal={handleCloseAppeal}
                       onAddServiceRequest={handleAddServiceRequest}
+                      onPay={handlePayBills}
                     />
                   )}
                 </>

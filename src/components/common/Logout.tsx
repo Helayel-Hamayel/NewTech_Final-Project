@@ -1,6 +1,6 @@
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useUser } from "../../contexts/useUser";
 import "../../styles/common/Logout.css";
 export default function Logout() {

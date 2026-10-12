@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { ClipboardList, FileCheck2, LogOut, Map, ReceiptText, Wrench } from "lucide-react";
 import type { StaffTab } from "../../data/staffData";
 import MobileDrawer from "../common/MobileDrawer";

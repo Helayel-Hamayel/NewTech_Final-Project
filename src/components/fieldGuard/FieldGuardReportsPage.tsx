@@ -3,6 +3,7 @@ import type { ReportFromBackend } from "../../data/staffData";
 import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
 import { Tag, CalendarDays, User, MapPin, FileText, Phone } from "lucide-react";
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
+import { toast } from "sonner";
 
 type ReportAction = "IN PROGRESS" | "RESOLVED" | "REJECTED";
 
@@ -133,8 +134,24 @@ export default function FieldGuardReportsPage() {
       setReports((currentReports) => currentReports.map((report) => (report._id === updatedReport._id ? updatedReport : report)));
 
       setRejectionReason("");
+      if (status === "RESOLVED") {
+        toast.success("Report completed", {
+          description: "The report is now marked as resolved.",
+        });
+      } else if (status === "REJECTED") {
+        toast.success("Report rejected", {
+          description: "Your rejection reason has been saved.",
+        });
+      } else {
+        toast.success("Report started", {
+          description: "The report is now in progress.",
+        });
+      }
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : "Could not update the report.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setActionError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }

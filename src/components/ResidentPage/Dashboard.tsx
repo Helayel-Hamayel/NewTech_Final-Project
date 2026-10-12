@@ -337,7 +337,7 @@ export default function Dashboard({
                     </p>
                   </section>
 
-                  {fine.status === "Unpaid" && (
+                  {fine.status === "Unpaid" && !fine.appealStatus && (
                     <button className="resident-secondary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
                       File Appeal
                     </button>
