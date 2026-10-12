@@ -1,3 +1,5 @@
+export const MONTHLY_RENT = 5800;
+
 export type UtilityMonth = {
   month: string;
   status: "PAID" | "UNPAID";

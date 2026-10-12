@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { StaffUtilityAccount, UtilityMonth } from "../../data/utilityData";
+import { MONTHLY_RENT, type StaffUtilityAccount, type UtilityMonth } from "../../data/utilityData";
 import { currency } from "../../helpers/formatting/currency";
 import StaffFineLedger from "./StaffFineLedger";
 
@@ -21,7 +21,7 @@ export default function BillingLedger({ accounts, search }: BillingLedgerProps) 
   const [statusFilter, setStatusFilter] = useState<UtilityMonth["status"] | "ALL">("UNPAID");
 
   const query = search.trim().toLowerCase();
-  const monthlyRent = 5800;
+  const monthlyRent = MONTHLY_RENT;
 
   const rows = accounts
     .flatMap((account) =>

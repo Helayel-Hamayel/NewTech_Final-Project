@@ -1,10 +1,11 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Camera, FileWarning, ImageOff, Wallet, Zap } from "lucide-react";
+import { Camera, FileWarning, Home, ImageOff, Wallet, Zap } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "../../contexts/useTheme";
 import { currency } from "../../helpers/formatting/currency";
 import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
+import { MONTHLY_RENT } from "../../data/utilityData";
 import { useUser } from "../../contexts/useUser";
 
 function formatMonth(month: string) {
@@ -54,11 +55,13 @@ export default function Dashboard({
 
   const latestBillTotal = latestMonth ? latestMonth.waterAmount + latestMonth.electricityAmount : 0;
 
-  const unpaidUtilityTotal = utilityMonths
-    .filter((entry) => entry.status === "UNPAID")
-    .reduce((total, entry) => total + entry.waterAmount + entry.electricityAmount, 0);
+  const unpaidMonths = utilityMonths.filter((entry) => entry.status === "UNPAID");
 
-  const totalBalance = unpaidUtilityTotal + unpaidFineTotal;
+  const unpaidUtilityTotal = unpaidMonths.reduce((total, entry) => total + entry.waterAmount + entry.electricityAmount, 0);
+
+  const unpaidRentTotal = unpaidMonths.length * MONTHLY_RENT;
+
+  const totalBalance = unpaidRentTotal + unpaidUtilityTotal + unpaidFineTotal;
 
   const balanceUnavailable = utilitiesLoading || finesLoading || Boolean(utilitiesError) || Boolean(finesError);
 
@@ -84,7 +87,7 @@ export default function Dashboard({
               <Wallet size={20} />
             </span>
             <section className="resident-balance-heading">
-              <p className="section-label section-label--light">Utilities and fines due</p>
+              <p className="section-label section-label--light">Rent, utilities and fines due</p>
               <h2 id="balance-heading" className="resident-balance-total">
                 {balanceUnavailable ? "—" : currency.format(totalBalance)}
               </h2>
@@ -97,6 +100,12 @@ export default function Dashboard({
           </section>
 
           <dl className="resident-balance-list">
+            <div className="resident-balance-tile resident-balance-tile--rent">
+              <dt>
+                <Home size={14} aria-hidden="true" /> Unpaid rent
+              </dt>
+              <dd>{utilitiesLoading || utilitiesError ? "—" : currency.format(unpaidRentTotal)}</dd>
+            </div>
             <div className="resident-balance-tile resident-balance-tile--utilities">
               <dt>
                 <Zap size={14} aria-hidden="true" /> Unpaid utilities

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { billingAccounts, type StaffServiceRequest } from "../../data/staffData";
+import type { StaffServiceRequest } from "../../data/staffData";
+import { MONTHLY_RENT } from "../../data/utilityData";
 import { currency } from "../../helpers/formatting/currency";
+
+type UtilityAccount = {
+  months: { status: "PAID" | "UNPAID"; waterAmount: number; electricityAmount: number }[];
+};
+
+type Fine = { status: "UNPAID" | "PAID" | "CANCELLED"; amount: number };
 
 type StaffOverviewProps = {
   pendingDisputes: number;
@@ -16,6 +23,7 @@ export default function StaffOverview({
   loading = false,
 }: StaffOverviewProps) {
   const [fieldOfficers, setFieldOfficers] = useState<number | null>(null);
+  const [outstandingBalance, setOutstandingBalance] = useState<number | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -31,8 +39,36 @@ export default function StaffOverview({
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    const options = { credentials: "include" as const, signal: controller.signal };
+    const load = (path: string) =>
+      fetch(`http://localhost:4000${path}`, options).then((response) =>
+        response.ok ? response.json() : Promise.reject(),
+      );
+
+    Promise.all([load("/utilities"), load("/fines/staff")])
+      .then(([accounts, fines]: [UtilityAccount[], Fine[]]) => {
+        const unpaidUtilities = accounts.reduce(
+          (total, account) =>
+            total +
+            account.months
+              .filter((month) => month.status === "UNPAID")
+              .reduce((sum, month) => sum + MONTHLY_RENT + month.waterAmount + month.electricityAmount, 0),
+          0,
+        );
+        const unpaidFines = fines
+          .filter((fine) => fine.status === "UNPAID")
+          .reduce((sum, fine) => sum + fine.amount, 0);
+
+        setOutstandingBalance(unpaidUtilities + unpaidFines);
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
+  }, []);
+
   const pendingRequests = serviceRequests.filter((request) => request.status === "Pending").length;
-  const outstandingBalance = billingAccounts.reduce((total, account) => total + account.balance, 0);
   const display = (value: number) => (loading ? "—" : value);
 
   return (
@@ -59,8 +95,8 @@ export default function StaffOverview({
       </article>
       <article className="staff-kpi staff-kpi--rose">
         <p>Total Outstanding</p>
-        <strong>{currency.format(outstandingBalance)}</strong>
-        <span>Across all accounts</span>
+        <strong>{outstandingBalance === null ? "—" : currency.format(outstandingBalance)}</strong>
+        <span>Unpaid rent, utilities and fines</span>
       </article>
     </section>
   );

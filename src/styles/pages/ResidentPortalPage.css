@@ -3001,6 +3001,14 @@ html[data-theme="dark"] .resident-kpi-card--sand h3 {
   font-size: 0.7rem;
 }
 
+.resident-balance-tile--rent {
+  grid-column: 1 / -1;
+}
+
+.resident-balance-tile--rent dt svg {
+  color: #86efac;
+}
+
 .resident-balance-tile--utilities dt svg {
   color: #7dd3fc;
 }
