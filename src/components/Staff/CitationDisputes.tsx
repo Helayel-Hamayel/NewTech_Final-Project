@@ -1,3 +1,4 @@
+import { ShieldCheck, UserRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { AppealFromBackend } from "../../data/appealData";
@@ -23,28 +24,51 @@ function EvidencePhoto({ src, alt }: { src?: string; alt: string }) {
 
 export default function CitationDisputes({ appeals, setAppeals, search }: CitationDisputesProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<"ALL" | AppealFromBackend["status"]>("ALL");
+  const [confirmationStatus, setConfirmationStatus] = useState<"ACCEPTED" | "REJECTED" | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const selectedAppeal = appeals.find((appeal) => appeal._id === selectedId) ?? null;
 
-  const pendingCount = appeals.filter((appeal) => appeal.status === "PENDING").length;
+  const pendingCount = appeals.filter(
+    (appeal) => appeal.status === "PENDING",
+  ).length;
+  const statusCounts: Record<"ALL" | AppealFromBackend["status"], number> = {
+    ALL: appeals.length,
+    PENDING: pendingCount,
+    ACCEPTED: appeals.filter((appeal) => appeal.status === "ACCEPTED").length,
+    REJECTED: appeals.filter((appeal) => appeal.status === "REJECTED").length,
+  };
 
   const query = search.trim().toLowerCase();
 
-  const matchingAppeals = appeals.filter((appeal) =>
-    [
-      appeal._id,
-      appeal.resident?.name ?? "",
-      appeal.email,
-      appeal.reason,
-      appeal.description,
-      appeal.status,
-      appeal.fine?.licensePlate ?? "",
-      appeal.fine?.violationType ?? "",
-    ].some((value) => value.toLowerCase().includes(query)),
-  );
+  const matchingAppeals = appeals
+    .filter((appeal) =>
+      (statusFilter === "ALL" || appeal.status === statusFilter) &&
+      [
+        appeal._id,
+        appeal.resident?.name ?? "",
+        appeal.email,
+        appeal.reason,
+        appeal.description,
+        appeal.status,
+        appeal.fine?.licensePlate ?? "",
+        appeal.fine?.violationType ?? "",
+      ].some((value) => value.toLowerCase().includes(query)),
+    )
+    .sort((left, right) => {
+      const pendingOrder =
+        Number(right.status === "PENDING") - Number(left.status === "PENDING");
+
+      if (pendingOrder !== 0) return pendingOrder;
+
+      const dateDifference =
+        new Date(left.createdAt).getTime() - new Date(right.createdAt).getTime();
+
+      return left.status === "PENDING" ? dateDifference : -dateDifference;
+    });
 
   useEffect(() => {
     if (selectedId && !dialogRef.current?.open) {
@@ -54,6 +78,7 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
 
   function openAppeal(id: string) {
     setError("");
+    setConfirmationStatus(null);
     setSelectedId(id);
   }
 
@@ -62,7 +87,18 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
 
     dialogRef.current?.close();
     setSelectedId(null);
+    setConfirmationStatus(null);
     setError("");
+  }
+
+  function handleDecisionClick(status: "ACCEPTED" | "REJECTED") {
+    if (confirmationStatus === status) {
+      void decideAppeal(status);
+      return;
+    }
+
+    setError("");
+    setConfirmationStatus(status);
   }
 
   async function decideAppeal(status: "ACCEPTED" | "REJECTED") {
@@ -134,25 +170,48 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
         <span className="staff-result-count">{pendingCount} pending</span>
       </header>
 
-      <section className="staff-table-scroll">
-        <table className="staff-table">
+      <div className="staff-ledger-toolbar">
+        <div className="staff-ledger-filters staff-appeal-filters" role="group" aria-label="Filter appeals by status">
+          {(["ALL", "PENDING", "ACCEPTED", "REJECTED"] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={statusFilter === option}
+              onClick={() => setStatusFilter(option)}
+            >
+              {option === "ALL" ? "All" : option.charAt(0) + option.slice(1).toLowerCase()}
+              <span>{statusCounts[option]}</span>
+            </button>
+          ))}
+        </div>
+        <span className="staff-result-count">{matchingAppeals.length} appeals</span>
+      </div>
+
+      <section className="staff-table-scroll" role="region" aria-label="Citation disputes table" tabIndex={0}>
+        <table className="staff-table staff-disputes-table">
           <thead>
             <tr>
               <th scope="col">Resident</th>
               <th scope="col">Vehicle</th>
               <th scope="col">Reason</th>
+              <th scope="col">Fine</th>
+              <th scope="col">Submitted</th>
               <th scope="col">Status</th>
-              <th scope="col">Review</th>
+              <th scope="col" className="staff-table-action-col">
+                Review
+              </th>
             </tr>
           </thead>
 
           <tbody>
             {matchingAppeals.map((appeal) => (
               <tr key={appeal._id}>
-                <td>{appeal.resident?.name ?? "Unknown resident"}</td>
-                <td>{appeal.fine?.licensePlate ?? "Fine unavailable"}</td>
-                <td>{appeal.reason}</td>
-                <td>{appeal.status}</td>
+                <td className="staff-resident-cell">
+                  <div className="staff-ledger-resident">
+                    <strong>{appeal.resident?.name ?? "Unknown resident"}</strong>
+                    <span>{appeal.email}</span>
+                  </div>
+                </td>
                 <td>
                   <button className="staff-review-request" type="button" onClick={() => openAppeal(appeal._id)}>
                     Review dispute
@@ -197,9 +256,30 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
               </button>
             </header>
 
+            <dl className="appeal-facts">
+              <div>
+                <dt>Fine amount</dt>
+                <dd>{selectedAppeal.fine ? currency.format(selectedAppeal.fine.amount) : "—"}</dd>
+              </div>
+              <div>
+                <dt>Vehicle</dt>
+                <dd>{selectedAppeal.fine?.licensePlate ?? "—"}</dd>
+              </div>
+              <div>
+                <dt>Fine issued</dt>
+                <dd>{selectedAppeal.fine ? formatIsraeliDateTime(selectedAppeal.fine.createdAt) : "—"}</dd>
+              </div>
+              <div>
+                <dt>Appeal submitted</dt>
+                <dd>{formatIsraeliDateTime(selectedAppeal.createdAt)}</dd>
+              </div>
+            </dl>
+
             <div className="appeal-evidence-grid">
-              <article className="appeal-evidence-card">
-                <h3>Field guard evidence</h3>
+              <article className="appeal-evidence-card appeal-evidence-card--guard">
+                <h3>
+                  <ShieldCheck size={16} aria-hidden="true" /> Field guard evidence
+                </h3>
 
                 <EvidencePhoto
                   key={`guard-${selectedAppeal._id}`}
@@ -214,14 +294,6 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
                       <dd>{selectedAppeal.fine.violationType}</dd>
                     </div>
                     <div>
-                      <dt>Vehicle registration</dt>
-                      <dd>{selectedAppeal.fine.licensePlate}</dd>
-                    </div>
-                    <div>
-                      <dt>Fine amount</dt>
-                      <dd>{currency.format(selectedAppeal.fine.amount)}</dd>
-                    </div>
-                    <div>
                       <dt>Fine ID</dt>
                       <dd>{selectedAppeal.fine._id}</dd>
                     </div>
@@ -231,12 +303,14 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
                     </div>
                   </dl>
                 ) : (
-                  <p>The linked fine is no longer available.</p>
+                  <p className="appeal-photo-empty">The linked fine is no longer available.</p>
                 )}
               </article>
 
-              <article className="appeal-evidence-card">
-                <h3>Resident appeal</h3>
+              <article className="appeal-evidence-card appeal-evidence-card--resident">
+                <h3>
+                  <UserRound size={16} aria-hidden="true" /> Resident appeal
+                </h3>
 
                 <EvidencePhoto
                   key={`resident-${selectedAppeal._id}`}
@@ -267,8 +341,16 @@ export default function CitationDisputes({ appeals, setAppeals, search }: Citati
 
             {selectedAppeal.resolvedAt && <p>Decided at: {formatIsraeliDateTime(selectedAppeal.resolvedAt)}</p>}
 
-            {error && <p role="alert">{error}</p>}
-            {saving && <p role="status">Saving decision...</p>}
+            {error && (
+              <p className="appeal-decision-note appeal-decision-note--rejected" role="alert">
+                {error}
+              </p>
+            )}
+            {saving && (
+              <p className="appeal-decision-note" role="status">
+                Saving decision...
+              </p>
+            )}
 
             {selectedAppeal.status === "PENDING" && (
               <footer className="appeal-review-actions">

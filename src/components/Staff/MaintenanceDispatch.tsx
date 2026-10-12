@@ -1,4 +1,5 @@
 import type { StaffServiceRequest } from "../../data/staffData";
+import { CheckCircle2, Clock, Image as ImageIcon, MapPin } from "lucide-react";
 import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
@@ -106,40 +107,66 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
                       <span className="staff-ticket-id">{ticket.id}</span>
                       <h4>{ticket.type}</h4>
 
-                      <p className="staff-ticket-location">{ticket.location}</p>
+                      <p className="staff-ticket-location">
+                        <MapPin size={13} aria-hidden="true" />
+                        <span>{ticket.location}</span>
+                      </p>
 
-                      <p>{ticket.description}</p>
+                      <p className="staff-ticket-description">{ticket.description}</p>
 
-                      <p className="staff-ticket-meta">Reported {ticket.reported}</p>
-                      {(ticket.status === "Resolved" || ticket.status === "Rejected") && ticket.resolvedAt && (
+                      <footer className="staff-ticket-footer">
                         <p className="staff-ticket-meta">
-                          {ticket.status === "Rejected" ? "Rejected at" : "Completed at"}:{" "}
-                          {new Date(ticket.resolvedAt).toLocaleString("en-GB", {
-                            timeZone: "Asia/Jerusalem",
-                            dateStyle: "short",
-                            timeStyle: "short",
-                          })}
+                          <Clock size={12} aria-hidden="true" />
+                          <span>Reported {ticket.reported}</span>
                         </p>
-                      )}
-                      {ticket.attachment && (
-                        <a href={ticket.attachment} target="_blank" rel="noopener noreferrer">
-                          View photo
-                        </a>
-                      )}
+                        {(ticket.status === "Resolved" || ticket.status === "Rejected") && ticket.resolvedAt && (
+                          <p className="staff-ticket-meta">
+                            <CheckCircle2 size={12} aria-hidden="true" />
+                            <span>
+                              {ticket.status === "Rejected" ? "Rejected" : "Completed"}{" "}
+                              {new Date(ticket.resolvedAt).toLocaleString("en-GB", {
+                                timeZone: "Asia/Jerusalem",
+                                dateStyle: "short",
+                                timeStyle: "short",
+                              })}
+                            </span>
+                          </p>
+                        )}
+                      </footer>
+
                       {ticket.status === "Rejected" && (
-                        <p>
-                          <strong>Reason:</strong> {ticket.rejectionReason || "No reason provided."}
+                        <p className="staff-ticket-reason">
+                          <strong>Reason</strong>
+                          {ticket.rejectionReason || "No reason provided."}
                         </p>
                       )}
 
-                      {(ticket.status === "Assigned" || ticket.status === "In Progress") && (
-                        <button
-                          className="staff-assign-team"
-                          type="button"
-                          disabled={updatingId !== null}
-                          onClick={() => advanceStatus(ticket)}>
-                          {updatingId === ticket.id ? "Saving..." : ticket.status === "Assigned" ? "Start work" : "Mark completed"}
-                        </button>
+                      {(ticket.attachment || ticket.status === "Assigned" || ticket.status === "In Progress") && (
+                        <section className="staff-ticket-actions">
+                          {ticket.attachment && (
+                            <a
+                              className="staff-photo-button"
+                              href={ticket.attachment}
+                              target="_blank"
+                              rel="noopener noreferrer">
+                              <ImageIcon size={14} aria-hidden="true" />
+                              View photo
+                            </a>
+                          )}
+                          {(ticket.status === "Assigned" || ticket.status === "In Progress") && (
+                            <button
+                              className="staff-assign-team"
+                              type="button"
+                              disabled={updatingId !== null}
+                              onClick={() => advanceStatus(ticket)}>
+                              {updatingId === ticket.id
+                                ? "Saving..."
+                                : ticket.status === "Assigned"
+                                  ? "Start work"
+                                  : "Mark completed"}
+                            </button>
+                          )}
+                        </section>
                       )}
                     </article>
                   ))}

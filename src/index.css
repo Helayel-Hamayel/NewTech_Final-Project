@@ -80,3 +80,45 @@ svg {
     font-size: 16px;
   }
 }
+
+.session-loader {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.session-loader strong {
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.session-loader p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.session-loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: session-loader-spin 0.8s linear infinite;
+}
+
+@keyframes session-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html[data-theme="dark"] .session-loader {
+  background: #111a27;
+  color: #e5edf5;
+}

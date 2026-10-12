@@ -63,7 +63,13 @@ function UserProvider({ children }: { children: ReactNode }) {
   }
   const value = { user, saveUser, signOut };
   if (loading) {
-    return <p>Loading your session...</p>;
+    return (
+      <main className="session-loader" role="status" aria-live="polite">
+        <span className="session-loader-spinner" aria-hidden="true" />
+        <strong>CivicHub</strong>
+        <p>Loading your session...</p>
+      </main>
+    );
   }
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }

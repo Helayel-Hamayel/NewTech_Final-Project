@@ -25,19 +25,33 @@ export default function StaffTopBar({
   onSearchChange,
   onOpenDisputes,
 }: StaffTopBarProps) {
+  const searchEnabled = activeTab === "billing" || activeTab === "disputes";
+  const searchPlaceholder =
+    activeTab === "billing"
+      ? "Search name, email, or license plate..."
+      : activeTab === "disputes"
+        ? "Search name, email, plate, or appeal reason..."
+        : "Search available in Billing Ledger and Citation Disputes";
+  const searchLabel =
+    activeTab === "billing"
+      ? "Search billing ledger"
+      : activeTab === "disputes"
+        ? "Search citation disputes"
+        : "Search unavailable";
+
   return (
     <header className="staff-topbar">
       <h1>{tabTitles[activeTab]}</h1>
       <section className="staff-topbar-tools">
-        <label className={`staff-search ${activeTab !== "billing" ? "staff-search--disabled" : ""}`}>
+        <label className={`staff-search ${searchEnabled ? "" : "staff-search--disabled"}`}>
           <Search size={17} aria-hidden="true" />
           <input
             type="search"
-            value={activeTab === "billing" ? search : ""}
+            value={searchEnabled ? search : ""}
             onChange={(event) => onSearchChange(event.target.value)}
-            disabled={activeTab !== "billing"}
-            placeholder={activeTab === "billing" ? "Search name, email, or license plate..." : "Search available in Billing Ledger"}
-            aria-label="Search billing ledger"
+            disabled={!searchEnabled}
+            placeholder={searchPlaceholder}
+            aria-label={searchLabel}
           />
         </label>
         <button

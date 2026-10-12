@@ -13,6 +13,7 @@ export type StaffLayoutContext = {
   unreadTabs: Record<StaffTab, boolean>;
   serviceRequests: StaffServiceRequest[];
   setServiceRequests: Dispatch<SetStateAction<StaffServiceRequest[]>>;
+  reportsLoading: boolean;
   maintenanceTickets: StaffServiceRequest[];
   appeals: AppealFromBackend[];
   setAppeals: Dispatch<SetStateAction<AppealFromBackend[]>>;
@@ -238,6 +239,7 @@ export default function StaffLayout() {
               serviceRequests,
               reportsLoading,
               setServiceRequests,
+              reportsLoading,
               maintenanceTickets,
               appeals,
               setAppeals,

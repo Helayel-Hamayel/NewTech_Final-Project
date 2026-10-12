@@ -1,18 +1,46 @@
 import { residentProperty } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
-import { Building2, Droplets, Phone, ShieldCheck } from "lucide-react";
+import {
+  Bath,
+  BedDouble,
+  Building2,
+  CalendarCheck,
+  CalendarDays,
+  Droplets,
+  Layers,
+  MapPin,
+  Phone,
+  PiggyBank,
+  ShieldCheck,
+  Wallet,
+  Zap,
+} from "lucide-react";
+
+const stats = [
+  { label: "Bedrooms", value: residentProperty.bedrooms, icon: BedDouble },
+  { label: "Bathrooms", value: residentProperty.bathrooms, icon: Bath },
+  { label: "Floor", value: residentProperty.floor, icon: Layers },
+  { label: "Zone", value: residentProperty.zone, icon: MapPin },
+];
+
+const leaseDetails = [
+  { label: "Start date", value: residentProperty.leaseStart, icon: CalendarDays },
+  { label: "End date", value: residentProperty.leaseEnd, icon: CalendarCheck },
+  { label: "Monthly rent", value: currency.format(residentProperty.monthlyRent), icon: Wallet },
+  { label: "Deposit", value: currency.format(residentProperty.deposit), icon: PiggyBank },
+];
 
 export default function Properties() {
   return (
     <section className="resident-view" aria-labelledby="properties-heading">
       <header className="resident-page-intro">
-        <p className="section-label">Your home</p>
-        <h1 id="properties-heading">Property details</h1>
-        <p>
-          Everything you need to know about your home, lease, and service
-          accounts.
-        </p>
+        <section>
+          <p className="section-label">Your home</p>
+          <h1 id="properties-heading">Property details</h1>
+          <p>Everything you need to know about your home, lease, and service accounts.</p>
+        </section>
       </header>
+
       <article className="property-hero">
         <section className="property-hero-art">
           <Building2 size={42} aria-hidden="true" />
@@ -37,33 +65,17 @@ export default function Properties() {
             <span>{residentProperty.leaseType}</span>
           </section>
         </section>
-      </article>
-      <section className="resident-card property-section property-glance">
-        <section className="resident-card-header">
-          <section>
-            <p className="section-label">At a glance</p>
-            <h2>Property stats</h2>
-          </section>
-        </section>
-        <dl className="property-stats">
-          <div>
-            <dt>Bedrooms</dt>
-            <dd>{residentProperty.bedrooms}</dd>
-          </div>
-          <div>
-            <dt>Bathrooms</dt>
-            <dd>{residentProperty.bathrooms}</dd>
-          </div>
-          <div>
-            <dt>Floor</dt>
-            <dd>{residentProperty.floor}</dd>
-          </div>
-          <div>
-            <dt>Zone</dt>
-            <dd>{residentProperty.zone}</dd>
-          </div>
+        <dl className="property-stat-strip">
+          {stats.map(({ label, value, icon: Icon }) => (
+            <div key={label}>
+              <Icon size={18} aria-hidden="true" />
+              <dd>{value}</dd>
+              <dt>{label}</dt>
+            </div>
+          ))}
         </dl>
-      </section>
+      </article>
+
       <section className="property-grid">
         <section className="resident-card property-section">
           <section className="resident-card-header">
@@ -72,64 +84,63 @@ export default function Properties() {
               <h2>Lease details</h2>
             </section>
           </section>
-          <dl className="property-details">
-            <div>
-              <dt>Start date</dt>
-              <dd>{residentProperty.leaseStart}</dd>
-            </div>
-            <div>
-              <dt>End date</dt>
-              <dd>{residentProperty.leaseEnd}</dd>
-            </div>
-            <div>
-              <dt>Monthly rent</dt>
-              <dd>{currency.format(residentProperty.monthlyRent)}</dd>
-            </div>
-            <div>
-              <dt>Deposit</dt>
-              <dd>{currency.format(residentProperty.deposit)}</dd>
-            </div>
+          <dl className="property-lease-list">
+            {leaseDetails.map(({ label, value, icon: Icon }) => (
+              <div key={label}>
+                <span className="property-row-icon" aria-hidden="true">
+                  <Icon size={16} />
+                </span>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
           </dl>
         </section>
+
         <section className="resident-card property-section">
           <section className="resident-card-header">
             <section>
               <p className="section-label">Connected services</p>
               <h2>Utility accounts</h2>
             </section>
-            <Droplets size={20} aria-hidden="true" />
           </section>
-          <ul className="property-contact-list">
-            {residentProperty.utilityAccounts.map((utility) => (
-              <li
-                className={`property-contact-list-item property-contact-list-item--${utility.name.toLowerCase()}`}
-                key={utility.name}
-              >
-                <span>{utility.name}</span>
-                <strong>{utility.account}</strong>
-              </li>
-            ))}
+          <ul className="property-account-list">
+            {residentProperty.utilityAccounts.map((utility) => {
+              const isWater = utility.name.toLowerCase() === "water";
+              return (
+                <li className={`property-account property-account--${utility.name.toLowerCase()}`} key={utility.name}>
+                  <span className="property-account-icon" aria-hidden="true">
+                    {isWater ? <Droplets size={18} /> : <Zap size={18} />}
+                  </span>
+                  <section>
+                    <span>{utility.name}</span>
+                    <strong>{utility.account}</strong>
+                  </section>
+                </li>
+              );
+            })}
           </ul>
         </section>
       </section>
-      <section className="property-support-row">
-        <section className="resident-card property-section property-section--support">
-          <section className="resident-card-header">
-            <section>
-              <p className="section-label">Need help?</p>
-              <h2>Emergency contacts</h2>
-            </section>
-            <Phone size={20} aria-hidden="true" />
+
+      <section className="resident-card property-section property-section--support">
+        <section className="resident-card-header">
+          <section>
+            <p className="section-label">Need help?</p>
+            <h2>Emergency contacts</h2>
           </section>
-          <ul className="property-contact-list">
-            {residentProperty.emergencyContacts.map((contact) => (
-              <li key={contact.name}>
-                <span>{contact.name}</span>
-                <a href={`tel:${contact.phone}`}>{contact.phone}</a>
-              </li>
-            ))}
-          </ul>
         </section>
+        <ul className="property-emergency-list">
+          {residentProperty.emergencyContacts.map((contact) => (
+            <li key={contact.name}>
+              <span className="property-row-icon" aria-hidden="true">
+                <Phone size={16} />
+              </span>
+              <span>{contact.name}</span>
+              <a href={`tel:${contact.phone}`}>{contact.phone}</a>
+            </li>
+          ))}
+        </ul>
       </section>
     </section>
   );

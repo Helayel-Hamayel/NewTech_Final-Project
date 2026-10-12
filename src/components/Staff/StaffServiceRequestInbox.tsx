@@ -261,7 +261,10 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                         })}`
                       : ""}
                   </p>
-                  <button className="staff-review-request" type="button" onClick={() => openRequest(request.id)}>
+                  <button
+                    className={request.status === "Rejected" ? "staff-photo-button" : "staff-assign-team"}
+                    type="button"
+                    onClick={() => openRequest(request.id)}>
                     {request.status === "Rejected" ? "View details" : "Review"}
                   </button>
                 </footer>
@@ -314,7 +317,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 <dt>Attachment</dt>
                 <dd>
                   {selectedRequest.attachment ? (
-                    <a href={selectedRequest.attachment} target="_blank" rel="noopener noreferrer">
+                    <a className="staff-photo-button" href={selectedRequest.attachment} target="_blank" rel="noopener noreferrer">
                       View photo
                     </a>
                   ) : (
@@ -365,7 +368,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
 
                   <section className="staff-route-actions">
                     <button
-                      className="staff-route-request staff-route-request--guard"
+                      className="staff-route-request staff-assign-team"
                       type="button"
                       disabled={assigning || rejecting || !fieldGuardId || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Field Guard")}>
@@ -373,7 +376,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </button>
 
                     <button
-                      className="staff-route-request staff-route-request--maintenance"
+                      className="staff-route-request staff-photo-button"
                       type="button"
                       disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
                       onClick={() => assignRequest("Maintenance Team")}>
@@ -410,7 +413,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     </p>
                   ) : null}
                   <button
-                    className="staff-reject-request"
+                    className="staff-reject"
                     type="submit"
                     disabled={assigning || rejecting || selectedRequest.status !== "Pending" || !rejectionReason.trim()}>
                     {rejecting ? "Rejecting..." : "Reject request"}
