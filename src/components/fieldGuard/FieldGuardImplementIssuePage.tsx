@@ -1,5 +1,6 @@
-import { useRef, useState, type SubmitEvent } from "react";
-import { Camera, Check, Ticket } from "lucide-react";
+import { useState, type SubmitEvent } from "react";
+import { Check, Ticket } from "lucide-react";
+import AppealPhotoPicker from "../ResidentPage/AppealPhotoPicker";
 import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
 import { toast } from "sonner";
 
@@ -38,7 +39,6 @@ export default function FieldGuardImplementIssuePage() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const photoInputRef = useRef<HTMLInputElement>(null);
   const [ticketIssued, setTicketIssued] = useState(false);
   const selectedInfraction = infractions.find((infraction) => infraction.name === infractionName) ?? infractions[0];
   const isPlateValid = israeliPlatePattern.test(plate);
@@ -99,10 +99,6 @@ export default function FieldGuardImplementIssuePage() {
     setPhoto(null);
     setTicketIssued(false);
     setError("");
-
-    if (photoInputRef.current) {
-      photoInputRef.current.value = "";
-    }
   }
 
   return (
@@ -163,29 +159,7 @@ export default function FieldGuardImplementIssuePage() {
           <small>Indicative amount; the official notice determines the final fine.</small>
         </section>
 
-        <input
-          ref={photoInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          hidden
-          disabled={submitting || ticketIssued}
-          onChange={(event) => {
-            setPhoto(event.target.files?.[0] ?? null);
-          }}
-        />
-
-        <button
-          className={`field-citation-photo${photo ? " is-captured" : ""}`}
-          type="button"
-          onClick={() => photoInputRef.current?.click()}
-          disabled={submitting || ticketIssued}>
-          {photo ? <Check size={20} aria-hidden="true" /> : <Camera size={20} aria-hidden="true" />}
-
-          <span>
-            <strong>{photo ? "Photo selected" : "Photo Evidence"}</strong>
-            <small>{photo ? photo.name : "Choose a JPEG, PNG, or WebP image"}</small>
-          </span>
-        </button>
+        <AppealPhotoPicker file={photo} disabled={submitting || ticketIssued} onChange={setPhoto} title="Photo Evidence" />
 
         <section className="field-citation-actions">
           <button className="field-citation-reset" type="button" onClick={resetForm} disabled={submitting}>

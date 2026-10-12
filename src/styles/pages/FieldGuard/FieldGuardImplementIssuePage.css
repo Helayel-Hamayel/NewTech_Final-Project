@@ -148,6 +148,171 @@
   line-height: 1.4;
 }
 
+.field-citation-form .appeal-photo {
+  display: grid;
+  gap: 8px;
+}
+
+.field-citation-form .appeal-photo-heading {
+  display: grid;
+  gap: 2px;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.field-citation-form .appeal-photo-heading small {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.field-citation-form .appeal-photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.field-citation-form .appeal-photo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  color: #cbd5e1;
+  background: #0d1727;
+  border: 1px solid #52647c;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.field-citation-form .appeal-photo-btn:hover:not(:disabled) {
+  color: #e2e8f0;
+  background: #142238;
+  border-color: #60a5fa;
+}
+
+.field-citation-form .appeal-photo-btn:active:not(:disabled) {
+  background: #0b1626;
+}
+
+.field-citation-form .appeal-photo-btn:focus-visible,
+.field-citation-form .appeal-photo-remove:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.field-citation-form .appeal-photo-btn:disabled,
+.field-citation-form .appeal-photo-remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-citation-form .appeal-photo-preview {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: #09251d;
+  border: 1px solid #22c55e;
+  border-radius: 11px;
+}
+
+.field-citation-form .appeal-photo-preview img {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.field-citation-form .appeal-photo-preview section {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.field-citation-form .appeal-photo-preview strong {
+  overflow: hidden;
+  color: #bbf7d0;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-citation-form .appeal-photo-preview small {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+.field-citation-form .appeal-photo-remove {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid #52647c;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.field-citation-form .appeal-photo-remove:hover:not(:disabled) {
+  color: #f87171;
+  border-color: #f87171;
+}
+
+.field-citation-form .appeal-photo-error {
+  margin: 0;
+  color: #f87171;
+  font-size: 0.76rem;
+}
+
+.field-citation-form .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-heading,
+html[data-theme="light"] .field-citation-form .appeal-photo-btn,
+html[data-theme="light"] .field-citation-form .appeal-photo-remove {
+  color: #334155;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-btn {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-btn:hover:not(:disabled) {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-remove:hover:not(:disabled) {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-preview {
+  background: #f0fdf4;
+}
+
+html[data-theme="light"] .field-citation-form .appeal-photo-preview strong {
+  color: #166534;
+}
+
 .field-citation-photo {
   display: flex;
   min-height: 76px;

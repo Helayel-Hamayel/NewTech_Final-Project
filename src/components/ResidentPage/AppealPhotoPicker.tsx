@@ -8,9 +8,10 @@ type AppealPhotoPickerProps = {
   file: File | null;
   disabled?: boolean;
   onChange: (file: File | null) => void;
+  title?: string;
 };
 
-export default function AppealPhotoPicker({ file, disabled = false, onChange }: AppealPhotoPickerProps) {
+export default function AppealPhotoPicker({ file, disabled = false, onChange, title = "Supporting photo" }: AppealPhotoPickerProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const browseInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
@@ -39,9 +40,9 @@ export default function AppealPhotoPicker({ file, disabled = false, onChange }: 
   }
 
   return (
-    <section className="appeal-photo" aria-label="Supporting photo">
+    <section className="appeal-photo" aria-label={title}>
       <header className="appeal-photo-heading">
-        <span>Supporting photo</span>
+        <span>{title}</span>
         <small>Optional · JPEG, PNG or WebP · up to 5 MB</small>
       </header>
 

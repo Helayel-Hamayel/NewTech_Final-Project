@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "../components/common/Footer";
 import LoginForm from "../components/LoginPage/LoginForm";
@@ -55,7 +56,8 @@ export default function LoginPage() {
                 <p>Create a resident account to access city services.</p>
 
                 <Link className="auth-register-link" to="/register">
-                  Register
+                  Create an account
+                  <ArrowRight size={14} strokeWidth={2.4} aria-hidden="true" />
                 </Link>
               </section>
             </aside>

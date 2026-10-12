@@ -22,7 +22,7 @@ export default function BillingLedger({ accounts }: BillingLedgerProps) {
   const [search, setSearch] = useState("");
 
   const query = search.trim().toLowerCase();
-  const monthlyRent = 5800;
+  const monthlyRent = MONTHLY_RENT;
 
   const rows = accounts
     .flatMap((account) =>
