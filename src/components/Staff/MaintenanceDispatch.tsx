@@ -28,6 +28,7 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
 
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [updateError, setUpdateError] = useState("");
+  const [activeStatus, setActiveStatus] = useState<(typeof columns)[number]["status"]>("Assigned");
 
   async function advanceStatus(ticket: StaffServiceRequest) {
     if (updatingId) return;
@@ -89,13 +90,26 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
         </section>
       </header>
       {updateError && <p role="alert">{updateError}</p>}
+      <nav className="staff-kanban-tabs" aria-label="Maintenance status">
+        {columns.map((column) => (
+          <button
+            key={column.status}
+            type="button"
+            className={`staff-kanban-tab staff-kanban-tab--${column.color}${activeStatus === column.status ? " is-active" : ""}`}
+            aria-pressed={activeStatus === column.status}
+            onClick={() => setActiveStatus(column.status)}>
+            <span>{column.label}</span>
+            <strong>{matchingTickets.filter((ticket) => ticket.status === column.status).length}</strong>
+          </button>
+        ))}
+      </nav>
       <section className="staff-kanban-scroll" aria-label="Maintenance board">
         <section className="staff-kanban">
           {columns.map((column) => {
             const columnTickets = matchingTickets.filter((ticket) => ticket.status === column.status);
 
             return (
-              <section key={column.status} className={`staff-kanban-column staff-kanban-column--${column.color}`}>
+              <section key={column.status} className={`staff-kanban-column staff-kanban-column--${column.color}${activeStatus === column.status ? " is-mobile-active" : ""}`}>
                 <header>
                   <h3>{column.label}</h3>
                   <span>{columnTickets.length}</span>

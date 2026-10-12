@@ -13,7 +13,7 @@ import ResidentPortalNav from "../components/ResidentPage/ResidentPortalNav";
 import { downloadInvoicePdf } from "../helpers/pdf/invoicePdf";
 import { useUser } from "../contexts/useUser";
 import type { PortalTab, PaymentSelection } from "../components/ResidentPage/types";
-import { type Fine, type Invoice, type ResidentServiceRequest, resident, type UtilityType } from "../data/residentPortal";
+import { type Fine, type Invoice, type ResidentServiceRequest, type UtilityType } from "../data/residentPortal";
 import type { ReportFromBackend } from "../data/staffData";
 import type { FineFromBackend } from "../data/fineData";
 import type { UtilityMonth, UtilityAccountFromBackend } from "../data/utilityData";
@@ -392,7 +392,7 @@ export default function ResidentPage() {
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
           <MobileDrawer
             brandIcon={<Building2 />}
-            userName={resident.name}
+            userName={user?.name ?? ""}
             subtitle="Resident Portal"
             items={residentDrawerItems}
             activeId={activeTab}
