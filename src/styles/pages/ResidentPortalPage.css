@@ -868,6 +868,232 @@ html[data-theme="dark"] .resident-kpi-actions {
   grid-column: 1 / -1;
 }
 
+.location-field {
+  display: flex;
+  gap: 8px;
+}
+
+.location-field input {
+  flex: 1;
+  min-width: 0;
+}
+
+.location-pin-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border: 1px solid var(--resident-blue);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--resident-blue);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.location-pin-btn:hover {
+  background: var(--resident-blue);
+  color: #fff;
+}
+
+.service-request-form .location-pin-btn {
+  grid-column: auto;
+}
+
+.map-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.map-picker {
+  display: flex;
+  flex-direction: column;
+  width: min(640px, 100%);
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--resident-white, #fff);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
+}
+
+.map-picker-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 12px;
+}
+
+.map-picker-header h3 {
+  margin: 0;
+  color: var(--resident-ink);
+  font-size: 1.05rem;
+}
+
+.map-picker-header p {
+  margin: 4px 0 0;
+  color: var(--resident-slate-700);
+  font-size: 0.8rem;
+}
+
+.map-picker-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--resident-slate-300);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--resident-ink);
+  cursor: pointer;
+}
+
+.map-picker-map {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  height: min(420px, 55vh);
+  min-height: 240px;
+  background: #e5e7eb;
+}
+
+.map-picker-footer {
+  display: grid;
+  gap: 12px;
+  padding: 14px 18px 18px;
+}
+
+.map-picker-address {
+  margin: 0;
+  color: var(--resident-ink);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.map-picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.map-picker-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.service-request-form .appeal-photo {
+  grid-column: 1 / -1;
+}
+
+.service-request-form .appeal-photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.service-request-form .appeal-photo-remove {
+  grid-column: auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+
+.service-request-form .appeal-photo-btn {
+  grid-column: auto;
+  flex-direction: row;
+  min-height: 40px;
+  padding: 0 16px;
+  border-style: solid;
+}
+
+.ticket-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.request-details-body {
+  display: grid;
+  gap: 16px;
+  padding: 0 18px 18px;
+  overflow-y: auto;
+}
+
+.request-details-body h4 {
+  margin: 0 0 6px;
+  color: var(--resident-slate-700);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.request-details-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 0;
+}
+
+.request-details-list dt {
+  color: var(--resident-slate-700);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.request-details-list dd {
+  margin: 2px 0 0;
+  color: var(--resident-ink);
+  font-size: 0.88rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.request-details-text {
+  margin: 0;
+  color: var(--resident-ink);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.request-details-photo {
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.request-details-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  color: var(--resident-blue);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .request-details-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .service-request-form {
     grid-template-columns: 1fr;

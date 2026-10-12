@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, ImageOff, MapPin } from "lucide-react";
+import { Camera, Eye, ImageOff, MapPin } from "lucide-react";
 import type { SubmitEvent } from "react";
 import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/residentPortal";
 import { currency } from "../../helpers/formatting/currency";
@@ -8,6 +8,8 @@ import ResidentAppeals from "./ResidentAppeals";
 import { useUser } from "../../contexts/useUser";
 import AppealPhotoPicker from "./AppealPhotoPicker";
 import PaymentCheckout from "./PaymentCheckout";
+import MapPicker from "./MapPicker";
+import RequestDetails from "./RequestDetails";
 import { toast } from "sonner";
 
 const requestTypes = [
@@ -46,7 +48,8 @@ export default function MyTickets({
   const [appealPhoto, setAppealPhoto] = useState<{ fineId: string; file: File } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-
+  const [mapOpen, setMapOpen] = useState(false);
+  const [detailsRequest, setDetailsRequest] = useState<ResidentServiceRequest | null>(null);
   const [requestForm, setRequestForm] = useState({
     type: requestTypes[0],
     description: "",
@@ -189,40 +192,52 @@ export default function MyTickets({
             </label>
             <label>
               Location
-              <input
-                required
-                value={requestForm.location}
-                onChange={(event) => updateRequestForm("location", event.target.value)}
-                placeholder="Street, building, or room"
-              />
+              <span className="location-field">
+                <input
+                  required
+                  maxLength={120}
+                  value={requestForm.location}
+                  onChange={(event) => updateRequestForm("location", event.target.value)}
+                  placeholder="Street, building, or room"
+                />
+                <button type="button" className="location-pin-btn" onClick={() => setMapOpen(true)}>
+                  <MapPin size={15} aria-hidden="true" /> Pick on map
+                </button>
+              </span>
             </label>
             <label>
               Contact phone
               <input
                 required
                 type="tel"
+                inputMode="numeric"
+                maxLength={10}
+                minLength={9}
+                pattern="0[0-9]{8,9}"
+                title="Enter 9 or 10 digits starting with 0, e.g. 0505550000"
                 value={requestForm.phone}
-                onChange={(event) => updateRequestForm("phone", event.target.value)}
-                placeholder="050-555-0000"
+                onChange={(event) => updateRequestForm("phone", event.target.value.replace(/\D/g, "").slice(0, 10))}
+                placeholder="0505550000"
               />
             </label>
-            <label>
-              Photo
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(event) => {
-                  setPhoto(event.target.files?.[0] ?? null);
-                }}
-              />
-            </label>
+            <AppealPhotoPicker file={photo} disabled={submitting} onChange={setPhoto} title="Photo" />
             <button className="resident-primary-btn" type="submit" disabled={submitting}>
               {submitting ? "Submitting..." : "Submit report"}
             </button>
 
             {error && <p role="alert">{error}</p>}
           </form>
+          {mapOpen && (
+            <MapPicker
+              onClose={() => setMapOpen(false)}
+              onConfirm={(address) => {
+                updateRequestForm("location", address.slice(0, 120));
+                setMapOpen(false);
+              }}
+            />
+          )}
           <h3 className="requests-subheading">Your requests</h3>
+          {detailsRequest && <RequestDetails request={detailsRequest} onClose={() => setDetailsRequest(null)} />}
           {serviceRequests.length === 0 ? (
             <p className="resident-empty-state">No requests yet. Submit a request above to get started.</p>
           ) : (
@@ -274,6 +289,12 @@ export default function MyTickets({
                           ))}
                         </section>
                       ) : null}
+                      <button
+                        className="resident-secondary-btn ticket-details-btn"
+                        type="button"
+                        onClick={() => setDetailsRequest(request)}>
+                        <Eye size={15} aria-hidden="true" /> View details
+                      </button>
                     </article>
                   </li>
                 );
