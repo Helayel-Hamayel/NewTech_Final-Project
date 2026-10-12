@@ -1,4 +1,5 @@
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
+import LoadingState from "../common/LoadingState";
 import { useEffect, useState } from "react";
 import type { FineFromBackend } from "../../data/fineData";
 import {
@@ -71,22 +72,6 @@ export default function FieldGuardHistoryPage() {
     return () => controller.abort();
   }, []);
 
-  if (loading) {
-    return (
-      <section className="field-guard-screen field-guard-history">
-        <p role="status">Loading fines...</p>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="field-guard-screen field-guard-history">
-        <p role="alert">{error}</p>
-      </section>
-    );
-  }
-
   return (
     <section className="field-guard-screen field-guard-history" aria-labelledby="history-title">
       <header className="field-guard-page-heading">
@@ -94,6 +79,13 @@ export default function FieldGuardHistoryPage() {
         <h1 id="history-title">Issue History</h1>
         <p>Review issued citations, their status, and indicative fines.</p>
       </header>
+
+      {loading ? (
+        <LoadingState title="Loading fines" description="Fetching your issued citations." />
+      ) : error ? (
+        <p role="alert">{error}</p>
+      ) : (
+        <>
       <dl className="field-guard-stat-grid field-guard-history-stats">
         <div className="field-guard-stat-card">
           <dt>Total issues</dt>
@@ -132,6 +124,8 @@ export default function FieldGuardHistoryPage() {
           <HistoryDetails issue={selectedIssue} />
         </section>
       </section>
+        </>
+      )}
     </section>
   );
 }

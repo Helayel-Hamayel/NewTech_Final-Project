@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
-import type { StaffUtilityAccount, UtilityMonth } from "../../data/utilityData";
+import { MONTHLY_RENT, type StaffUtilityAccount, type UtilityMonth } from "../../data/utilityData";
 import { currency } from "../../helpers/formatting/currency";
 import StaffFineLedger from "./StaffFineLedger";
 

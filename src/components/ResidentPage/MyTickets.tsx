@@ -1,4 +1,5 @@
 import { useState } from "react";
+import LoadingState from "../common/LoadingState";
 import { Camera, Eye, ImageOff, MapPin } from "lucide-react";
 import type { SubmitEvent } from "react";
 import type { MaintenanceTicket, ResidentServiceRequest } from "../../data/residentPortal";
@@ -313,7 +314,7 @@ export default function MyTickets({
             <span className="billing-count">{fines.length} records</span>
           </section>
           {finesLoading ? (
-            <p role="status">Loading your fines...</p>
+            <LoadingState variant="inline" title="Loading fines" description="Fetching your fines." />
           ) : finesError ? (
             <p role="alert">{finesError}</p>
           ) : fines.length === 0 ? (

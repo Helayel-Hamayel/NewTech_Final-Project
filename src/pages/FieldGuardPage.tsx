@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../data/staffData";
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
+import LoadingState from "../components/common/LoadingState";
 import { fieldGuardData } from "../data/fieldGuardData";
 import type { FineFromBackend } from "../data/fineData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";
@@ -105,7 +106,7 @@ export default function FieldGuardPage() {
 
       <dl className="field-guard-stat-grid">
         <div className="field-guard-stat-card">
-          <dt>FINES ISSUED</dt>
+          <dt>ISSUED FINES</dt>
           <dd>{finesLoading || finesError ? "—" : fines.length}</dd>
         </div>
 
@@ -132,14 +133,14 @@ export default function FieldGuardPage() {
       </dl>
       <section className="field-guard-overview-panels" aria-label="Recent activity">
         {finesLoading ? (
-          <p role="status">Loading fines...</p>
+          <LoadingState title="Loading fines" description="Fetching your recent citations." />
         ) : finesError ? (
           <p role="alert">{finesError}</p>
         ) : (
           <RecentPanel title="Recent fines" prefix="Fine" entries={fineEntries} />
         )}{" "}
         {reportsLoading ? (
-          <p role="status">Loading reports...</p>
+          <LoadingState title="Loading reports" description="Fetching your assigned reports." />
         ) : reportsError ? (
           <p role="alert">{reportsError}</p>
         ) : (

@@ -226,7 +226,6 @@ export default function StaffLayout() {
         pendingServiceRequests={pendingServiceRequests}
       />
       <main className="staff-content">
-        {reportsLoading && <p role="status">Loading reports...</p>}
 
         {reportsError && <p role="alert">{reportsError}</p>}
         <Outlet

@@ -3,6 +3,7 @@ import type { ReportFromBackend } from "../../data/staffData";
 import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
 import { Tag, CalendarDays, User, MapPin, FileText, Phone } from "lucide-react";
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
+import LoadingState from "../common/LoadingState";
 import { toast } from "sonner";
 
 type ReportAction = "IN PROGRESS" | "RESOLVED" | "REJECTED";
@@ -168,7 +169,7 @@ export default function FieldGuardReportsPage() {
       </header>
 
       {loading ? (
-        <p role="status">Loading reports...</p>
+        <LoadingState title="Loading reports" description="Fetching your assigned reports." />
       ) : loadError ? (
         <p role="alert">{loadError}</p>
       ) : (

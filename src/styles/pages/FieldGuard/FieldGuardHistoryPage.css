@@ -17,3 +17,7 @@
 .field-guard-history-details-panel {
   min-height: 180px;
 }
+
+.field-guard-history-content h2 {
+  margin: 0;
+}

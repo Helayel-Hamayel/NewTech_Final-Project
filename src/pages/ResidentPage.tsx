@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import SharedLayout from "../components/common/SharedLayout";
 import MobileDrawer from "../components/common/MobileDrawer";
+import LoadingState from "../components/common/LoadingState";
 import ThemeToggle from "../components/common/ThemeToggle";
 import Billing from "../components/ResidentPage/Billing";
 import Dashboard from "../components/ResidentPage/Dashboard";
@@ -456,7 +457,7 @@ export default function ResidentPage() {
               ) : activeTab === "Billing" ? (
                 <>
                   {utilitiesLoading || finesLoading ? (
-                    <p role="status">Loading your billing information...</p>
+                    <LoadingState variant="inline" title="Loading billing" description="Fetching your billing information." />
                   ) : utilitiesError || finesError ? (
                     <p role="alert">{utilitiesError || finesError}</p>
                   ) : (
@@ -472,7 +473,7 @@ export default function ResidentPage() {
               ) : activeTab === "My Services" ? (
                 <>
                   {reportsLoading ? (
-                    <p role="status">Loading your reports...</p>
+                    <LoadingState variant="inline" title="Loading reports" description="Fetching your reports." />
                   ) : reportsError ? (
                     <p role="alert">{reportsError}</p>
                   ) : (
