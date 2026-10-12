@@ -1,6 +1,7 @@
 import { useRef, useState, type SubmitEvent } from "react";
 import { Camera, Check, Ticket } from "lucide-react";
 import "../../styles/pages/FieldGuard/FieldGuardImplementIssuePage.css";
+import { toast } from "sonner";
 
 const infractions = [
   { name: "Accessible parking without a permit", fine: 1000 },
@@ -77,8 +78,14 @@ export default function FieldGuardImplementIssuePage() {
       }
 
       setTicketIssued(true);
+      toast.success("Fine issued", {
+        description: "The fine has been saved to the resident’s account.",
+      });
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Could not create the fine.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setError(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }

@@ -21,6 +21,7 @@ export type StaffLayoutContext = {
   utilityAccounts: StaffUtilityAccount[];
   utilitiesLoading: boolean;
   utilitiesError: string;
+  reportsLoading: boolean;
 };
 
 export default function StaffLayout() {
@@ -235,6 +236,7 @@ export default function StaffLayout() {
               setActiveTab: handleTabChange,
               unreadTabs,
               serviceRequests,
+              reportsLoading,
               setServiceRequests,
               maintenanceTickets,
               appeals,

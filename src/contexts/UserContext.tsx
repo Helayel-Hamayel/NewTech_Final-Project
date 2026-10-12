@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { UserContext, type User } from "./userContextValue";
+import { toast } from "sonner";
 
 function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -58,6 +59,7 @@ function UserProvider({ children }: { children: ReactNode }) {
     }
 
     setUser(null);
+    toast.success("You’ve been signed out. See you next time!");
   }
   const value = { user, saveUser, signOut };
   if (loading) {

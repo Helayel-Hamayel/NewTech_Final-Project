@@ -46,6 +46,7 @@ export type MyTicketsProps = {
   appealError: string;
   onCloseAppeal: () => void;
   onAddServiceRequest: (request: ResidentServiceRequest) => void;
+  onPay: (selection: PaymentSelection) => Promise<void>;
 };
 
 export type PaymentSelection = {

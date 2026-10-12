@@ -15,6 +15,7 @@ export default function StaffPage() {
     setActiveTab,
     unreadTabs,
     serviceRequests,
+    reportsLoading,
     setServiceRequests,
     maintenanceTickets,
     appeals,

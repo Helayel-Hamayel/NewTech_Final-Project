@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../components/common/Footer";
 import LoginForm from "../components/LoginPage/LoginForm";
 import LoginHeader from "../components/LoginPage/LoginHeader";
@@ -9,17 +10,11 @@ import "../styles/pages/LoginPage.css";
 
 export default function LoginPage() {
   const [activeBackground, setActiveBackground] = useState(0);
-  const backgrounds = [
-    loginBackgroundOne,
-    loginBackgroundTwo,
-    loginBackgroundThree,
-  ];
+  const backgrounds = [loginBackgroundOne, loginBackgroundTwo, loginBackgroundThree];
 
   useEffect(() => {
     const rotation = window.setInterval(() => {
-      setActiveBackground(
-        (currentBackground) => (currentBackground + 1) % backgrounds.length,
-      );
+      setActiveBackground((currentBackground) => (currentBackground + 1) % backgrounds.length);
     }, 8000);
 
     return () => window.clearInterval(rotation);
@@ -46,27 +41,22 @@ export default function LoginPage() {
             <header className="login-intro">
               <p className="login-eyebrow">Municipal portal / secure access</p>
               <h1 id="login-heading">Sign in to your account</h1>
-              <p className="login-description">
-                Access city services and operations securely.
-              </p>
+              <p className="login-description">Access city services and operations securely.</p>
             </header>
 
             <LoginForm />
-            <aside
-              className="registration-notice"
-              aria-labelledby="registration-heading"
-            >
+            <aside className="registration-notice" aria-labelledby="registration-heading">
               <section className="registration-notice-mark" aria-hidden="true">
                 i
               </section>
+
               <section>
                 <h2 id="registration-heading">Need an account?</h2>
-                <p>
-                  New residents can register at a Tel Aviv-Yafo Municipality
-                  service center. Bring valid identification and proof of
-                  address. Staff will verify your details and issue temporary
-                  credentials for your first sign-in.
-                </p>
+                <p>Create a resident account to access city services.</p>
+
+                <Link className="auth-register-link" to="/register">
+                  Register
+                </Link>
               </section>
             </aside>
           </section>

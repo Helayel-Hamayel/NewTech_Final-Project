@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { LogOut, Menu, X, type LucideIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { useUser } from "../../contexts/useUser";

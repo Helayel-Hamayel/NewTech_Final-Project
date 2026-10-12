@@ -88,7 +88,10 @@ export function HistoryList({ issues, selectedId, onSelect }: HistoryListProps) 
           </section>
           <section className="field-guard-history-summary">
             <span className="field-guard-history-cost">{formatCost(issue.amount)}</span>
-            <span className={`field-guard-status field-guard-status--${issue.status === "PAID" ? "accepted" : "new"}`}>
+            <span
+              className={`field-guard-status field-guard-status--${
+                issue.status === "PAID" ? "accepted" : issue.status === "CANCELLED" ? "rejected" : "new"
+              }`}>
               {" "}
               <FieldGuardStatusIcon status={issue.status} />
               {issue.status}
@@ -120,7 +123,10 @@ export function HistoryDetails({ issue }: SelectedIssue) {
             {issue.displayId}
           </h2>
         </section>
-        <span className={`field-guard-status field-guard-status--${issue.status === "PAID" ? "accepted" : "new"}`}>
+        <span
+          className={`field-guard-status field-guard-status--${
+            issue.status === "PAID" ? "accepted" : issue.status === "CANCELLED" ? "rejected" : "new"
+          }`}>
           <FieldGuardStatusIcon status={issue.status} />
           {issue.status}
         </span>

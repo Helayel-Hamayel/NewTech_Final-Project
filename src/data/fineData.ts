@@ -6,7 +6,8 @@ export type FineFromBackend = {
   violationType: string;
   amount: number;
   photoUrl: string;
-  status: "UNPAID" | "PAID";
+  status: "UNPAID" | "PAID" | "CANCELLED";
+  appealStatus: "PENDING" | "ACCEPTED" | "REJECTED" | null;
   resolvedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -22,6 +23,6 @@ export type StaffFineFromBackend = {
   licensePlate: string;
   violationType: string;
   amount: number;
-  status: "UNPAID" | "PAID";
+  status: "UNPAID" | "PAID" | "CANCELLED";
   createdAt: string;
 };

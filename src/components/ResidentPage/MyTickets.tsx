@@ -6,6 +6,8 @@ import type { MyTicketsProps } from "./types";
 import ResidentAppeals from "./ResidentAppeals";
 import { useUser } from "../../contexts/useUser";
 import AppealPhotoPicker from "./AppealPhotoPicker";
+import PaymentCheckout from "./PaymentCheckout";
+import { toast } from "sonner";
 
 const requestTypes = [
   "Parking",
@@ -34,6 +36,7 @@ export default function MyTickets({
   onSubmitAppeal,
   onCloseAppeal,
   onAddServiceRequest,
+  onPay,
 }: MyTicketsProps) {
   const [activeSection, setActiveSection] = useState<"requests" | "fines">("requests");
   const [selectedCitationFine, setSelectedCitationFine] = useState<MyTicketsProps["selectedAppealFine"]>(null);
@@ -42,7 +45,6 @@ export default function MyTickets({
   const [appealPhoto, setAppealPhoto] = useState<{ fineId: string; file: File } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const [requestForm, setRequestForm] = useState({
     type: requestTypes[0],
@@ -50,6 +52,11 @@ export default function MyTickets({
     location: "",
     phone: "",
   });
+
+  const [fineToPay, setFineToPay] = useState<{
+    id: string;
+    amount: number;
+  } | null>(null);
 
   const ticketStages: MaintenanceTicket["stage"][] = ["Reported", "Dispatched", "In Progress", "Resolved"];
 
@@ -68,7 +75,6 @@ export default function MyTickets({
 
     setSubmitting(true);
     setError("");
-    setSuccess("");
 
     try {
       if (photo && photo.size > 5 * 1024 * 1024) {
@@ -127,9 +133,14 @@ export default function MyTickets({
 
       setPhoto(null);
       form.reset();
-      setSuccess("Your report was submitted successfully.");
+      toast.success("Report submitted", {
+        description: "Your report has been sent to staff for review.",
+      });
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Something went wrong while submitting the report.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setError(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -209,7 +220,6 @@ export default function MyTickets({
             </button>
 
             {error && <p role="alert">{error}</p>}
-            {success && <p role="status">{success}</p>}
           </form>
           <h3 className="requests-subheading">Your requests</h3>
           {serviceRequests.length === 0 ? (
@@ -321,9 +331,23 @@ export default function MyTickets({
                         <button className="resident-secondary-btn" type="button" onClick={() => setSelectedCitationFine(fine)}>
                           View details
                         </button>
-                        <button className="resident-primary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
-                          File appeal
+                        <button
+                          className="resident-primary-btn"
+                          type="button"
+                          onClick={() =>
+                            setFineToPay({
+                              id: fine.id,
+                              amount: fine.amount,
+                            })
+                          }>
+                          Pay
                         </button>
+
+                        {!fine.appealStatus && (
+                          <button className="resident-secondary-btn" type="button" onClick={() => onOpenAppeal(fine)}>
+                            File appeal
+                          </button>
+                        )}
                       </section>
                     ) : (
                       <section className="citation-actions">
@@ -343,8 +367,8 @@ export default function MyTickets({
         </section>
       ) : null}
 
-      {activeSection === "fines" && <ResidentAppeals appealSubmitting={appealSubmitting} />}
-      
+      {activeSection === "fines" && <ResidentAppeals appealSubmitting={appealSubmitting} onPay={onPay} fines={fines} />}
+
       {selectedAppealFine ? (
         <section className="resident-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby="appeal-heading">
           <section className="resident-dialog">
@@ -411,7 +435,11 @@ export default function MyTickets({
                   onChange={(file) => setAppealPhoto(file ? { fineId: selectedAppealFine.id, file } : null)}
                 />
 
-                {appealError && <p className="appeal-error" role="alert">{appealError}</p>}
+                {appealError && (
+                  <p className="appeal-error" role="alert">
+                    {appealError}
+                  </p>
+                )}
 
                 <button className="resident-primary-btn appeal-submit" type="submit" disabled={appealSubmitting || !appealStatement.trim()}>
                   {appealSubmitting ? "Submitting..." : "Submit appeal"}
@@ -460,7 +488,7 @@ export default function MyTickets({
                 </dd>{" "}
               </div>
             </dl>
-            {selectedCitationFine.status === "Unpaid" ? (
+            {selectedCitationFine.status === "Unpaid" && !selectedCitationFine.appealStatus ? (
               <button
                 className="resident-primary-btn"
                 type="button"
@@ -474,6 +502,19 @@ export default function MyTickets({
           </section>
         </section>
       ) : null}
+      {fineToPay && (
+        <PaymentCheckout
+          amount={fineToPay.amount}
+          defaultPayments={1}
+          onConfirm={() =>
+            onPay({
+              months: [],
+              fineIds: [fineToPay.id],
+            })
+          }
+          onClose={() => setFineToPay(null)}
+        />
+      )}
     </section>
   );
 }

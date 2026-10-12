@@ -10,7 +10,7 @@ export type AppealFromBackend = {
     violationType: string;
     amount: number;
     photoUrl: string;
-    status: "UNPAID" | "PAID";
+    status: "UNPAID" | "PAID" | "CANCELLED";
     createdAt: string;
     resolvedAt: string | null;
   } | null;

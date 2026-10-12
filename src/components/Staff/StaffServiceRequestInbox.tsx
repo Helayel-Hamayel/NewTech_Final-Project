@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { SubmitEvent, Dispatch, SetStateAction } from "react";
 import { X } from "lucide-react";
 import type { StaffServiceRequest, StaffServiceRequestDestination } from "../../data/staffData";
+import { toast } from "sonner";
 
 type StaffServiceRequestInboxProps = {
   requests: StaffServiceRequest[];
@@ -116,9 +117,18 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
         ),
       );
 
+      toast.success("Report assigned", {
+        description:
+          destination === "Field Guard"
+            ? "The report has been assigned to the selected field guard."
+            : "The report has been assigned to the maintenance team.",
+      });
       setSelectedRequestId(null);
     } catch (error) {
-      setAssignmentError(error instanceof Error ? error.message : "Assignment failed.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setAssignmentError(message);
+      toast.error(message);
     } finally {
       setAssigning(false);
     }
@@ -174,9 +184,15 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
         ),
       );
 
+      toast.success("Report rejected", {
+        description: "The rejection reason has been saved.",
+      });
       setSelectedRequestId(null);
     } catch (error) {
-      setRejectionError(error instanceof Error ? error.message : "Rejection failed.");
+      const message = error instanceof Error ? error.message : "Could not create the fine.";
+
+      setRejectionError(message);
+      toast.error(message);
     } finally {
       setRejecting(false);
     }

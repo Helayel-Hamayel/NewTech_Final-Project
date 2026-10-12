@@ -3,10 +3,15 @@ import type { AppealFromBackend } from "../../data/appealData";
 import { ImageOff } from "lucide-react";
 import { currency } from "../../helpers/formatting/currency";
 import { formatIsraeliDateTime } from "../../helpers/formatting/israeliDate";
+import PaymentCheckout from "./PaymentCheckout";
+import type { Fine } from "../../data/residentPortal";
+import type { PaymentSelection } from "./types";
 import "../../styles/pages/ResidentAppeals.css";
 
 type ResidentAppealsProps = {
   appealSubmitting: boolean;
+  onPay: (selection: PaymentSelection) => Promise<void>;
+  fines: Fine[];
 };
 
 const statuses = ["PENDING", "ACCEPTED", "REJECTED"] as const;
@@ -32,12 +37,16 @@ function EvidencePhoto({ src, alt }: { src?: string; alt: string }) {
   return <img className="resident-appeal-photo" src={src} alt={alt} onError={() => setFailed(true)} />;
 }
 
-export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsProps) {
+export default function ResidentAppeals({ appealSubmitting, onPay, fines }: ResidentAppealsProps) {
   const [appeals, setAppeals] = useState<AppealFromBackend[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [fineToPay, setFineToPay] = useState<{
+    id: string;
+    amount: number;
+  } | null>(null);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -95,6 +104,10 @@ export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsPro
     setSelectedId(null);
   }
 
+  function isFinePaid(fineId: string) {
+    return fines.some((fine) => fine.id === fineId && fine.status === "Paid");
+  }
+
   return (
     <section className="resident-card tickets-section resident-appeals" aria-labelledby="resident-appeals-heading">
       <header className="resident-card-header">
@@ -149,6 +162,25 @@ export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsPro
                           <button className="resident-secondary-btn" type="button" onClick={() => setSelectedId(appeal._id)}>
                             View appeal
                           </button>
+                          {appeal.status === "ACCEPTED" && <p className="resident-muted">Fine waived. No payment required.</p>}
+
+                          {appeal.fine && (appeal.fine.status === "PAID" || isFinePaid(appeal.fine._id)) && (
+                            <p className="resident-muted">Paid</p>
+                          )}
+
+                          {appeal.status === "REJECTED" && appeal.fine?.status === "UNPAID" && !isFinePaid(appeal.fine._id) && (
+                            <button
+                              className="resident-primary-btn"
+                              type="button"
+                              onClick={() =>
+                                setFineToPay({
+                                  id: appeal.fine!._id,
+                                  amount: appeal.fine!.amount,
+                                })
+                              }>
+                              Pay fine
+                            </button>
+                          )}
                         </article>
                       </li>
                     ))}
@@ -208,7 +240,7 @@ export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsPro
                       <strong>Amount:</strong> {currency.format(selectedAppeal.fine.amount)}
                     </p>
                     <p>
-                      <strong>Payment status:</strong> {selectedAppeal.fine.status}
+                      <strong>Payment status:</strong> {isFinePaid(selectedAppeal.fine._id) ? "PAID" : selectedAppeal.fine.status}
                     </p>
                     <p>
                       <strong>Issued:</strong> {formatIsraeliDateTime(selectedAppeal.fine.createdAt)}
@@ -245,6 +277,35 @@ export default function ResidentAppeals({ appealSubmitting }: ResidentAppealsPro
           </>
         )}
       </dialog>
+      {fineToPay && (
+        <PaymentCheckout
+          amount={fineToPay.amount}
+          defaultPayments={1}
+          onConfirm={async () => {
+            const fineId = fineToPay.id;
+
+            await onPay({
+              months: [],
+              fineIds: [fineId],
+            });
+
+            setAppeals((current) =>
+              current.map((appeal) =>
+                appeal.fine?._id === fineId
+                  ? {
+                      ...appeal,
+                      fine: {
+                        ...appeal.fine,
+                        status: "PAID",
+                      },
+                    }
+                  : appeal,
+              ),
+            );
+          }}
+          onClose={() => setFineToPay(null)}
+        />
+      )}
     </section>
   );
 }
