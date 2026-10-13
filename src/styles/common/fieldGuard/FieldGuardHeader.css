@@ -7,6 +7,7 @@
 }
 
 .field-guard-header-main,
+.field-guard-brand,
 .field-guard-officer,
 .field-guard-header-actions,
 .field-guard-nav,
@@ -21,6 +22,48 @@
   gap: 16px;
 }
 
+.field-guard-brand {
+  flex: 0 0 auto;
+  gap: 9px;
+  color: #f8fafc;
+}
+
+.field-guard-brand-block {
+  display: grid;
+  justify-items: start;
+  gap: 11px;
+}
+
+.field-guard-brand-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.field-guard-brand-copy strong {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.field-guard-brand-copy > span {
+  color: #bfdbfe;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.field-guard-brand .field-guard-mobile-brand-mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 10px;
+  background: #1b5cff;
+  color: #fff;
+}
+
 .field-guard-header.is-menu-open .field-guard-header-main {
   position: fixed;
   z-index: 61;
@@ -32,7 +75,7 @@
 
 .field-guard-officer {
   min-width: 0;
-  gap: 11px;
+  gap: 0;
 }
 
 .field-guard-officer-icon {
@@ -403,11 +446,40 @@ html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
     display: none;
   }
 
+  .field-guard-brand {
+    display: none;
+  }
+
   .field-guard-mobile-brand {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
     min-height: 42px;
+  }
+
+  .field-guard-mobile-brand-content {
+    display: grid;
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .field-guard-mobile-brand-copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  .field-guard-mobile-brand-content .field-guard-user-avatar {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+
+  .field-guard-mobile-brand-content .field-guard-user-info > strong {
+    font-size: 0.76rem;
+  }
+
+  .field-guard-mobile-brand-content .field-guard-user-info > span {
+    font-size: 0.66rem;
   }
 
   .field-guard-mobile-brand-mark {
@@ -427,17 +499,17 @@ html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
   }
 
   .field-guard-mobile-brand p:first-child {
-    color: #bfdbfe;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    color: #f8fafc;
+    font-size: 1.05rem;
+    font-weight: 700;
   }
 
   .field-guard-mobile-brand p:last-child {
     margin-top: 4px;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #f8fafc;
+    color: #bfdbfe;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 }
 
@@ -522,6 +594,34 @@ html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
   align-items: flex-start;
   gap: 3px;
   min-width: 0;
+}
+
+.field-guard-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.field-guard-user-avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 1px solid #3b82f6;
+  border-radius: 50%;
+  background: #1e3a8a;
+  color: #dbeafe;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.field-guard-user-info > strong {
+  color: #f8fafc;
+  font-size: 0.82rem;
+  line-height: 1.2;
 }
 
 .field-guard-user-info > span {

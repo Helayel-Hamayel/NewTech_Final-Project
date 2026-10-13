@@ -11,6 +11,32 @@
   color: inherit;
 }
 
+html[data-theme="dark"] .novu-bell {
+  border-color: #475569;
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.novu-bell svg {
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.novu-bell:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+.novu-bell:hover {
+  border-color: #60a5fa;
+  background: #dbeafe;
+}
+
+html[data-theme="dark"] .novu-bell:hover,
+.novu-bell.is-light-bell:hover {
+  background: #334155;
+}
+
 .novu-bell-count {
   position: absolute;
   top: -5px;

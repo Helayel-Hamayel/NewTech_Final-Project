@@ -12,6 +12,7 @@ import PaymentCheckout from "./PaymentCheckout";
 import MapPicker from "./MapPicker";
 import RequestDetails from "./RequestDetails";
 import { toast } from "sonner";
+import ImagePreview from "../common/ImagePreview";
 
 const requestTypes = [
   "Parking",
@@ -326,10 +327,14 @@ export default function MyTickets({
                   <article className="citation-card">
                     <section className="citation-card-header">
                       {fine.photoUrl ? (
-                        <a className="citation-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer">
+                        <ImagePreview
+                          className="citation-photo"
+                          src={fine.photoUrl}
+                          alt={`Photo evidence for ${fine.violation}`}
+                          label="View fine photo">
                           <Camera size={14} aria-hidden="true" />
                           View photo
-                        </a>
+                        </ImagePreview>
                       ) : (
                         <span className="citation-photo citation-photo--empty">
                           <ImageOff size={14} aria-hidden="true" />
@@ -509,9 +514,12 @@ export default function MyTickets({
                 <dt>Evidence</dt>
                 <dd>
                   {selectedCitationFine.photoUrl ? (
-                    <a href={selectedCitationFine.photoUrl} target="_blank" rel="noopener noreferrer">
+                    <ImagePreview
+                      src={selectedCitationFine.photoUrl}
+                      alt={`Photo evidence for ${selectedCitationFine.violation}`}
+                      label="View fine photo">
                       View photo
-                    </a>
+                    </ImagePreview>
                   ) : (
                     "No photo"
                   )}

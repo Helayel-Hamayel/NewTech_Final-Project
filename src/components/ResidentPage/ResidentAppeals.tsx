@@ -8,6 +8,7 @@ import PaymentCheckout from "./PaymentCheckout";
 import type { Fine } from "../../data/residentPortal";
 import type { PaymentSelection } from "./types";
 import "../../styles/pages/ResidentAppeals.css";
+import ImagePreview from "../common/ImagePreview";
 
 type ResidentAppealsProps = {
   appealSubmitting: boolean;
@@ -35,7 +36,11 @@ function EvidencePhoto({ src, alt }: { src?: string; alt: string }) {
     );
   }
 
-  return <img className="resident-appeal-photo" src={src} alt={alt} onError={() => setFailed(true)} />;
+  return (
+    <ImagePreview src={src} alt={alt} label="View appeal evidence photo">
+      <img className="resident-appeal-photo" src={src} alt={alt} onError={() => setFailed(true)} />
+    </ImagePreview>
+  );
 }
 
 export default function ResidentAppeals({ appealSubmitting, onPay, fines }: ResidentAppealsProps) {

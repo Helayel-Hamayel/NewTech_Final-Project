@@ -8,6 +8,7 @@ import PaymentCheckout from "./PaymentCheckout";
 import type { DashboardProps } from "./types";
 import { MONTHLY_RENT } from "../../data/utilityData";
 import { useUser } from "../../contexts/useUser";
+import ImagePreview from "../common/ImagePreview";
 
 function formatMonth(month: string) {
   return new Date(`${month}-01T00:00:00Z`).toLocaleDateString("en-GB", {
@@ -303,9 +304,13 @@ export default function Dashboard({
                 <article className="resident-list-item">
                   <section className="resident-list-meta">
                     {fine.photoUrl ? (
-                      <a className="resident-list-photo" href={fine.photoUrl} target="_blank" rel="noopener noreferrer" title="View photo">
+                      <ImagePreview
+                        className="resident-list-photo"
+                        src={fine.photoUrl}
+                        alt={`Photo evidence for ${fine.violation}`}
+                        label="View fine photo">
                         <Camera size={20} aria-hidden="true" />
-                      </a>
+                      </ImagePreview>
                     ) : (
                       <span className="resident-list-photo resident-list-photo--empty" title="No photo attached">
                         <ImageOff size={20} aria-hidden="true" />

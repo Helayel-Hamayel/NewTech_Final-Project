@@ -1,7 +1,8 @@
-import { Tag, CalendarDays, FileText, Coins } from "lucide-react";
+import { Tag, CalendarDays, FileText, Coins, Image as ImageIcon } from "lucide-react";
 import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
 import { formatCost, formatHistoryDate } from "./fieldGuardHistoryHelpers";
 import type { HistoryIssue } from "./fieldGuardHistoryHelpers";
+import ImagePreview from "../../../components/common/ImagePreview";
 
 type HistoryFiltersProps = {
   search: string;
@@ -167,9 +168,14 @@ export function HistoryDetails({ issue }: SelectedIssue) {
           <div>
             <dt>Photo evidence</dt>
             <dd>
-              <a href={issue.photoUrl} target="_blank" rel="noopener noreferrer">
+              <ImagePreview
+                className="field-guard-photo-button"
+                src={issue.photoUrl}
+                alt={`Photo evidence for ${issue.violationType}`}
+                label="View fine photo">
+                <ImageIcon size={15} aria-hidden="true" />
                 View photo
-              </a>
+              </ImagePreview>
             </dd>
           </div>
         )}

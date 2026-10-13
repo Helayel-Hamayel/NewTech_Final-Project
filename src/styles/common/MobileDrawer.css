@@ -114,6 +114,14 @@
     white-space: nowrap;
   }
 
+  .mobile-drawer-product {
+    color: #bfdbfe !important;
+    font-size: 10px !important;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   .mobile-drawer-brand-copy span {
     overflow: hidden;
     color: #94a3b8;

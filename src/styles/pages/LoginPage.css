@@ -103,18 +103,20 @@
 }
 
 .login-brand-copy p:first-child {
-  color: #bfdbfe;
+  color: #f8fafc;
   font-family: "Segoe UI", sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
 }
 
 .login-brand-copy p:last-child {
   margin-top: 4px;
-  font-size: 18px;
-  font-weight: 750;
-  letter-spacing: 0.01em;
+  color: #bfdbfe;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .login-system-status {
@@ -538,7 +540,7 @@
   }
 
   .login-brand-copy p:last-child {
-    font-size: 16px;
+    font-size: 10px;
   }
 
   .login-system-status {

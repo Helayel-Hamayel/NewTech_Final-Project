@@ -1265,6 +1265,121 @@ html[data-theme="dark"] .staff-appeal-status--rejected {
   cursor: not-allowed;
 }
 
+.staff-routing-heading {
+  margin-bottom: 14px;
+}
+
+.staff-routing-heading h3 {
+  margin: 0 0 3px;
+}
+
+.staff-service-request-routing select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--staff-border);
+  border-radius: 9px;
+  background: var(--staff-card-bg);
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.staff-service-request-routing select:focus {
+  border-color: #3b82f6;
+  outline: 3px solid rgba(59, 130, 246, 0.14);
+}
+
+.staff-routing-list-wrap {
+  margin-top: 14px;
+}
+
+.staff-service-request-routing .staff-routing-list-title {
+  margin: 0 0 8px;
+  color: var(--staff-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.staff-routing-list {
+  display: grid;
+  max-height: 210px;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.staff-routing-option {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-alt, var(--staff-card-bg));
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease;
+}
+
+.staff-routing-option:hover:not(:disabled) {
+  border-color: #60a5fa;
+}
+
+.staff-routing-option.is-selected {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.staff-routing-option svg:last-child {
+  margin-left: auto;
+  color: #2563eb;
+}
+
+li.staff-routing-option {
+  cursor: default;
+}
+
+.staff-routing-option-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.staff-routing-avatar {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.staff-service-request-routing .staff-routing-empty {
+  padding: 10px 0;
+}
+
+.staff-route-submit {
+  width: 100%;
+  margin-top: 16px;
+}
+
 @media (max-width: 520px) {
   .staff-route-actions {
     grid-template-columns: 1fr;
@@ -1316,8 +1431,210 @@ html[data-theme="dark"] .staff-appeal-status--rejected {
   color: #b91c1c;
 }
 
-.staff-reject-request-form .staff-reject {
+.staff-reject-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.staff-reject-cancel {
+  padding: 8px 14px;
+  border: 1px solid var(--staff-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-maintenance-dialog {
+  width: min(620px, 100%);
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
+}
+
+.staff-progress-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.staff-progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  color: var(--staff-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.staff-progress-step span {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--staff-card-alt);
+  font-size: 0.66rem;
+}
+
+.staff-progress-step.is-current {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--staff-ink);
+}
+
+.staff-progress-step.is-current span {
+  background: #2563eb;
+  color: #fff;
+}
+
+.staff-progress-step.is-done {
+  border-color: #059669;
+  color: var(--staff-ink);
+}
+
+.staff-progress-step.is-done span {
+  background: #059669;
+  color: #fff;
+}
+
+.staff-progress-log {
+  margin-top: 17px;
+  padding: 16px;
+  border: 1px solid var(--staff-border);
+  border-radius: 10px;
+  background: var(--staff-card-bg);
+}
+
+.staff-progress-log h3 {
+  margin: 0 0 10px;
+  color: var(--staff-ink);
+  font-size: 0.92rem;
+}
+
+.staff-progress-log ul {
+  display: grid;
+  max-height: 200px;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.staff-progress-log li {
+  padding: 8px 10px;
+  border-left: 3px solid #2563eb;
+  border-radius: 6px;
+  background: var(--staff-card-alt);
+}
+
+.staff-progress-log time {
+  color: var(--staff-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.staff-progress-log li p,
+.staff-progress-empty {
+  margin: 3px 0 0;
+  color: var(--staff-ink);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.staff-progress-empty {
+  margin-bottom: 12px;
+  color: var(--staff-muted);
+}
+
+.staff-progress-form {
+  display: grid;
+  gap: 8px;
+}
+
+.staff-progress-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--staff-ink);
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.staff-progress-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border: 1px solid var(--staff-border);
+  border-radius: 8px;
+  background: var(--staff-card-bg);
+  color: var(--staff-ink);
+  font: inherit;
+  font-size: 0.76rem;
+  resize: vertical;
+}
+
+.staff-progress-form button {
   justify-self: end;
+  padding: 0 16px;
+}
+
+.staff-progress-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.staff-progress-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+@media (max-width: 520px) {
+  .staff-progress-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.staff-reject-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--staff-border);
+  color: var(--staff-muted);
+  font-size: 0.74rem;
+}
+
+.staff-reject-prompt button {
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
+  color: #dc2626;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-reject-prompt button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.staff-reject-prompt button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .staff-dialog-heading {

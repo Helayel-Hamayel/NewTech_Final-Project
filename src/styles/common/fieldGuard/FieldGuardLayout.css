@@ -186,6 +186,33 @@ html[data-theme="dark"] .field-guard-status--in-progress {
   gap: 14px;
 }
 
+.field-guard-photo-button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, var(--field-guard-accent) 32%, var(--field-guard-border));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--field-guard-accent) 9%, var(--field-guard-surface));
+  color: var(--field-guard-accent);
+  font-size: 0.76rem;
+  font-weight: 750;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.field-guard-photo-button:hover {
+  transform: translateY(-1px);
+  border-color: var(--field-guard-accent);
+  background: color-mix(in srgb, var(--field-guard-accent) 15%, var(--field-guard-surface));
+}
+
+.field-guard-photo-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--field-guard-accent) 40%, transparent);
+  outline-offset: 3px;
+}
+
 .field-guard-panel {
   min-width: 0;
   padding: 17px;

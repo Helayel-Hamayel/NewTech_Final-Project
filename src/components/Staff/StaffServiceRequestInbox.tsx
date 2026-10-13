@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import type { SubmitEvent, Dispatch, SetStateAction } from "react";
-import { X } from "lucide-react";
+import { Check, Wrench, X } from "lucide-react";
 import type { StaffServiceRequest, StaffServiceRequestDestination } from "../../data/staffData";
 import { toast } from "sonner";
+import ImagePreview from "../common/ImagePreview";
 
 type StaffServiceRequestInboxProps = {
   requests: StaffServiceRequest[];
   search: string;
   setRequests: Dispatch<SetStateAction<StaffServiceRequest[]>>;
 };
+
+type AssignmentDestination = StaffServiceRequestDestination | "";
 
 type FieldGuardOption = {
   _id: string;
@@ -19,9 +22,11 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
   const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [rejectionError, setRejectionError] = useState("");
+  const [showRejectForm, setShowRejectForm] = useState(false);
 
   const [guards, setGuards] = useState<FieldGuardOption[]>([]);
   const [fieldGuardId, setFieldGuardId] = useState("");
+  const [destination, setDestination] = useState<AssignmentDestination>("");
   const [guardsError, setGuardsError] = useState("");
   const [assigning, setAssigning] = useState(false);
   const [assignmentError, setAssignmentError] = useState("");
@@ -29,9 +34,15 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
 
   const normalizedSearch = search.trim().toLocaleLowerCase();
   const matchingRequests = requests.filter((request) =>
-    [request.id, request.residentName, request.type, request.description, request.location, request.status, request.assignedTo ?? ""].some(
-      (value) => value.toLocaleLowerCase().includes(normalizedSearch),
-    ),
+    [
+      request.id,
+      request.residentName,
+      request.type,
+      request.description,
+      request.location,
+      request.status,
+      request.assignedTo ?? "",
+    ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch)),
   );
   const selectedRequest = requests.find((request) => request.id === selectedRequestId) ?? null;
 
@@ -70,7 +81,9 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
     setSelectedRequestId(requestId);
     setRejectionReason("");
     setRejectionError("");
+    setShowRejectForm(false);
     setFieldGuardId("");
+    setDestination("");
     setAssignmentError("");
   }
 
@@ -209,7 +222,9 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
               Review each request, route it to the right team, or reject it with a reason.
             </p>
           </section>
-          <span className="staff-service-request-count">{requests.filter((request) => request.status === "Pending").length} pending</span>
+          <span className="staff-service-request-count">
+            {requests.filter((request) => request.status === "Pending").length} pending
+          </span>
         </header>
         {matchingRequests.length === 0 ? (
           <p className="staff-service-requests-empty">
@@ -225,7 +240,8 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     <span className="staff-ticket-id">{request.id}</span>
                   </section>
                   <span
-                    className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase()}`}>
+                    className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase()}`}
+                  >
                     {request.status}
                   </span>
                 </header>
@@ -264,7 +280,8 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                   <button
                     className={request.status === "Rejected" ? "staff-photo-button" : "staff-assign-team"}
                     type="button"
-                    onClick={() => openRequest(request.id)}>
+                    onClick={() => openRequest(request.id)}
+                  >
                     {request.status === "Rejected" ? "View details" : "Review"}
                   </button>
                 </footer>
@@ -280,7 +297,8 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
             className="staff-ticket-dialog staff-service-request-dialog"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="service-request-dialog-heading">
+            aria-labelledby="service-request-dialog-heading"
+          >
             <header className="staff-dialog-heading">
               <section>
                 <p className="staff-section-label">Request {selectedRequest.id}</p>
@@ -291,7 +309,8 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 type="button"
                 aria-label="Close request details"
                 disabled={assigning || rejecting}
-                onClick={() => setSelectedRequestId(null)}>
+                onClick={() => setSelectedRequestId(null)}
+              >
                 <X size={19} aria-hidden="true" />
               </button>
             </header>
@@ -317,9 +336,14 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                 <dt>Attachment</dt>
                 <dd>
                   {selectedRequest.attachment ? (
-                    <a className="staff-photo-button" href={selectedRequest.attachment} target="_blank" rel="noopener noreferrer">
+                    <ImagePreview
+                      className="staff-photo-button"
+                      src={selectedRequest.attachment}
+                      alt={`Photo attached to ${selectedRequest.type}`}
+                      label="View attached photo"
+                    >
                       View photo
-                    </a>
+                    </ImagePreview>
                   ) : (
                     "No photo"
                   )}
@@ -346,79 +370,163 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
             ) : (
               <>
                 <section className="staff-service-request-routing">
-                  <h3>Assign request</h3>
-
-                  {guardsError && <p role="alert">{guardsError}</p>}
+                  <header className="staff-routing-heading">
+                    <h3>Assign request</h3>
+                    <p>Choose who should handle this request.</p>
+                  </header>
 
                   <label>
-                    Field guard
+                    Assign to
                     <select
-                      value={fieldGuardId}
-                      onChange={(event) => setFieldGuardId(event.target.value)}
-                      disabled={assigning || rejecting || selectedRequest.status !== "Pending"}>
-                      <option value="">Choose a field guard</option>
-
-                      {guards.map((guard) => (
-                        <option key={guard._id} value={guard._id}>
-                          {guard.name}
-                        </option>
-                      ))}
+                      value={destination}
+                      onChange={(event) => {
+                        setDestination(event.target.value as AssignmentDestination);
+                        setFieldGuardId("");
+                        setAssignmentError("");
+                      }}
+                      disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
+                    >
+                      <option value="">Select a team</option>
+                      <option value="Field Guard">Field guard</option>
+                      <option value="Maintenance Team">Maintenance team</option>
                     </select>
                   </label>
 
-                  <section className="staff-route-actions">
-                    <button
-                      className="staff-route-request staff-assign-team"
-                      type="button"
-                      disabled={assigning || rejecting || !fieldGuardId || selectedRequest.status !== "Pending"}
-                      onClick={() => assignRequest("Field Guard")}>
-                      Assign to Field Guard
-                    </button>
+                  {destination === "Field Guard" ? (
+                    <section className="staff-routing-list-wrap">
+                      <p className="staff-routing-list-title">Available field guards</p>
+                      {guardsError && <p role="alert">{guardsError}</p>}
+                      {!guardsError && guards.length === 0 ? (
+                        <p className="staff-routing-empty">No field guards available.</p>
+                      ) : null}
+                      <ul className="staff-routing-list" role="radiogroup" aria-label="Field guards">
+                        {guards.map((guard) => {
+                          const isSelected = fieldGuardId === guard._id;
 
-                    <button
-                      className="staff-route-request staff-photo-button"
-                      type="button"
-                      disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
-                      onClick={() => assignRequest("Maintenance Team")}>
-                      Assign to Maintenance Team
-                    </button>
-                  </section>
+                          return (
+                            <li key={guard._id}>
+                              <button
+                                className={`staff-routing-option${isSelected ? " is-selected" : ""}`}
+                                type="button"
+                                role="radio"
+                                aria-checked={isSelected}
+                                disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
+                                onClick={() => setFieldGuardId(guard._id)}
+                              >
+                                <span className="staff-routing-avatar" aria-hidden="true">
+                                  {guard.name
+                                    .split(/\s+/)
+                                    .slice(0, 2)
+                                    .map((part) => part[0])
+                                    .join("")
+                                    .toUpperCase()}
+                                </span>
+                                <span className="staff-routing-option-name">{guard.name}</span>
+                                {isSelected ? <Check size={16} aria-hidden="true" /> : null}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
+                  ) : null}
+
+                  {destination === "Maintenance Team" ? (
+                    <section className="staff-routing-list-wrap">
+                      <p className="staff-routing-list-title">Maintenance team</p>
+                      <ul className="staff-routing-list">
+                        <li className="staff-routing-option is-selected">
+                          <span className="staff-routing-avatar" aria-hidden="true">
+                            <Wrench size={15} />
+                          </span>
+                          <span className="staff-routing-option-name">Municipal maintenance team</span>
+                          <Check size={16} aria-hidden="true" />
+                        </li>
+                      </ul>
+                    </section>
+                  ) : null}
+
+                  <button
+                    className="staff-route-request staff-assign-team staff-route-submit"
+                    type="button"
+                    disabled={
+                      assigning ||
+                      rejecting ||
+                      selectedRequest.status !== "Pending" ||
+                      !destination ||
+                      (destination === "Field Guard" && !fieldGuardId)
+                    }
+                    onClick={() => destination && assignRequest(destination)}
+                  >
+                    {assigning ? "Assigning..." : destination ? `Assign to ${destination}` : "Assign request"}
+                  </button>
 
                   {assigning && <p role="status">Saving assignment...</p>}
                   {assignmentError && <p role="alert">{assignmentError}</p>}
                 </section>
-                <form className="staff-reject-request-form" onSubmit={rejectRequest}>
-                  <label htmlFor="request-rejection-reason">
-                    Reason for rejection
-                    <textarea
-                      id="request-rejection-reason"
-                      required
-                      value={rejectionReason}
-                      aria-describedby="request-rejection-help"
-                      aria-invalid={Boolean(rejectionError)}
-                      onChange={(event) => {
-                        setRejectionReason(event.target.value);
-                        setRejectionError("");
-                      }}
-                      placeholder="Explain why this request cannot be accepted"
-                      rows={3}
-                    />
-                  </label>
-                  <p className="staff-reject-request-help" id="request-rejection-help">
-                    A reason is required before rejecting the request.
-                  </p>
-                  {rejectionError ? (
-                    <p className="staff-reject-request-error" role="alert">
-                      {rejectionError}
+                {!showRejectForm ? (
+                  <footer className="staff-reject-prompt">
+                    <span>Can't accept this request?</span>
+                    <button
+                      type="button"
+                      disabled={assigning || rejecting || selectedRequest.status !== "Pending"}
+                      onClick={() => setShowRejectForm(true)}
+                    >
+                      Reject request
+                    </button>
+                  </footer>
+                ) : (
+                  <form className="staff-reject-request-form" onSubmit={rejectRequest}>
+                    <label htmlFor="request-rejection-reason">
+                      Reason for rejection
+                      <textarea
+                        id="request-rejection-reason"
+                        autoFocus
+                        required
+                        value={rejectionReason}
+                        aria-describedby="request-rejection-help"
+                        aria-invalid={Boolean(rejectionError)}
+                        onChange={(event) => {
+                          setRejectionReason(event.target.value);
+                          setRejectionError("");
+                        }}
+                        placeholder="Explain why this request cannot be accepted"
+                        rows={3}
+                      />
+                    </label>
+                    <p className="staff-reject-request-help" id="request-rejection-help">
+                      A reason is required before rejecting the request.
                     </p>
-                  ) : null}
-                  <button
-                    className="staff-reject"
-                    type="submit"
-                    disabled={assigning || rejecting || selectedRequest.status !== "Pending" || !rejectionReason.trim()}>
-                    {rejecting ? "Rejecting..." : "Reject request"}
-                  </button>
-                </form>
+                    {rejectionError ? (
+                      <p className="staff-reject-request-error" role="alert">
+                        {rejectionError}
+                      </p>
+                    ) : null}
+                    <section className="staff-reject-actions">
+                      <button
+                        className="staff-reject-cancel"
+                        type="button"
+                        disabled={rejecting}
+                        onClick={() => {
+                          setShowRejectForm(false);
+                          setRejectionReason("");
+                          setRejectionError("");
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="staff-reject"
+                        type="submit"
+                        disabled={
+                          assigning || rejecting || selectedRequest.status !== "Pending" || !rejectionReason.trim()
+                        }
+                      >
+                        {rejecting ? "Rejecting..." : "Confirm rejection"}
+                      </button>
+                    </section>
+                  </form>
+                )}
               </>
             )}
           </section>

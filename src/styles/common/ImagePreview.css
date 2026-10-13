@@ -1,0 +1,72 @@
+:where(.image-preview-trigger) {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
+.image-preview-dialog {
+  position: fixed;
+  width: fit-content;
+  max-width: min(820px, calc(100vw - 32px));
+  max-height: min(78dvh, 720px);
+  box-sizing: border-box;
+  padding: 38px 16px 16px;
+  overflow: visible;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 16px;
+  background: #111827;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 40%);
+}
+
+.image-preview-dialog::backdrop {
+  background: rgb(2 6 23 / 72%);
+  backdrop-filter: blur(3px);
+}
+
+.image-preview-dialog img {
+  display: block;
+  max-width: min(780px, calc(100vw - 64px));
+  max-height: calc(min(78dvh, 720px) - 56px);
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.image-preview-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 50%;
+  background: #1f2937;
+  color: #fff;
+  cursor: pointer;
+}
+
+.image-preview-trigger:focus-visible,
+.image-preview-close:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .image-preview-dialog {
+    max-width: calc(100vw - 24px);
+    max-height: 76dvh;
+    padding: 36px 10px 10px;
+  }
+
+  .image-preview-dialog img {
+    max-width: calc(100vw - 48px);
+    max-height: calc(76dvh - 50px);
+  }
+}

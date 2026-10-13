@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../data/staffData";
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
 import LoadingState from "../components/common/LoadingState";
-import { fieldGuardData } from "../data/fieldGuardData";
 import type { FineFromBackend } from "../data/fineData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";
+import { useUser } from "../contexts/useUser";
 import "../styles/pages/FieldGuard/FieldGuardPage.css";
 
 export default function FieldGuardPage() {
-  const { name } = fieldGuardData;
+  const { user } = useUser();
 
   const [reports, setReports] = useState<ReportFromBackend[]>([]);
   const [reportsLoading, setReportsLoading] = useState(true);
@@ -101,7 +101,7 @@ export default function FieldGuardPage() {
       <header className="field-guard-page-heading">
         <p className="field-guard-eyebrow">OFFICER WORKSPACE</p>
         <h1 id="field-guard-title">Field Guard Overview</h1>
-        <p>Welcome back, {name}. Here is your activity at a glance.</p>
+        <p>Welcome back, {user?.name ?? "Field Guard"}. Here is your activity at a glance.</p>
       </header>
 
       <dl className="field-guard-stat-grid">
