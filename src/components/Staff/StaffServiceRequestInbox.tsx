@@ -240,7 +240,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                     <span className="staff-ticket-id">{request.id}</span>
                   </section>
                   <span
-                    className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase()}`}
+                    className={`staff-status-badge staff-status-badge--${request.status.toLocaleLowerCase() === "assigned" ? "current" : request.status.toLocaleLowerCase().replace(/\s+/g, "-")}`}
                   >
                     {request.status}
                   </span>
@@ -316,23 +316,23 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
             </header>
 
             <dl className="staff-service-request-details">
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Resident</dt>
                 <dd>{selectedRequest.residentName}</dd>
               </div>
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Reported</dt>
                 <dd>{selectedRequest.reported}</dd>
               </div>
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Location</dt>
                 <dd>{selectedRequest.location}</dd>
               </div>
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Contact phone</dt>
                 <dd>{selectedRequest.phone}</dd>
               </div>
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Attachment</dt>
                 <dd>
                   {selectedRequest.attachment ? (
@@ -345,29 +345,34 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                       View photo
                     </ImagePreview>
                   ) : (
-                    "No photo"
+                    <span className="staff-service-request-no-attachment">No photo attached</span>
                   )}
                 </dd>{" "}
               </div>
-              <div>
+              <div className="staff-service-request-detail">
                 <dt>Status</dt>
                 <dd>
-                  {selectedRequest.status}
+                  <span
+                    className={`staff-status-badge staff-status-badge--${selectedRequest.status.toLocaleLowerCase() === "assigned" ? "current" : selectedRequest.status.toLocaleLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    {selectedRequest.status}
+                  </span>
                   {selectedRequest.assignedTo ? ` · ${selectedRequest.assignedTo}` : ""}
                 </dd>
               </div>
             </dl>
             <section className="staff-service-request-description">
-              <h3>Request details</h3>
+              <h3>Resident's description</h3>
               <p>{selectedRequest.description}</p>
             </section>
 
             {selectedRequest.status === "Rejected" ? (
               <section className="staff-service-request-rejection">
-                <h3>Rejection reason</h3>
-                <p>{selectedRequest.rejectionReason}</p>
+                <p className="staff-service-request-rejection-label">Request declined</p>
+                <h3>Reason provided</h3>
+                <p>{selectedRequest.rejectionReason || "No rejection reason was provided."}</p>
               </section>
-            ) : (
+            ) : selectedRequest.status === "Pending" ? (
               <>
                 <section className="staff-service-request-routing">
                   <header className="staff-routing-heading">
@@ -528,6 +533,13 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
                   </form>
                 )}
               </>
+            ) : (
+              <section className="staff-service-request-routing">
+                <header className="staff-routing-heading">
+                  <h3>Assignment</h3>
+                  <p>Assigned to {selectedRequest.assignedTo ?? "the responsible team"}.</p>
+                </header>
+              </section>
             )}
           </section>
         </section>
