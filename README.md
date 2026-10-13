@@ -1,8 +1,18 @@
-# CivicHub
+<h1 align="center">CivicHub</h1>
 
-**One platform for residents, municipal staff and field guards.**
+<p align="center"><strong>Making everyday municipal services easier to access.</strong></p>
+<p align="center">One digital hub for residents, municipal staff and field guards—so getting things done takes fewer steps than the traditional way.</p>
 
-CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Residents register, pay bills, report problems and appeal fines. Staff review disputes, manage billing and dispatch maintenance. Field guards issue parking citations from the street. The React front end talks to the Express and MongoDB API in [`Backend/`](Backend/README.md).
+<p align="center">
+  <a href="https://react.dev"><img alt="React 19" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white"></a>
+  <a href="https://www.typescriptlang.org"><img alt="TypeScript 6" src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white"></a>
+  <a href="https://vite.dev"><img alt="Vite 8" src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white"></a>
+  <a href="https://expressjs.com"><img alt="Express 5" src="https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white"></a>
+  <a href="https://www.mongodb.com"><img alt="MongoDB" src="https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white"></a>
+  <a href="https://novu.co"><img alt="Novu" src="https://img.shields.io/badge/Notifications-Novu-000000"></a>
+</p>
+
+CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Residents can register, pay bills, report problems and appeal fines online. Staff can review disputes, manage billing and dispatch maintenance, while field guards issue parking citations. The React front end talks to the Express and MongoDB API in [`Backend/`](Backend/README.md).
 
 ![Login](src/assets/screenshots/login-desktop.png)
 
