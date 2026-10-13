@@ -99,16 +99,11 @@ select {
 }
 
 .resident-brand-mark {
-  display: grid;
-  place-items: center;
+  display: block;
   width: clamp(38px, 3vw, 52px);
   height: clamp(38px, 3vw, 52px);
   border-radius: 8px;
-  background: #2563eb;
-  border: 1px solid rgba(147, 197, 253, 0.5);
-  color: var(--resident-white);
-  font-size: 0.8rem;
-  font-weight: 700;
+  object-fit: cover;
 }
 
 .resident-brand-copy p {

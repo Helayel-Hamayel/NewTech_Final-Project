@@ -1,3 +1,5 @@
+<p align="center"><img src="src/assets/logo/CivicHub_Logo.png" alt="CivicHub logo" width="96"></p>
+
 <h1 align="center">CivicHub</h1>
 
 <p align="center"><strong>Making everyday municipal services easier to access.</strong></p>

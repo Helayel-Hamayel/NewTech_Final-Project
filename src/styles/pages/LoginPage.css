@@ -81,20 +81,12 @@
 }
 
 .login-brand-mark {
-  display: grid;
+  display: block;
   width: 42px;
   height: 42px;
-  place-items: center;
-  border: 1px solid #93c5fd66;
-  border-radius: 12px;
-  background: var(--login-blue);
+  border-radius: 10px;
+  object-fit: cover;
   box-shadow: 0 8px 20px #02061755;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.login-brand-mark svg {
-  display: block;
 }
 
 .login-brand-copy p {

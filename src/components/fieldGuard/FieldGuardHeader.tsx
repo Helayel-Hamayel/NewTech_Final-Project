@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Activity, Building2, FilePlusCorner, Flag, History, LayoutDashboard, LogOut } from "lucide-react";
+import { FilePlusCorner, Flag, History, LayoutDashboard, LogOut } from "lucide-react";
+import civicHubLogo from "../../assets/logo/CivicHub_Logo.png";
 import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
@@ -46,9 +47,7 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
   return (
     <header className="field-guard-header">
       <section className="field-guard-mobile-brand">
-        <span className="field-guard-mobile-brand-mark" aria-hidden="true">
-          <Building2 size={20} strokeWidth={2.2} />
-        </span>
+        <img className="field-guard-mobile-brand-mark" src={civicHubLogo} alt="" aria-hidden="true" />
         <section className="field-guard-mobile-brand-content">
           <section className="field-guard-mobile-brand-copy">
             <p>CivicHub</p>
@@ -68,9 +67,7 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
       <section className="field-guard-header-main">
         <section className="field-guard-brand-block">
           <section className="field-guard-brand" aria-label="CivicHub">
-            <span className="field-guard-mobile-brand-mark" aria-hidden="true">
-              <Building2 size={20} strokeWidth={2.2} />
-            </span>
+            <img className="field-guard-mobile-brand-mark" src={civicHubLogo} alt="" aria-hidden="true" />
             <span className="field-guard-brand-copy">
               <strong>CivicHub</strong>
               <span>Tel Aviv-Yafo Municipality</span>
@@ -128,7 +125,6 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
         </section>
       </section>
       <MobileDrawer
-        brandIcon={<Activity />}
         userName={userName}
         subtitle={user?.email ?? "Field Guard"}
         items={navigationItems}

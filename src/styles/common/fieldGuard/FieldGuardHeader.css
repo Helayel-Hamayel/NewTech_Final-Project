@@ -55,13 +55,11 @@
 }
 
 .field-guard-brand .field-guard-mobile-brand-mark {
-  display: grid;
+  display: block;
   width: 36px;
   height: 36px;
-  place-items: center;
+  object-fit: cover;
   border-radius: 10px;
-  background: #1b5cff;
-  color: #fff;
 }
 
 .field-guard-header.is-menu-open .field-guard-header-main {
@@ -483,13 +481,12 @@ html[data-theme="light"] .field-guard-signout-actions button:not(:first-child) {
   }
 
   .field-guard-mobile-brand-mark {
-    display: grid;
+    display: block;
     flex: 0 0 38px;
     width: 38px;
     height: 38px;
-    place-items: center;
+    object-fit: cover;
     border-radius: 11px;
-    background: #1b5cff;
     color: #fff;
   }
 

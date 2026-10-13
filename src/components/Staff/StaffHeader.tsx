@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ClipboardList, FileCheck2, LogOut, Map, ReceiptText, Wrench } from "lucide-react";
+import { ClipboardList, FileCheck2, LogOut, ReceiptText, Wrench } from "lucide-react";
+import civicHubLogo from "../../assets/logo/CivicHub_Logo.png";
 import type { StaffTab } from "../../data/staffData";
 import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
@@ -58,7 +59,6 @@ export default function StaffHeader({
   return (
     <>
       <MobileDrawer
-        brandIcon={<Map />}
         userName={staffName}
         subtitle="Municipal Staff"
         items={navigationItems.map((item) => ({
@@ -75,9 +75,7 @@ export default function StaffHeader({
       />
       <aside className="sidebar" id="staff-navigation" aria-label="Staff sidebar">
         <section className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            <Map size={28} />
-          </span>
+          <img className="brand-mark" src={civicHubLogo} alt="" aria-hidden="true" />
           <section>
             <p className="brand-title">CivicHub</p>
             <p className="city">Tel Aviv-Yafo Municipality</p>

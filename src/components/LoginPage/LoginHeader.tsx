@@ -1,12 +1,10 @@
-import { Building2 } from "lucide-react";
+import civicHubLogo from "../../assets/logo/CivicHub_Logo.png";
 
 export default function LoginHeader() {
   return (
     <header className="login-header">
       <section className="login-brand">
-        <span className="login-brand-mark" aria-hidden="true">
-          <Building2 size={22} strokeWidth={2.1} />
-        </span>
+        <img className="login-brand-mark" src={civicHubLogo} alt="" aria-hidden="true" />
         <section className="login-brand-copy">
           <p>CivicHub</p>
           <p>Tel Aviv-Yafo Municipality</p>

@@ -1,7 +1,8 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { LogOut, Menu, X, type LucideIcon } from "lucide-react";
+import civicHubLogo from "../../assets/logo/CivicHub_Logo.png";
 import ThemeToggle from "./ThemeToggle";
 import { useUser } from "../../contexts/useUser";
 import "../../styles/common/MobileDrawer.css";
@@ -14,7 +15,6 @@ export type MobileDrawerItem<Id extends string> = {
 };
 
 type MobileDrawerProps<Id extends string> = {
-  brandIcon: ReactNode;
   userName: string;
   subtitle: string;
   items: Array<MobileDrawerItem<Id>>;
@@ -23,7 +23,6 @@ type MobileDrawerProps<Id extends string> = {
 };
 
 export default function MobileDrawer<Id extends string>({
-  brandIcon,
   userName,
   subtitle,
   items,
@@ -87,7 +86,7 @@ export default function MobileDrawer<Id extends string>({
       >
         <section className="mobile-drawer-header">
           <span className="mobile-drawer-brand-mark" aria-hidden="true">
-            {brandIcon}
+            <img src={civicHubLogo} alt="" />
           </span>
           <section className="mobile-drawer-brand-copy">
             <span className="mobile-drawer-product">CivicHub</span>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Building2, ClipboardList, FileText, Home, LayoutDashboard, LogOut } from "lucide-react";
+import { ClipboardList, FileText, Home, LayoutDashboard, LogOut } from "lucide-react";
+import civicHubLogo from "../assets/logo/CivicHub_Logo.png";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import SharedLayout from "../components/common/SharedLayout";
@@ -382,9 +383,7 @@ export default function ResidentPage() {
       header={
         <header className="resident-topbar">
           <section className="resident-brand">
-            <span className="resident-brand-mark" aria-hidden="true">
-              <Building2 size={20} strokeWidth={2.2} />
-            </span>
+            <img className="resident-brand-mark" src={civicHubLogo} alt="" aria-hidden="true" />
             <section className="resident-brand-copy">
               <p>CivicHub</p>
               <p>Tel Aviv-Yafo Municipality</p>
@@ -393,7 +392,6 @@ export default function ResidentPage() {
 
           <ResidentPortalNav activeTab={activeTab} onTabChange={setActiveTab} />
           <MobileDrawer
-            brandIcon={<Building2 />}
             userName={user?.name ?? ""}
             subtitle="Resident Portal"
             items={residentDrawerItems}
