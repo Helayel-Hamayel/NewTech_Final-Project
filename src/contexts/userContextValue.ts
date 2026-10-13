@@ -5,6 +5,7 @@ export type User = {
   name: string;
   email: string;
   role: "RESIDENT" | "FIELD_GUARD" | "STAFF";
+  subscriberHash: string;
 };
 
 export type UserContextType = {

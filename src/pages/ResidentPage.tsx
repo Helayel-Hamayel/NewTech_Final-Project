@@ -18,6 +18,7 @@ import { type Fine, type Invoice, type ResidentServiceRequest, type UtilityType 
 import type { ReportFromBackend } from "../data/staffData";
 import type { FineFromBackend } from "../data/fineData";
 import { MONTHLY_RENT, type UtilityMonth, type UtilityAccountFromBackend } from "../data/utilityData";
+import NotificationBell from "../components/common/NotificationBell";
 import "../styles/pages/ResidentPortalPage.css";
 
 const residentDrawerItems: Array<{
@@ -401,6 +402,7 @@ export default function ResidentPage() {
           />
 
           <section className="resident-user-meta">
+            <NotificationBell />
             <ThemeToggle />
             <span className="resident-header-divider" aria-hidden="true" />
             <section className="resident-signout-wrap">

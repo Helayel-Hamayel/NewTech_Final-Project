@@ -12,8 +12,6 @@ import "../styles/pages/StaffDashboardPage.css";
 export default function StaffPage() {
   const {
     activeTab,
-    setActiveTab,
-    unreadTabs,
     reportsLoading,
     serviceRequests,
     setServiceRequests,
@@ -32,12 +30,7 @@ export default function StaffPage() {
 
   return (
     <section className="staff-page" aria-label="Municipal staff dashboard">
-      <StaffTopBar
-        activeTab={activeTab}
-        pendingDisputes={pendingDisputes}
-        hasUnseenNotifications={unreadTabs.disputes}
-        onOpenDisputes={() => setActiveTab("disputes")}
-      />
+      <StaffTopBar activeTab={activeTab} />
 
       <section className="staff-dashboard-content" aria-label="Staff workspace">
         <StaffOverview

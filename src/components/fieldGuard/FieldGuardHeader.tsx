@@ -6,6 +6,7 @@ import "../../styles/common/fieldGuard/FieldGuardHeader.css";
 import MobileDrawer from "../common/MobileDrawer";
 import ThemeToggle from "../common/ThemeToggle";
 import { useUser } from "../../contexts/useUser";
+import NotificationBell from "../common/NotificationBell";
 
 export type FieldGuardTab = "dashboard" | "citation" | "reports" | "history";
 
@@ -64,6 +65,7 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
         </section>
 
         <section className="field-guard-header-actions">
+          <NotificationBell />
           <ThemeToggle />
           <section className="field-guard-signout-wrap">
             <button
