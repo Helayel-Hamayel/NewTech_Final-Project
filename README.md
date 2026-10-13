@@ -12,7 +12,7 @@
   <a href="https://novu.co"><img alt="Novu" src="https://img.shields.io/badge/Notifications-Novu-000000"></a>
 </p>
 
-CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Residents can register, pay bills, report problems and appeal fines online. Staff can review disputes, manage billing and dispatch maintenance, while field guards issue parking citations. The React front end talks to the Express and MongoDB API in [`Backend/`](Backend/README.md).
+CivicHub is a municipal services app themed around Tel Aviv-Yafo. Residents can register, pay bills, report problems and appeal fines online. Staff can review disputes, manage billing and dispatch maintenance, while field guards issue parking citations. This repository contains the React front end; its Express and MongoDB API is maintained separately in the [CivicHub backend repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd).
 
 ![Login](src/assets/screenshots/login-desktop.png)
 
@@ -102,38 +102,29 @@ CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Res
 - [Novu React](https://docs.novu.co/platform/inbox/react) (`@novu/react`) for in-app notifications
 - ESLint for linting
 
-**Back end** (see [Backend/README.md](Backend/README.md))
+**Back end** (see the [backend repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd))
 - Node.js, Express 5, MongoDB and Mongoose
 - JWT authentication with bcrypt-hashed passwords
 - Multer and Cloudinary for photo uploads
 
 ## Getting started
 
-Requires Node.js 20+ and a MongoDB database that supports transactions (for example MongoDB Atlas).
+Requires Node.js 20+. The API is maintained in a [separate repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd), and requires a MongoDB database that supports transactions (for example MongoDB Atlas).
 
 ### 1. Start the API
 
-```bash
-cd Backend
-npm install
-```
-
-Create `Backend/.env` (all variables are listed in [Backend/README.md](Backend/README.md)) and set `PORT=4000`, because the front end calls `http://localhost:4000`. Then:
-
-```bash
-npm run dev
-```
+Clone the [backend repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd) separately, install its dependencies, and configure it using that repository's README. Set the backend port to `4000`: the front end currently sends API requests to `http://localhost:4000`. Keep the API running while using the front end.
 
 ### 2. Start the front end
 
-From the repository root:
+From this repository's root:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173. The API only allows the origins `localhost:5173`, `5174` and `5175`, so keep Vite on one of those ports.
+Open http://localhost:5173. The API allows the origins `localhost:5173`, `5174` and `5175`, so keep Vite on one of those ports.
 
 | Script | Purpose |
 | --- | --- |
@@ -163,13 +154,6 @@ src/
 ├── layouts/        Staff and Field Guard layouts
 ├── pages/          Route-level pages (login, register, resident, staff, field guard)
 └── styles/         CSS, including the shared mobile system
-Backend/
-├── config/         Database, Cloudinary, Novu and fine configuration
-├── controllers/    Request handlers
-├── middleware/     Authentication, roles and uploads
-├── models/         Mongoose models
-├── routes/         Express routes
-└── services/       Notifications
 ```
 
 ## Team
