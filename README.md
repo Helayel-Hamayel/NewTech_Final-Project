@@ -106,6 +106,10 @@ CivicHub is a municipal services app themed around Tel Aviv-Yafo. Residents can 
 - Node.js, Express 5, MongoDB and Mongoose
 - JWT authentication with bcrypt-hashed passwords
 - Multer and Cloudinary for photo uploads
+- `cookie-parser` and `cors` for cookie and cross-origin request handling; `dotenv` for environment configuration
+- `@novu/api` and `@novu/framework` for notifications and workflows
+- `swagger-ui-express` for API documentation
+- `@types/express` for Express development-time types
 
 ## Getting started
 
