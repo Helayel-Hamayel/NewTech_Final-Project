@@ -1,5 +1,6 @@
-import { ExternalLink, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { ResidentServiceRequest } from "../../data/residentPortal";
+import ImagePreview from "../common/ImagePreview";
 
 type RequestDetailsProps = {
   request: ResidentServiceRequest;
@@ -68,12 +69,20 @@ export default function RequestDetails({ request, onClose }: RequestDetailsProps
           {request.attachment && (
             <section>
               <h4>Photo</h4>
-              <a href={request.attachment} target="_blank" rel="noopener noreferrer">
+              <ImagePreview
+                className="request-details-photo-trigger"
+                src={request.attachment}
+                alt="Attached to the request"
+                label="View attached photo">
                 <img className="request-details-photo" src={request.attachment} alt="Attached to the request" />
-              </a>
-              <a className="request-details-link" href={request.attachment} target="_blank" rel="noopener noreferrer">
-                <ExternalLink size={14} aria-hidden="true" /> Open full size
-              </a>
+              </ImagePreview>
+              <ImagePreview
+                className="request-details-link"
+                src={request.attachment}
+                alt="Attached to the request"
+                label="Open attached photo">
+                View full size
+              </ImagePreview>
             </section>
           )}
         </div>

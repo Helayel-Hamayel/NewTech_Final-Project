@@ -79,7 +79,7 @@ export default function StaffHeader({
             <Map size={28} />
           </span>
           <section>
-            <p className="brand-title">Municipal Operations</p>
+            <p className="brand-title">CivicHub</p>
             <p className="city">Tel Aviv-Yafo Municipality</p>
           </section>
         </section>

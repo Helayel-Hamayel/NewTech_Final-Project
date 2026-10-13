@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../../data/staffData";
 import "../../styles/pages/FieldGuard/FieldGuardReportsPage.css";
-import { Tag, CalendarDays, User, MapPin, FileText, Phone } from "lucide-react";
+import { Tag, CalendarDays, User, MapPin, FileText, Phone, Image as ImageIcon } from "lucide-react";
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
 import LoadingState from "../common/LoadingState";
+import ImagePreview from "../common/ImagePreview";
 import { toast } from "sonner";
 
 type ReportAction = "IN PROGRESS" | "RESOLVED" | "REJECTED";
@@ -369,9 +370,14 @@ export default function FieldGuardReportsPage() {
                       <div>
                         <dt>Photo</dt>
                         <dd>
-                          <a href={selectedReport.photoUrl} target="_blank" rel="noopener noreferrer">
+                          <ImagePreview
+                            className="field-guard-photo-button"
+                            src={selectedReport.photoUrl}
+                            alt={`Photo attached to ${selectedReport.category} report`}
+                            label="View report photo">
+                            <ImageIcon size={15} aria-hidden="true" />
                             View photo
-                          </a>
+                          </ImagePreview>
                         </dd>
                       </div>
                     )}

@@ -117,16 +117,17 @@ select {
 }
 
 .resident-brand-copy p:first-child {
-  color: #bfdbfe;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  color: #f8fafc;
+  font-size: clamp(1.16rem, 1.4vw, 1.5rem);
+  font-weight: 700;
 }
 
 .resident-brand-copy p:last-child {
   margin-top: 4px;
-  font-size: clamp(1.16rem, 1.4vw, 1.5rem);
-  font-weight: 700;
+  color: #bfdbfe;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .resident-user-meta {
@@ -2610,7 +2611,7 @@ html[data-theme="dark"] .property-section--support .property-contact-list a {
   }
 
   .resident-brand-copy p:last-child {
-    font-size: 1.05rem;
+    font-size: 9px;
   }
 
   .resident-user-meta {

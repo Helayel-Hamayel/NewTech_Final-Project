@@ -14,6 +14,13 @@ export type ReportFromBackend = {
   status: "NEW" | "DISPATCHED" | "IN PROGRESS" | "RESOLVED" | "REJECTED";
   rejectionReason?: string;
   resolvedAt?: string | null;
+  progressUpdates?: StaffProgressUpdate[];
+  createdAt: string;
+};
+
+export type StaffProgressUpdate = {
+  _id?: string;
+  note: string;
   createdAt: string;
 };
 
@@ -49,6 +56,7 @@ export type StaffServiceRequest = {
   assignedTo?: StaffServiceRequestDestination;
   rejectionReason?: string;
   resolvedAt?: string | null;
+  progressUpdates?: StaffProgressUpdate[];
 };
 
 export const seededStaffServiceRequests: StaffServiceRequest[] = [

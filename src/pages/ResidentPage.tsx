@@ -386,8 +386,8 @@ export default function ResidentPage() {
               <Building2 size={20} strokeWidth={2.2} />
             </span>
             <section className="resident-brand-copy">
-              <p>Tel Aviv-Yafo</p>
-              <p>Municipality</p>
+              <p>CivicHub</p>
+              <p>Tel Aviv-Yafo Municipality</p>
             </section>
           </section>
 

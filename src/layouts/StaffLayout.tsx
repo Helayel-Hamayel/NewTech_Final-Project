@@ -120,6 +120,7 @@ export default function StaffLayout() {
           assignedTo: report.assignedTeam === "MAINTENANCE" ? "Maintenance Team" : report.assignedFieldGuard ? "Field Guard" : undefined,
           rejectionReason: report.rejectionReason,
           resolvedAt: report.resolvedAt,
+          progressUpdates: report.progressUpdates ?? [],
         }));
 
         if (!controller.signal.aborted) {

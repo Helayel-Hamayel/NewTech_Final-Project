@@ -26,6 +26,13 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
   const navigate = useNavigate();
   const { user, signOut } = useUser();
   const [isSignoutOpen, setIsSignoutOpen] = useState(false);
+  const userName = user?.name?.trim() || "Field Guard";
+  const userInitials = userName
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((namePart) => namePart[0])
+    .join("")
+    .toUpperCase();
 
   async function confirmSignOut() {
     try {
@@ -42,22 +49,44 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
         <span className="field-guard-mobile-brand-mark" aria-hidden="true">
           <Building2 size={20} strokeWidth={2.2} />
         </span>
-        <section>
-          <p>Tel Aviv-Yafo</p>
-          <p>Municipality</p>
+        <section className="field-guard-mobile-brand-content">
+          <section className="field-guard-mobile-brand-copy">
+            <p>CivicHub</p>
+            <p>Tel Aviv-Yafo Municipality</p>
+          </section>
+          <section className="field-guard-user-profile" aria-label="Signed-in field guard">
+            <span className="field-guard-user-avatar" aria-hidden="true">
+              {userInitials}
+            </span>
+            <span className="field-guard-user-info">
+              <strong>{userName}</strong>
+              <span>{user?.email ?? ""}</span>
+            </span>
+          </section>
         </section>
       </section>
       <section className="field-guard-header-main">
-        <section className="field-guard-officer">
-          <span className="field-guard-officer-icon" aria-hidden="true">
-            <Activity size={20} />
-          </span>
-          <section>
-            <section className="field-guard-user-info">
-              <strong>{user?.name ?? "Field Guard"}</strong>
-              <span>{user?.email ?? ""}</span>
-            </section>
+        <section className="field-guard-brand-block">
+          <section className="field-guard-brand" aria-label="CivicHub">
+            <span className="field-guard-mobile-brand-mark" aria-hidden="true">
+              <Building2 size={20} strokeWidth={2.2} />
+            </span>
+            <span className="field-guard-brand-copy">
+              <strong>CivicHub</strong>
+              <span>Tel Aviv-Yafo Municipality</span>
+            </span>
           </section>
+          <section className="field-guard-user-profile" aria-label="Signed-in field guard">
+            <span className="field-guard-user-avatar" aria-hidden="true">
+              {userInitials}
+            </span>
+            <span className="field-guard-user-info">
+              <strong>{userName}</strong>
+              <span>{user?.email ?? ""}</span>
+            </span>
+          </section>
+        </section>
+        <section className="field-guard-officer">
           <span className="field-guard-shift">
             <span className="field-guard-pulse" aria-hidden="true" />
             SHIFT ACTIVE
@@ -100,7 +129,7 @@ export default function FieldGuardHeader({ activeTab, onTabChange }: FieldGuardH
       </section>
       <MobileDrawer
         brandIcon={<Activity />}
-        userName={user?.name ?? "Field Guard"}
+        userName={userName}
         subtitle={user?.email ?? "Field Guard"}
         items={navigationItems}
         activeId={activeTab}

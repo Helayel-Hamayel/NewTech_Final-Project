@@ -90,6 +90,7 @@ export default function MobileDrawer<Id extends string>({
             {brandIcon}
           </span>
           <section className="mobile-drawer-brand-copy">
+            <span className="mobile-drawer-product">CivicHub</span>
             <strong>{userName}</strong>
             <span>{subtitle}</span>
           </section>

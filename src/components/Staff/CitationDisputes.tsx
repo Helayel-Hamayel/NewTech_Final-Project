@@ -5,6 +5,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { AppealFromBackend } from "../../data/appealData";
 import { currency } from "../../helpers/formatting/currency";
 import { formatIsraeliDateTime } from "../../helpers/formatting/israeliDate";
+import ImagePreview from "../common/ImagePreview";
 
 type CitationDisputesProps = {
   appeals: AppealFromBackend[];
@@ -18,7 +19,11 @@ function EvidencePhoto({ src, alt }: { src?: string; alt: string }) {
     return <p className="appeal-photo-empty">{failed ? "Could not load this photo." : "No photo provided."}</p>;
   }
 
-  return <img className="appeal-evidence-photo" src={src} alt={alt} onError={() => setFailed(true)} />;
+  return (
+    <ImagePreview src={src} alt={alt} label="View appeal evidence photo">
+      <img className="appeal-evidence-photo" src={src} alt={alt} onError={() => setFailed(true)} />
+    </ImagePreview>
+  );
 }
 
 export default function CitationDisputes({ appeals, setAppeals }: CitationDisputesProps) {

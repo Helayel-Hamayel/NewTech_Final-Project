@@ -94,11 +94,12 @@ CivicHub is a full-stack municipal services app themed around Tel Aviv-Yafo. Res
 **Front end**
 - [React 19](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
 - [Vite](https://vite.dev) and [React Router 7](https://reactrouter.com)
+- [Leaflet](https://leafletjs.com) for interactive maps and report locations
 - [Recharts](https://recharts.org) for charts
 - [lucide-react](https://lucide.dev) for icons
 - [Sonner](https://sonner.emilkowal.ski) for toasts
 - [jsPDF](https://github.com/parallax/jsPDF) + autotable for PDF receipts
-- [Novu](https://novu.co) for in-app notifications
+- [Novu React](https://docs.novu.co/platform/inbox/react) (`@novu/react`) for in-app notifications
 - ESLint for linting
 
 **Back end** (see [Backend/README.md](Backend/README.md))
