@@ -1,3 +1,4 @@
+import { apiUrl } from "../helpers/apiUrl";
 import { useEffect, useState, type ReactNode } from "react";
 import { UserContext, type User } from "./userContextValue";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ function UserProvider({ children }: { children: ReactNode }) {
 
     async function restoreUser() {
       try {
-        const response = await fetch("http://localhost:4000/auth/me", {
+        const response = await fetch(apiUrl("/auth/me"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -49,7 +50,7 @@ function UserProvider({ children }: { children: ReactNode }) {
   }
 
   async function signOut() {
-    const response = await fetch("http://localhost:4000/auth/logout", {
+    const response = await fetch(apiUrl("/auth/logout"), {
       method: "POST",
       credentials: "include",
     });

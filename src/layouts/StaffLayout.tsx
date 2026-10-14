@@ -1,3 +1,4 @@
+import { apiUrl } from "../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Outlet } from "react-router-dom";
@@ -84,7 +85,7 @@ export default function StaffLayout() {
       setReportsError("");
 
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch(apiUrl("/reports"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -147,7 +148,7 @@ export default function StaffLayout() {
 
     async function loadAppeals() {
       try {
-        const response = await fetch("http://localhost:4000/appeals", {
+        const response = await fetch(apiUrl("/appeals"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -185,7 +186,7 @@ export default function StaffLayout() {
       setUtilitiesError("");
 
       try {
-        const response = await fetch("http://localhost:4000/utilities", {
+        const response = await fetch(apiUrl("/utilities"), {
           credentials: "include",
           signal: controller.signal,
         });

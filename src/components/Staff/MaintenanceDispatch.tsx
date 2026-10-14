@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import type { StaffServiceRequest } from "../../data/staffData";
 import { CheckCircle2, Clock, Image as ImageIcon, MapPin, X } from "lucide-react";
 import { useState } from "react";
@@ -57,7 +58,7 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
     setSavingNote(true);
 
     try {
-      const response = await fetch(`http://localhost:4000/reports/${ticket.id}/maintenance-progress`, {
+      const response = await fetch(apiUrl(`/reports/${ticket.id}/maintenance-progress`), {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -101,7 +102,7 @@ export default function MaintenanceDispatch({ tickets, search, setRequests }: Ma
     setUpdateError("");
 
     try {
-      const response = await fetch(`http://localhost:4000/reports/${ticket.id}/maintenance-status`, {
+      const response = await fetch(apiUrl(`/reports/${ticket.id}/maintenance-status`), {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

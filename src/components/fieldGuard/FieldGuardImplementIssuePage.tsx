@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import { useState, type SubmitEvent } from "react";
 import { Check, Ticket } from "lucide-react";
 import AppealPhotoPicker from "../ResidentPage/AppealPhotoPicker";
@@ -65,7 +66,7 @@ export default function FieldGuardImplementIssuePage() {
         formData.append("photo", photo);
       }
 
-      const response = await fetch("http://localhost:4000/fines", {
+      const response = await fetch(apiUrl("/fines"), {
         method: "POST",
         credentials: "include",
         body: formData,

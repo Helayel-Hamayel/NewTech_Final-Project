@@ -1,4 +1,5 @@
 import { RefreshCw } from "lucide-react";
+import { apiUrl } from "../../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import type { StaffFineFromBackend } from "../../data/fineData";
 import { currency } from "../../helpers/formatting/currency";
@@ -25,7 +26,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
       setError("");
 
       try {
-        const response = await fetch("http://localhost:4000/fines/staff", {
+        const response = await fetch(apiUrl("/fines/staff"), {
           credentials: "include",
           signal: controller.signal,
         });

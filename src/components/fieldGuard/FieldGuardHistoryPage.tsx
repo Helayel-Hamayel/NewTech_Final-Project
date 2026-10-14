@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import FieldGuardStatusIcon from "./FieldGuardStatusIcon";
 import LoadingState from "../common/LoadingState";
 import { useEffect, useState } from "react";
@@ -42,7 +43,7 @@ export default function FieldGuardHistoryPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch(apiUrl("/fines"), {
           credentials: "include",
           signal: controller.signal,
         });

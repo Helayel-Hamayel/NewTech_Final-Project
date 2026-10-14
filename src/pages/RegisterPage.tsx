@@ -1,3 +1,4 @@
+import { apiUrl } from "../helpers/apiUrl";
 import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -55,7 +56,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:4000/auth/register", {
+      const response = await fetch(apiUrl("/auth/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

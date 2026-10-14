@@ -1,3 +1,4 @@
+import { apiUrl } from "../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import { ClipboardList, FileText, Home, LayoutDashboard, LogOut } from "lucide-react";
 import civicHubLogo from "../assets/logo/CivicHub_Logo.png";
@@ -142,7 +143,7 @@ export default function ResidentPage() {
     setAppealSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:4000/appeals", {
+      const response = await fetch(apiUrl("/appeals"), {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -192,7 +193,7 @@ export default function ResidentPage() {
   }
 
   async function handlePayBills(selection: PaymentSelection) {
-    const response = await fetch("http://localhost:4000/utilities/pay", {
+    const response = await fetch(apiUrl("/utilities/pay"), {
       method: "PUT",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -226,7 +227,7 @@ export default function ResidentPage() {
 
     async function loadReports() {
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch(apiUrl("/reports"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -287,7 +288,7 @@ export default function ResidentPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch(apiUrl("/fines"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -348,7 +349,7 @@ export default function ResidentPage() {
 
     async function loadUtilities() {
       try {
-        const response = await fetch("http://localhost:4000/utilities/me", {
+        const response = await fetch(apiUrl("/utilities/me"), {
           credentials: "include",
           signal: controller.signal,
         });

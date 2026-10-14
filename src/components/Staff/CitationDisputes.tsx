@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import { ShieldCheck, UserRound, X, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -101,7 +102,7 @@ export default function CitationDisputes({ appeals, setAppeals }: CitationDisput
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:4000/appeals/${selectedAppeal._id}/decision`, {
+      const response = await fetch(apiUrl(`/appeals/${selectedAppeal._id}/decision`), {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

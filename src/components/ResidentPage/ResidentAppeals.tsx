@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import { useEffect, useRef, useState } from "react";
 import LoadingState from "../common/LoadingState";
 import type { AppealFromBackend } from "../../data/appealData";
@@ -69,7 +70,7 @@ export default function ResidentAppeals({ appealSubmitting, onPay, fines }: Resi
       setError("");
 
       try {
-        const response = await fetch("http://localhost:4000/appeals", {
+        const response = await fetch(apiUrl("/appeals"), {
           credentials: "include",
           signal: controller.signal,
         });

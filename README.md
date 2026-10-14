@@ -119,7 +119,7 @@ Requires Node.js 20+. The API is maintained in a [separate repository](https://g
 
 ### 1. Start the API
 
-Clone the [backend repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd) separately, install its dependencies, and configure it using that repository's README. Set the backend port to `4000`: the front end currently sends API requests to `http://localhost:4000`. Keep the API running while using the front end.
+Clone the [backend repository](https://github.com/MohamadAmer1/NewTech_Final-Project_BackEnd) separately, install its dependencies, and configure it using that repository's README. For local development, the front end sends API requests to `http://localhost:4000` by default. Set `VITE_API_URL` in a root `.env.local` file to override the API origin.
 
 ### 2. Start the front end
 
@@ -138,6 +138,18 @@ Open http://localhost:5173. The API allows the origins `localhost:5173`, `5174` 
 | `npm run build` | Type-check and build for production |
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Run ESLint |
+
+## Deploying the front end to Netlify
+
+The repository includes a `netlify.toml` with the Vite build command, `dist` publish directory, and a single-page-app fallback for React Router routes. Connect this repository to Netlify from its root directory.
+
+The Express API must be deployed separately; Netlify hosts this front end, not the API or MongoDB. In the Netlify site's environment variables, set:
+
+| Variable | Value |
+| --- | --- |
+| `VITE_API_URL` | The public API origin, such as `https://your-api.example.com` (no trailing slash or route path) |
+
+After setting or changing the variable, trigger a new deploy. Configure the API's credentialed CORS allowlist to include the exact Netlify site origin (and any custom domain), and keep `credentials: true`. Because the browser sends the HTTP-only login cookie on API requests, serve the API over HTTPS and configure its production cookie for cross-site use (`SameSite=None; Secure`) when the front end and API are on different sites. Keep `JWT_SECRET`, database credentials, and other backend secrets only in the backend host's environment; do not put them in Netlify's `VITE_` variables.
 
 ### Accounts
 

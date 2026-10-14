@@ -1,3 +1,4 @@
+import { apiUrl } from "../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../data/staffData";
 import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
@@ -32,7 +33,7 @@ export default function FieldGuardPage() {
 
     async function loadReports() {
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch(apiUrl("/reports"), {
           credentials: "include",
           signal: controller.signal,
         });
@@ -67,7 +68,7 @@ export default function FieldGuardPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch(apiUrl("/fines"), {
           credentials: "include",
           signal: controller.signal,
         });

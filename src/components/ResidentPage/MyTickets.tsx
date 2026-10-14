@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import { useState } from "react";
 import LoadingState from "../common/LoadingState";
 import { Camera, Eye, ImageOff, MapPin } from "lucide-react";
@@ -98,7 +99,7 @@ export default function MyTickets({
         formData.append("photo", photo);
       }
 
-      const response = await fetch("http://localhost:4000/reports", {
+      const response = await fetch(apiUrl("/reports"), {
         method: "POST",
         credentials: "include",
         body: formData,

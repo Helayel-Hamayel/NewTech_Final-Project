@@ -1,3 +1,4 @@
+import { apiUrl } from "../../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import type { StaffServiceRequest } from "../../data/staffData";
 import { MONTHLY_RENT } from "../../data/utilityData";
@@ -28,7 +29,7 @@ export default function StaffOverview({
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("http://localhost:4000/reports/field-guards", {
+    fetch(apiUrl("/reports/field-guards"), {
       credentials: "include",
       signal: controller.signal,
     })
@@ -43,7 +44,7 @@ export default function StaffOverview({
     const controller = new AbortController();
     const options = { credentials: "include" as const, signal: controller.signal };
     const load = (path: string) =>
-      fetch(`http://localhost:4000${path}`, options).then((response) =>
+      fetch(apiUrl(path), options).then((response) =>
         response.ok ? response.json() : Promise.reject(),
       );
 
