@@ -71,7 +71,7 @@ function UserProvider({ children }: { children: ReactNode }) {
     }
 
     setUser(null);
-    toast.success("You’ve been signed out. See you next time!");
+    toast.success("You've been signed out. See you next time!");
   }
   const value = { user, loading, saveUser, signOut };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
