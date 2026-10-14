@@ -1,5 +1,5 @@
 import { Tag, CalendarDays, User, MapPin, FileText, Flag, Phone } from "lucide-react";
-import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../../components/fieldGuard/FieldGuardStatusIcon";
 import type { fieldGuardData } from "../../../data/fieldGuardData";
 import { formatIsraeliDateTime } from "../../formatting/israeliDate";
 

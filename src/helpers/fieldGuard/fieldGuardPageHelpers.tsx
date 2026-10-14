@@ -1,5 +1,5 @@
 import { Tag, CalendarDays } from "lucide-react";
-import FieldGuardStatusIcon from "../../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../components/fieldGuard/FieldGuardStatusIcon";
 import { formatIsraeliDateTime } from "../formatting/israeliDate";
 type RecentEntry = {
   _id: string;

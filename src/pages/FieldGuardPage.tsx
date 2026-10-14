@@ -1,7 +1,7 @@
 import { apiUrl } from "../helpers/apiUrl";
 import { useEffect, useState } from "react";
 import type { ReportFromBackend } from "../data/staffData";
-import FieldGuardStatusIcon from "../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../components/fieldGuard/FieldGuardStatusIcon";
 import LoadingState from "../components/common/LoadingState";
 import type { FineFromBackend } from "../data/fineData";
 import { RecentPanel } from "../helpers/fieldGuard/fieldGuardPageHelpers";

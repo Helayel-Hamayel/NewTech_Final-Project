@@ -1,8 +1,8 @@
 import { useState } from "react";
-import FieldGuardHistoryPage from "../components/FieldGuard/FieldGuardHistoryPage";
-import FieldGuardImplementIssuePage from "../components/FieldGuard/FieldGuardImplementIssuePage";
-import FieldGuardReportsPage from "../components/FieldGuard/FieldGuardReportsPage";
-import FieldGuardHeader, { type FieldGuardTab } from "../components/FieldGuard/FieldGuardHeader";
+import FieldGuardHistoryPage from "../components/fieldGuard/FieldGuardHistoryPage";
+import FieldGuardImplementIssuePage from "../components/fieldGuard/FieldGuardImplementIssuePage";
+import FieldGuardReportsPage from "../components/fieldGuard/FieldGuardReportsPage";
+import FieldGuardHeader, { type FieldGuardTab } from "../components/fieldGuard/FieldGuardHeader";
 import FieldGuardPage from "../pages/FieldGuardPage";
 import "../styles/common/fieldGuard/FieldGuardLayout.css";
 

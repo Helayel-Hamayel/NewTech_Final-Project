@@ -1,5 +1,5 @@
 import { Tag, CalendarDays, FileText, Coins, Image as ImageIcon } from "lucide-react";
-import FieldGuardStatusIcon from "../../../components/FieldGuard/FieldGuardStatusIcon";
+import FieldGuardStatusIcon from "../../../components/fieldGuard/FieldGuardStatusIcon";
 import { formatCost, formatHistoryDate } from "./fieldGuardHistoryHelpers";
 import type { HistoryIssue } from "./fieldGuardHistoryHelpers";
 import ImagePreview from "../../../components/common/ImagePreview";
