@@ -162,6 +162,10 @@ src/
 └── styles/         CSS, including the shared mobile system
 ```
 
+## Design documentation
+
+Read the [CivicHub design document](DesignDoc.html). Download the file and open it in a browser, since GitHub shows HTML files as source code.
+
 ## Team
 
 Helayel Hamayel and Mohamad Amer.
