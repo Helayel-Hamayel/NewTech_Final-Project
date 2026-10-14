@@ -12,7 +12,7 @@ function UserProvider({ children }: { children: ReactNode }) {
 
     async function restoreUser() {
       try {
-        const response = await fetch("http://localhost:4000/auth/me", {
+        const response = await fetch("/api/auth/me", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -49,7 +49,7 @@ function UserProvider({ children }: { children: ReactNode }) {
   }
 
   async function signOut() {
-    const response = await fetch("http://localhost:4000/auth/logout", {
+    const response = await fetch("/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });

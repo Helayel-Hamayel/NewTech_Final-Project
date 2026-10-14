@@ -98,7 +98,7 @@ export default function MyTickets({
         formData.append("photo", photo);
       }
 
-      const response = await fetch("http://localhost:4000/reports", {
+      const response = await fetch("/api/reports", {
         method: "POST",
         credentials: "include",
         body: formData,

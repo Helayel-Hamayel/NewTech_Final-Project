@@ -28,7 +28,7 @@ export default function StaffOverview({
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("http://localhost:4000/reports/field-guards", {
+    fetch("/api/reports/field-guards", {
       credentials: "include",
       signal: controller.signal,
     })
@@ -43,7 +43,7 @@ export default function StaffOverview({
     const controller = new AbortController();
     const options = { credentials: "include" as const, signal: controller.signal };
     const load = (path: string) =>
-      fetch(`http://localhost:4000${path}`, options).then((response) =>
+      fetch(`/api${path}`, options).then((response) =>
         response.ok ? response.json() : Promise.reject(),
       );
 

@@ -65,7 +65,7 @@ export default function FieldGuardImplementIssuePage() {
         formData.append("photo", photo);
       }
 
-      const response = await fetch("http://localhost:4000/fines", {
+      const response = await fetch("/api/fines", {
         method: "POST",
         credentials: "include",
         body: formData,

@@ -69,7 +69,7 @@ export default function ResidentAppeals({ appealSubmitting, onPay, fines }: Resi
       setError("");
 
       try {
-        const response = await fetch("http://localhost:4000/appeals", {
+        const response = await fetch("/api/appeals", {
           credentials: "include",
           signal: controller.signal,
         });

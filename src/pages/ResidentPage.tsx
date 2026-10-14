@@ -142,7 +142,7 @@ export default function ResidentPage() {
     setAppealSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:4000/appeals", {
+      const response = await fetch("/api/appeals", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -192,7 +192,7 @@ export default function ResidentPage() {
   }
 
   async function handlePayBills(selection: PaymentSelection) {
-    const response = await fetch("http://localhost:4000/utilities/pay", {
+    const response = await fetch("/api/utilities/pay", {
       method: "PUT",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -226,7 +226,7 @@ export default function ResidentPage() {
 
     async function loadReports() {
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch("/api/reports", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -287,7 +287,7 @@ export default function ResidentPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch("/api/fines", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -348,7 +348,7 @@ export default function ResidentPage() {
 
     async function loadUtilities() {
       try {
-        const response = await fetch("http://localhost:4000/utilities/me", {
+        const response = await fetch("/api/utilities/me", {
           credentials: "include",
           signal: controller.signal,
         });

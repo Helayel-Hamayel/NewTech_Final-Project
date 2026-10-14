@@ -41,7 +41,7 @@ export default function FieldGuardReportsPage() {
 
     async function loadReports() {
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch("/api/reports", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -115,7 +115,7 @@ export default function FieldGuardReportsPage() {
     setActionError("");
 
     try {
-      const response = await fetch(`http://localhost:4000/reports/${selectedReport._id}/field-guard-status`, {
+      const response = await fetch(`/api/reports/${selectedReport._id}/field-guard-status`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

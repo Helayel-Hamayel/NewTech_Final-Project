@@ -84,7 +84,7 @@ export default function StaffLayout() {
       setReportsError("");
 
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch("/api/reports", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -147,7 +147,7 @@ export default function StaffLayout() {
 
     async function loadAppeals() {
       try {
-        const response = await fetch("http://localhost:4000/appeals", {
+        const response = await fetch("/api/appeals", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -185,7 +185,7 @@ export default function StaffLayout() {
       setUtilitiesError("");
 
       try {
-        const response = await fetch("http://localhost:4000/utilities", {
+        const response = await fetch("/api/utilities", {
           credentials: "include",
           signal: controller.signal,
         });

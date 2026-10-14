@@ -25,7 +25,7 @@ export default function StaffFineLedger({ search }: StaffFineLedgerProps) {
       setError("");
 
       try {
-        const response = await fetch("http://localhost:4000/fines/staff", {
+        const response = await fetch("/api/fines/staff", {
           credentials: "include",
           signal: controller.signal,
         });

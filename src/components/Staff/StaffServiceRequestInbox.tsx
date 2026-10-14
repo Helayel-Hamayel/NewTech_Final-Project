@@ -51,7 +51,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
 
     async function loadGuards() {
       try {
-        const response = await fetch("http://localhost:4000/reports/field-guards", {
+        const response = await fetch("/api/reports/field-guards", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -99,7 +99,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
     setAssignmentError("");
 
     try {
-      const response = await fetch(`http://localhost:4000/reports/${selectedRequest.id}/assign`, {
+      const response = await fetch(`/api/reports/${selectedRequest.id}/assign`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -168,7 +168,7 @@ export default function StaffServiceRequestInbox({ requests, search, setRequests
     setRejectionError("");
 
     try {
-      const response = await fetch(`http://localhost:4000/reports/${selectedRequest.id}/reject`, {
+      const response = await fetch(`/api/reports/${selectedRequest.id}/reject`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -32,7 +32,7 @@ export default function FieldGuardPage() {
 
     async function loadReports() {
       try {
-        const response = await fetch("http://localhost:4000/reports", {
+        const response = await fetch("/api/reports", {
           credentials: "include",
           signal: controller.signal,
         });
@@ -67,7 +67,7 @@ export default function FieldGuardPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch("/api/fines", {
           credentials: "include",
           signal: controller.signal,
         });

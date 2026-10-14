@@ -42,7 +42,7 @@ export default function FieldGuardHistoryPage() {
 
     async function loadFines() {
       try {
-        const response = await fetch("http://localhost:4000/fines", {
+        const response = await fetch("/api/fines", {
           credentials: "include",
           signal: controller.signal,
         });

@@ -19,7 +19,7 @@ export default function LoginForm() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/auth/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
