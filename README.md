@@ -141,15 +141,17 @@ Open http://localhost:5173. The API allows the origins `localhost:5173`, `5174` 
 
 ## Deploying the front end to Netlify
 
-The repository includes a `netlify.toml` with the Vite build command, `dist` publish directory, and a single-page-app fallback for React Router routes. Connect this repository to Netlify from its root directory.
+The repository includes a `netlify.toml` with the Vite build command, `dist` publish directory, an API proxy, and a single-page-app fallback for React Router routes. Connect this repository to Netlify from its root directory.
 
-The Express API must be deployed separately; Netlify hosts this front end, not the API or MongoDB. In the Netlify site's environment variables, set:
+Production builds send API requests to `/api` on the frontend's own origin. Netlify forwards these requests to the separately hosted Express API at `https://backend-civichub.onrender.com`, preserving the route, request body, and session cookies. This avoids browser CORS restrictions and third-party cookie blocking between the frontend and Render. The API proxy must remain before the single-page-app fallback so API requests do not return the frontend HTML.
+
+No API environment variable is required for Netlify deployments. To change the production backend, update the proxy destination in `netlify.toml` and redeploy. For local Vite development only, you can set:
 
 | Variable | Value |
 | --- | --- |
-| `VITE_API_URL` | The public API origin, such as `https://your-api.example.com` (no trailing slash or route path) |
+| `VITE_API_URL` | The API origin, such as `http://localhost:4000` (the default; no trailing slash or route path) |
 
-After setting or changing the variable, trigger a new deploy. Configure the API's credentialed CORS allowlist to include the exact Netlify site origin (and any custom domain), and keep `credentials: true`. Because the browser sends the HTTP-only login cookie on API requests, serve the API over HTTPS and configure its production cookie for cross-site use (`SameSite=None; Secure`) when the front end and API are on different sites. Keep `JWT_SECRET`, database credentials, and other backend secrets only in the backend host's environment; do not put them in Netlify's `VITE_` variables.
+For local development, configure the API's credentialed CORS allowlist to include your local Vite origin. Keep the API's HTTP-only session cookie host-only (do not set a Render-specific cookie domain) with `Path=/` so it works through the proxy. Keep backend secrets only in the backend host's environment; do not put them in Netlify's `VITE_` variables.
 
 ### Accounts
 
