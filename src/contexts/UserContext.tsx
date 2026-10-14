@@ -1,5 +1,5 @@
 import { apiUrl } from "../helpers/apiUrl";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { UserContext, type User } from "./userContextValue";
 import { toast } from "sonner";
 
@@ -7,16 +7,20 @@ function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const restoreController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
+    restoreController.current = controller;
 
     async function restoreUser() {
       try {
         const response = await fetch(apiUrl("/auth/me"), {
           credentials: "include",
-          signal: controller.signal,
+          signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
         });
+
+        if (controller.signal.aborted) return;
 
         if (response.status === 401) {
           setUser(null);
@@ -28,10 +32,12 @@ function UserProvider({ children }: { children: ReactNode }) {
         }
 
         const data = await response.json();
-        setUser(data.user);
-      } catch (error) {
         if (!controller.signal.aborted) {
-          console.error("Could not restore the session:", error);
+          setUser(data.user);
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setUser(null);
         }
       } finally {
         if (!controller.signal.aborted) {
@@ -46,7 +52,9 @@ function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   function saveUser(loggedInUser: User) {
+    restoreController.current?.abort();
     setUser(loggedInUser);
+    setLoading(false);
   }
 
   async function signOut() {
@@ -62,16 +70,7 @@ function UserProvider({ children }: { children: ReactNode }) {
     setUser(null);
     toast.success("You’ve been signed out. See you next time!");
   }
-  const value = { user, saveUser, signOut };
-  if (loading) {
-    return (
-      <main className="session-loader" role="status" aria-live="polite">
-        <span className="session-loader-spinner" aria-hidden="true" />
-        <strong>CivicHub</strong>
-        <p>Loading your session...</p>
-      </main>
-    );
-  }
+  const value = { user, loading, saveUser, signOut };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 export default UserProvider;

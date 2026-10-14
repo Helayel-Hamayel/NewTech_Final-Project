@@ -7,7 +7,17 @@ type ProtectedRouteProps = {
 };
 
 export default function ProtectedRoute({ allowedRole }: ProtectedRouteProps) {
-  const { user } = useUser();
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return (
+      <main className="session-loader" role="status" aria-live="polite">
+        <span className="session-loader-spinner" aria-hidden="true" />
+        <strong>CivicHub</strong>
+        <p>Checking your session...</p>
+      </main>
+    );
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;

@@ -153,6 +153,12 @@ No API environment variable is required for Netlify deployments. To change the p
 
 For local development, configure the API's credentialed CORS allowlist to include your local Vite origin. Keep the API's HTTP-only session cookie host-only (do not set a Render-specific cookie domain) with `Path=/` so it works through the proxy. Keep backend secrets only in the backend host's environment; do not put them in Netlify's `VITE_` variables.
 
+### Troubleshooting slow login
+
+The login and registration pages remain available while the app checks an existing session in the background. Session checks stop after 15 seconds; protected pages wait for that check before deciding whether to redirect to login. Login requests stop after 20 seconds and show a progress explanation after five seconds, with separate messages for incorrect credentials, rate limits, unavailable servers, and unexpected responses.
+
+If `/api/auth/me` or `/api/auth/login` returns a gateway timeout, the separately hosted API has not responded in time. Check the backend service status and logs in Render, including startup and database connectivity. Client-side timeouts prevent an endless spinner but cannot repair an unavailable backend. Do not repeatedly submit credentials or treat a server timeout as an incorrect password.
+
 ### Accounts
 
 - **Resident:** register from the login page ("Create an account").

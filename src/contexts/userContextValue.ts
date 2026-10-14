@@ -10,6 +10,7 @@ export type User = {
 
 export type UserContextType = {
   user: User | null;
+  loading: boolean;
   saveUser: (user: User) => void;
   signOut: () => Promise<void>;
 };
